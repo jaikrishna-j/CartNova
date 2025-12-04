@@ -1,0 +1,347 @@
+import { useState, useEffect, useRef, useMemo, useContext } from 'react';
+import { Link, useSearchParams, useNavigate, NavLink } from 'react-router-dom';
+import { FaCartShopping, FaRegUser } from 'react-icons/fa6';
+import { IoSearch } from 'react-icons/io5';
+import { useQuery } from '@tanstack/react-query';
+import { getCategories } from '@/services/apiProducts';
+import { HiOutlineBars3, HiChevronDown } from 'react-icons/hi2';
+import { AuthContext } from '@/context/AuthContext';
+
+const NavBar = ({ numCartItems }) => {
+  const { isAuthenticated, setIsAuthenticated, username } = useContext(AuthContext);
+
+  function logout(){
+    localStorage.removeItem("access")
+    setIsAuthenticated(false)
+  }
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
+  const [selectedCategory, setSelectedCategory] = useState(
+    searchParams.get('category') || 'all'
+  );
+
+  const categoryButtonRef = useRef(null);
+
+  const { data: categories = [], isPending: categoriesPending } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
+
+  const allCategories = useMemo(() => {
+    const list = [{ value: 'all', label: 'All Category' }];
+    if (Array.isArray(categories) && categories.length > 0) {
+      list.push(...categories.filter((cat) => cat.value !== 'all'));
+    }
+    return list;
+  }, [categories]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        categoryButtonRef.current &&
+        !categoryButtonRef.current.contains(event.target)
+      ) {
+        setIsCategoryMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [categoryButtonRef]);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    const newParams = new URLSearchParams();
+    if (searchQuery.trim()) {
+      newParams.set('q', searchQuery.trim());
+    }
+    if (selectedCategory !== 'all') {
+      newParams.set('category', selectedCategory);
+    }
+    newParams.set('page', '1');
+    navigate(`/store?${newParams.toString()}`);
+  };
+
+  const handleCategorySelect = (categoryValue) => {
+    setSelectedCategory(categoryValue);
+    const newParams = new URLSearchParams();
+    if (searchQuery.trim()) {
+      newParams.set('q', searchQuery.trim());
+    }
+    if (categoryValue !== 'all') {
+      newParams.set('category', categoryValue);
+    }
+    newParams.set('page', '1');
+    navigate(`/store?${newParams.toString()}`);
+    setIsCategoryMenuOpen(false);
+  };
+
+  const NAVBAR_INNER_HEIGHT_CLASS = 'h-16';
+  const currentCategoryLabel =
+    allCategories.find((c) => c.value === selectedCategory)?.label ||
+    'All Category';
+
+  return (
+    <>
+      {/* 1. FIXED NAVBAR */}
+      <nav className={`bg-white shadow-lg fixed top-0 left-0 w-full z-50`}>
+        <div className='max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 lg:py-2'>
+          <div
+            className={`flex justify-between items-center ${NAVBAR_INNER_HEIGHT_CLASS} w-full`}
+          >
+            {/* 1. LEFT: Logo */}
+            <Link
+              to='/'
+              className='flex-shrink-0 text-2xl font-extrabold text-gray-900 uppercase no-underline tracking-wider'
+            >
+              CartNova
+            </Link>
+
+            {/* 2. CENTER: Search UI (Desktop Only) */}
+            <div className='hidden lg:flex flex-grow justify-center items-stretch mx-8 max-w-4xl space-x-2'>
+              <div ref={categoryButtonRef} className='relative flex-shrink-0 z-30'>
+                <button
+                  onClick={() => setIsCategoryMenuOpen((prev) => !prev)}
+                  className='bg-blue-600 text-white text-sm font-medium pl-3 pr-4 py-2 rounded-xl border border-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center justify-center space-x-1'
+                >
+                  <HiOutlineBars3 className='text-lg' />
+                  <span>{currentCategoryLabel}</span>
+                  <HiChevronDown
+                    className={`ml-1 transition-transform ${
+                      isCategoryMenuOpen ? 'rotate-180' : 'rotate-0'
+                    }`}
+                  />
+                </button>
+                {isCategoryMenuOpen && (
+                  <div className='absolute top-full mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-200 py-1 max-h-80 overflow-y-auto'>
+                    {categoriesPending ? (
+                      <div className='text-center py-2 text-sm text-gray-500'>
+                        Loading...
+                      </div>
+                    ) : (
+                      allCategories.map((cat) => (
+                        <button
+                          key={cat.value}
+                          onClick={() => handleCategorySelect(cat.value)}
+                          className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors border-b border-transparent ${
+                            selectedCategory === cat.value
+                              ? 'bg-indigo-100 text-indigo-700 font-bold'
+                              : 'text-gray-700 hover:bg-indigo-50'
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+              <Link
+                to='/store'
+                className='flex-shrink-0 text-blue-600 border border-blue-400 text-sm font-medium px-4 py-2 rounded-xl shadow-md flex items-center justify-center no-underline bg-white hover:!bg-indigo-600 hover:!text-white hover:!border-indigo-600 transition-all duration-300'
+              >
+                Store
+              </Link>
+              <form
+                onSubmit={handleSearchSubmit}
+                className='flex w-[50%] items-stretch shadow-md overflow-hidden rounded-xl'
+              >
+                <input
+                  type='text'
+                  placeholder='Search products...'
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className='flex-grow bg-white px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none ring-0 focus:ring-0'
+                />
+                <button
+                  type='submit'
+                  className='bg-blue-600 text-white w-12 hover:bg-blue-700 transition duration-200 focus:outline-none flex items-center justify-center border-none rounded-r-xl'
+                >
+                  <IoSearch className='text-xl' />
+                </button>
+              </form>
+            </div>
+
+            {/* 3. RIGHT: Auth Links & Cart Icon */}
+            <div className='flex items-center space-x-6'>
+              <div className='hidden lg:flex space-x-6 items-center'>
+                {isAuthenticated ? (
+                  <>
+                    <NavLink
+                      to='/profile'
+                      className='flex items-center gap-2 font-medium text-gray-700 hover:text-indigo-600 no-underline'
+                      end
+                    >
+                      <FaRegUser className='text-xl' />
+                      {`Hi, ${username}`}
+                    </NavLink>
+                    <NavLink
+                      onClick={logout}
+                      to='/'
+                      className='font-medium text-gray-700 hover:text-indigo-600 no-underline'
+                      end
+                    >
+                      Logout
+                    </NavLink>
+                  </>
+                ) : (
+                  <div>
+                    <p className='text-xs text-gray-500 text-right -mb-1'>
+                      Welcome guest!
+                    </p>
+                    <div className='flex items-center space-x-2'>
+                      <FaRegUser className='text-xl text-gray-600' />
+                      <div className='text-sm'>
+                        <NavLink
+                          to='/login'
+                          className='font-medium text-gray-800 hover:text-indigo-600 no-underline'
+                        >
+                          Sign in
+                        </NavLink>
+                        <span className='mx-1 text-gray-400'>|</span>
+                        <NavLink
+                          to='/register'
+                          className='font-medium text-gray-800 hover:text-indigo-600 no-underline'
+                        >
+                          Register
+                        </NavLink>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Link to='/cart' className='relative hidden lg:inline-block'>
+                <div className='bg-indigo-600 rounded-full p-3 flex items-center justify-center hover:bg-purple-600'>
+                  <FaCartShopping className='text-white text-xl' />
+                </div>
+                {numCartItems > 0 && (
+                  <span className='absolute -top-1 -right-3  bg-red-500 text-white text-xs font-bold px-[8px] py-1 flex items-center justify-center rounded-full shadow-lg'>
+                    {numCartItems}
+                  </span>
+                )}
+              </Link>
+
+              {/* Mobile Toggle Button */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className='lg:hidden appearance-none bg-transparent border-none p-0 m-0 focus:outline-none flex flex-col justify-center items-center w-8 h-8'
+              >
+                <span
+                  className={`block w-6 h-0.5 bg-black transform transition duration-300 ease-in-out ${
+                    isOpen ? 'rotate-45 translate-y-1.5' : ''
+                  }`}
+                />
+                <span
+                  className={`block w-6 h-0.5 bg-black my-1 transition duration-300 ease-in-out ${
+                    isOpen ? 'opacity-0' : ''
+                  }`}
+                />
+                <span
+                  className={`block w-6 h-0.5 bg-black transform transition duration-300 ease-in-out ${
+                    isOpen ? '-rotate-45 -translate-y-1.5' : ''
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div
+          className={`lg:hidden transition-all duration-500 ease-in-out overflow-hidden ${
+            isOpen ? 'max-h-screen' : 'max-h-0'
+          }`}
+        >
+          <div className='flex flex-col items-center space-y-4 py-6 bg-white border-t border-gray-200 px-4'>
+            <form
+              onSubmit={handleSearchSubmit}
+              className='flex flex-col w-full max-w-md space-y-2'
+            >
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className='bg-gray-100 border border-gray-300 text-gray-700 text-sm px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500'
+              >
+                {allCategories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+              <div className='flex bg-gray-100 rounded-lg overflow-hidden border border-gray-300'>
+                <input
+                  type='text'
+                  placeholder='Search products...'
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className='flex-grow bg-transparent px-3 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none'
+                />
+                <button
+                  type='submit'
+                  className='bg-indigo-600 text-white px-3 hover:bg-indigo-700 transition duration-200 border-none'
+                >
+                  <IoSearch />
+                </button>
+              </div>
+            </form>
+            {isAuthenticated ? (
+              <>
+                <NavLink
+                  to='/profile'
+                  onClick={() => setIsOpen(false)}
+                  className='font-medium text-black no-underline hover:text-indigo-700'
+                >
+                  {`Hi, ${username}`}
+                </NavLink>
+                <NavLink
+                  to='/'
+                  onClick={() => { logout(); setIsOpen(false); }}
+                  className='font-medium no-underline text-black hover:text-indigo-700'
+                >
+                  Logout
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to='/login'
+                  onClick={() => setIsOpen(false)}
+                  className='font-medium no-underline text-black hover:text-indigo-700'
+                >
+                  Sign in
+                </NavLink>
+                <NavLink
+                  to='/register'
+                  onClick={() => setIsOpen(false)}
+                  className='font-medium no-underline text-black hover:text-indigo-700'
+                >
+                  Register
+                </NavLink>
+              </>
+            )}
+            <Link
+              to='/cart'
+              onClick={() => setIsOpen(false)}
+              className='flex items-center gap-2 no-underline font-medium hover:text-indigo-700'
+            >
+              <FaCartShopping />
+              <span>
+                Cart {numCartItems > 0 && <span>({numCartItems})</span>}
+              </span>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* SPACER DIV */}
+      <div className='invisible h-16 lg:h-20'></div>
+    </>
+  );
+};
+
+export default NavBar;

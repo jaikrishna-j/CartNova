@@ -1,0 +1,9 @@
+{
+    "venvPath": ".",
+    "venv": "shopenv",
+    "pythonVersion": "3.13",
+    "extraPaths": [
+        "."
+    ]
+}
+
