@@ -60,8 +60,8 @@ const HomePage = () => {
             ) : products.length > 0 ? (
                 <CardContainer products={products} isSearch={isSearching} />
             ) : (
-                <div className='text-center py-20'>
-                    <p className='text-xl text-gray-500'>
+                <div className='text-center py-20 bg-white dark:bg-gray-900'>
+                    <p className='text-xl text-gray-500 dark:text-gray-400'>
                         No products found for your search criteria.
                     </p>
                 </div>

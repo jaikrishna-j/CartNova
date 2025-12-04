@@ -32,10 +32,20 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 ]
 
-# Serve static and media files during development
-if settings.DEBUG or True:  # Always serve static files
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve static and media files
+# This works even when DEBUG=False for development purposes
+from django.views.static import serve
+from django.urls import re_path
+
+# Serve static files
+urlpatterns += [
+    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+]
+
+# Serve media files  
+urlpatterns += [
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+]
 
 
 

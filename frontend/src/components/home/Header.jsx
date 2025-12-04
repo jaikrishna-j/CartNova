@@ -70,27 +70,27 @@ const Header = () => {
       </div>
 
       {/* --- LAYER 2: OVERLAY & CONTENT (FOREGROUND) --- */}
-      <div className='relative z-10 flex h-full min-h-[80vh] items-center justify-between bg-black/40 px-4 sm:px-6 lg:px-8'>
+      <div className='relative z-10 flex h-full min-h-[80vh] items-center justify-between bg-gradient-to-r from-black/50 via-black/40 to-black/50 px-4 sm:px-6 lg:px-8'>
         {/* Left Arrow */}
         <button
           onClick={() => handleManualNavigation('prev')}
-          className='bg-transparent border-none p-2'
+          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
           aria-label='Previous image'
         >
-          <FaChevronLeft className='text-2xl text-gray-300 hover:text-white transition-colors duration-300' />
+          <FaChevronLeft className='text-2xl text-white transition-transform duration-300' />
         </button>
 
         {/* Center Text Content */}
-        <div className='flex flex-col items-center text-center'>
-          <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg'>
+        <div className='flex flex-col items-center text-center px-4'>
+          <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight drop-shadow-2xl bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent animate-fade-in'>
             Welcome to Your Favorite Store
           </h1>
-          <p className='text-lg sm:text-xl md:text-2xl text-white/75 mb-8 max-w-2xl drop-shadow'>
+          <p className='text-lg sm:text-xl md:text-2xl text-white/90 mb-8 max-w-2xl drop-shadow-lg font-medium'>
             Discover the latest trends with our modern collection
           </p>
           <a
             href='#products'
-            className='inline-block bg-indigo-600 text-white text-base no-underline font-semibold rounded-full px-8 py-3 transition duration-300 hover:bg-indigo-700 shadow-lg transform hover:scale-105'
+            className='inline-block bg-indigo-600 text-white text-base sm:text-lg no-underline font-semibold rounded-full px-8 py-4 sm:px-10 sm:py-4 transition-all duration-300 hover:bg-indigo-700 dark:hover:bg-indigo-600 shadow-2xl transform hover:scale-105 hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
           >
             Shop Now
           </a>
@@ -99,10 +99,10 @@ const Header = () => {
         {/* Right Arrow */}
         <button
           onClick={() => handleManualNavigation('next')}
-          className='bg-transparent border-none p-2'
+          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
           aria-label='Next image'
         >
-          <FaChevronRight className='text-2xl text-gray-300 hover:text-white transition-colors duration-300' />
+          <FaChevronRight className='text-2xl text-white transition-transform duration-300' />
         </button>
       </div>
     </header>

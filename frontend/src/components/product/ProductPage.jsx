@@ -119,9 +119,9 @@ const ProductPage = ({ setNumberCartItems }) => {
     if (loading) return <ProductPagePlaceHolder />;
     if (error && !product) {
         return (
-             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center'>
-                 <p className="text-red-500">{error}</p>
-                 <Link to="/store" className="text-indigo-600 hover:underline mt-4 inline-block">Go back to Store</Link>
+             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center bg-white dark:bg-gray-900 min-h-screen'>
+                 <p className="text-red-500 dark:text-red-400">{error}</p>
+                 <Link to="/store" className="text-indigo-600 dark:text-indigo-400 hover:underline mt-4 inline-block">Go back to Store</Link>
              </div>
         );
     }
@@ -170,7 +170,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                                 {productName}
                             </h1>
                             <div className='flex items-baseline mb-6'>
-                                <span className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600'>
+                                <span className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600 dark:from-indigo-400 dark:to-purple-400'>
                                     ₹{productPrice}
                                 </span>
                             </div>
@@ -180,7 +180,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                             <div className='flex flex-wrap gap-4'>
                                 <button
                                     onClick={add_item}
-                                    className={`flex flex-1 sm:flex-none items-center justify-center px-8 py-3 text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
+                                    className={`flex flex-1 sm:flex-none items-center justify-center px-8 py-3 text-lg font-medium text-white bg-indigo-600 dark:bg-indigo-700 rounded-xl shadow-lg hover:bg-indigo-700 dark:hover:bg-indigo-600 transition duration-300 disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
                                     type='button'
                                     disabled={inCart || isAdding}
                                 >
@@ -199,7 +199,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                                     )}
                                 </button>
                             </div>
-                            {error && !inCart && <p className="text-red-500 mt-4">{error}</p>}
+                            {error && !inCart && <p className="text-red-500 dark:text-red-400 mt-4">{error}</p>}
                         </div>
                     </div>
                 </div>
