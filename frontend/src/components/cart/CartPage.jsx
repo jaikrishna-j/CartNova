@@ -23,13 +23,13 @@ const CartPage = ({ setNumberCartItems }) => {
 
   if (!cartItems || cartItems.length < 1) {
     return (
-      <div className='min-h-[calc(100vh-8rem)] flex items-center justify-center bg-white dark:bg-gray-900'>
+      <div className='min-h-[calc(100vh-8rem)] flex items-center justify-center bg-white'>
         <div className='text-center p-8'>
-          <FiShoppingBag className='mx-auto text-6xl text-gray-300 dark:text-gray-600 mb-4' />
-          <h2 className='text-3xl font-bold text-gray-800 dark:text-white mb-3'>
+          <FiShoppingBag className='mx-auto text-6xl text-gray-300 mb-4' />
+          <h2 className='text-3xl font-bold text-gray-800 mb-3'>
             Your Cart is Empty
           </h2>
-          <p className='text-gray-500 dark:text-gray-400 mb-8'>
+          <p className='text-gray-500 mb-8'>
             Looks like you haven't added anything yet.
           </p>
           <Link
@@ -44,19 +44,19 @@ const CartPage = ({ setNumberCartItems }) => {
   }
 
   return (
-    <div className='bg-white dark:bg-gray-900 min-h-screen'>
+    <div className='bg-white min-h-screen'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <div className='mb-8'>
-          <h1 className='text-3xl md:text-4xl font-bold text-gray-900 dark:text-white'>
+          <h1 className='text-3xl md:text-4xl font-bold text-gray-900'>
             Your Cart
           </h1>
-          <p className='mt-2 text-gray-500 dark:text-gray-400'>
+          <p className='mt-2 text-gray-500'>
             You have {numItems} item{numItems !== 1 && 's'} in your cart.
           </p>
         </div>
         <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start'>
           <div className='lg:col-span-8'>
-            <div className='divide-y divide-gray-200 dark:divide-gray-700'>
+            <div className='divide-y divide-gray-200'>
               {cartItems.map(item => (
                 <CartItem
                   key={item.id}

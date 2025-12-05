@@ -12,7 +12,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import './tailwind-scope.css';
 
 
-const googleClientId = "784614708869-ha9756cert2gu0vte6dta98l6edfvd4q.apps.googleusercontent.com";
+const googleClientId = "1082363198832-bf2isc0l8e89cr3vkqfaotaaioj5m6tp.apps.googleusercontent.com";
 
 const queryClient = new QueryClient();
 

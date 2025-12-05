@@ -70,7 +70,7 @@ const PagePagination = ({ numOfPages, handleSetPage, page }) => {
                         disabled={currentPage === 1}
                         href="#"
                         // THEME: Switched to a light, bordered style to match the theme
-                        className="h-9 px-3 text-sm sm:h-11 sm:px-5 sm:text-base bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
+                        className="h-9 px-3 text-sm sm:h-11 sm:px-5 sm:text-base bg-white border border-gray-200 text-gray-600 rounded-xl shadow-sm hover:bg-gray-50 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                     />
                 </PaginationItem>
 
@@ -91,7 +91,7 @@ const PagePagination = ({ numOfPages, handleSetPage, page }) => {
                                           rounded-xl transition duration-300 border
                                           ${item === currentPage
                                             ? "bg-indigo-600 text-white shadow-lg border-transparent" // Active style
-                                            : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-gray-700 hover:text-indigo-600 dark:hover:text-indigo-400" // Default style
+                                            : "bg-white border-gray-200 text-gray-600 hover:bg-indigo-50 hover:text-indigo-600" // Default style
                                           }`}
                             >
                                 {item}
@@ -109,7 +109,7 @@ const PagePagination = ({ numOfPages, handleSetPage, page }) => {
                         disabled={currentPage === totalPages}
                         href="#"
                         // THEME: Switched to a light, bordered style to match the theme
-                        className="h-9 px-3 text-sm sm:h-11 sm:px-5 sm:text-base bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white dark:disabled:hover:bg-gray-800"
+                        className="h-9 px-3 text-sm sm:h-11 sm:px-5 sm:text-base bg-white border border-gray-200 text-gray-600 rounded-xl shadow-sm hover:bg-gray-50 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                     />
                 </PaginationItem>
             </PaginationContent>

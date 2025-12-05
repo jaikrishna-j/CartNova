@@ -99,11 +99,11 @@ const PaymentStatusPage = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <AnimatePresence mode="wait">
                 <motion.div
                     key={status}
-                    className="w-full max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex flex-col items-center text-center p-8 md:p-12"
+                    className="w-full max-w-lg mx-auto bg-white rounded-2xl shadow-2xl flex flex-col items-center text-center p-8 md:p-12"
                     variants={cardVariants}
                     initial="hidden"
                     animate="visible"
@@ -113,13 +113,13 @@ const PaymentStatusPage = () => {
                         {statusContent.icon}
                     </motion.div>
                     <motion.h1
-                        className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-3"
+                        className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3"
                         variants={itemVariants}
                     >
                         {statusContent.title}
                     </motion.h1>
                     <motion.p
-                        className="text-gray-600 dark:text-gray-400 mb-8 max-w-md"
+                        className="text-gray-600 mb-8 max-w-md"
                         variants={itemVariants}
                     >
                         {statusContent.message}

@@ -4,13 +4,13 @@ import { FiLoader } from 'react-icons/fi';
 
 const OrderHistoryItemContainer = ({ items, isLoading, hasMoreItems, onLoadMore }) => {
   return (
-    <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden'>
+    <div className='bg-white rounded-2xl shadow-lg overflow-hidden'>
       <div className='bg-indigo-600 text-white p-4'>
         <h5 className='text-xl font-bold'>Order History</h5>
       </div>
       
       {/* --- THIS CLASS adds the border --- */}
-      <div className='max-h-[400px] overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700'>
+      <div className='max-h-[400px] overflow-y-auto divide-y divide-gray-200'>
         {isLoading && items.length === 0 ? ( 
           <div className="flex justify-center items-center h-40">
             <FiLoader className="text-4xl text-indigo-500 animate-spin" />
@@ -23,7 +23,7 @@ const OrderHistoryItemContainer = ({ items, isLoading, hasMoreItems, onLoadMore 
             </div>
           ))
         ) : !isLoading ? ( 
-          <div className="text-center py-10 px-4 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-10 px-4 text-gray-500">
             You haven't placed any completed orders yet.
           </div>
         ) : null}
@@ -31,7 +31,7 @@ const OrderHistoryItemContainer = ({ items, isLoading, hasMoreItems, onLoadMore 
 
       {/* --- "SHOW MORE" BUTTON SECTION --- */}
       {hasMoreItems && (
-        <div className="border-t border-gray-200 dark:border-gray-700 p-4 text-center">
+        <div className="border-t border-gray-200 p-4 text-center">
             <button
                 onClick={onLoadMore}
                 className="bg-indigo-600 text-white font-semibold py-2 px-6 rounded-xl hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none"

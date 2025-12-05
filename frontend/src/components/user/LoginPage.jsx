@@ -12,26 +12,26 @@ import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 
 // --- Style Definitions ---
-const pageStyle = 'h-screen overflow-hidden flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-2 sm:p-4';
-const containerStyle = 'w-full max-w-5xl mx-auto max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden';
+const pageStyle = 'h-screen overflow-hidden flex items-center justify-center bg-gray-50 p-2 sm:p-4';
+const containerStyle = 'w-full max-w-5xl mx-auto max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden';
 const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-8 lg:p-12 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
 const rightPanelStyle = 'p-6 sm:p-8 lg:p-12 overflow-y-auto';
-const titleStyle = 'text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white';
-const subtitleStyle = 'text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1 sm:mt-2';
-const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 ml-1';
+const titleStyle = 'text-2xl sm:text-3xl font-bold text-gray-900';
+const subtitleStyle = 'text-sm sm:text-base text-gray-500 mt-1 sm:mt-2';
+const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 ml-1';
 const formStyle = 'space-y-3 sm:space-y-4';
 const inputGroupStyle = 'relative mt-1';
-const labelStyle = 'block text-sm font-medium text-gray-700 dark:text-gray-300';
+const labelStyle = 'block text-sm font-medium text-gray-700';
 const iconStyle = 'absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none';
 const iconSvgStyle = 'h-5 w-5 text-gray-400';
-const inputStyle = 'block w-full pl-10 pr-3 py-2 sm:py-2.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
-const passwordInputStyle = 'block w-full pl-10 pr-10 py-2 sm:py-2.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
-const eyeButtonStyle = 'absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors focus:outline-none';
+const inputStyle = 'block w-full pl-10 pr-3 py-2 sm:py-2.5 bg-gray-100 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
+const passwordInputStyle = 'block w-full pl-10 pr-10 py-2 sm:py-2.5 bg-gray-100 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
+const eyeButtonStyle = 'absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-indigo-500 transition-colors focus:outline-none';
 const submitButtonStyle = 'w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm sm:text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50';
 const separatorStyle = 'relative flex items-center justify-center my-4 sm:my-5';
-const separatorLineStyle = 'w-full h-px bg-gray-300 dark:bg-gray-600';
-const separatorTextStyle = 'absolute px-3 bg-white dark:bg-gray-800 text-xs sm:text-sm text-gray-500 dark:text-gray-400';
-const socialButtonStyle = 'w-full flex items-center justify-center gap-3 py-2.5 sm:py-3 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
+const separatorLineStyle = 'w-full h-px bg-gray-300';
+const separatorTextStyle = 'absolute px-3 bg-white text-xs sm:text-sm text-gray-500';
+const socialButtonStyle = 'w-full flex items-center justify-center gap-3 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 transition-colors';
 const bottomTextStyle = 'text-xs sm:text-sm text-center mt-4 sm:mt-6';
 
 
@@ -175,7 +175,7 @@ const LoginPage = () => {
               </motion.div>
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                 <div className='flex justify-between items-center mb-1'> <label htmlFor='password' className={labelStyle}>Password</label> <Link to='/forgot-password' className='text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400'>Forgot Password?</Link> </div>
+                 <div className='flex justify-between items-center mb-1'> <label htmlFor='password' className={labelStyle}>Password</label> <Link to='/forgot-password' className='text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-500'>Forgot Password?</Link> </div>
                  <div className={inputGroupStyle}> <span className={iconStyle}><FiLock className={iconSvgStyle} /></span> <input type={showPassword ? 'text' : 'password'} id='password' value={password} onChange={(e) => setPassword(e.target.value)} className={passwordInputStyle} placeholder='Enter your password' required /> <button type='button' onClick={() => setShowPassword(!showPassword)} className={eyeButtonStyle}>{showPassword ? <FiEyeOff /> : <FiEye />}</button> </div>
               </motion.div>
               {/* Submit Button */}
@@ -191,7 +191,7 @@ const LoginPage = () => {
             {/* Microsoft button removed */}
           </motion.div>
           {/* Link to Register */}
-          <motion.div variants={itemVariants} className={bottomTextStyle}><p className='text-gray-500 dark:text-gray-400'>Don't have an account?{' '} <Link to='/register' className={linkStyle}>Sign up</Link></p></motion.div>
+          <motion.div variants={itemVariants} className={bottomTextStyle}><p className='text-gray-500'>Don't have an account?{' '} <Link to='/register' className={linkStyle}>Sign up</Link></p></motion.div>
         </motion.div>
       </div>
     </div>

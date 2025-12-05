@@ -4,7 +4,7 @@ import notFoundAnimation from '@/assets/animations/404-not-found.json';
 
 const NotFoundPage = () => {
   return (
-    <div className='min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-gray-50 to-indigo-50 dark:from-gray-900 dark:to-indigo-900 py-8 transition-colors duration-300'>
+    <div className='min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 text-center bg-gradient-to-br from-gray-50 to-indigo-50 py-8 transition-colors duration-300'>
       
       {/* Animation */}
       <div className='w-full max-w-[200px] sm:max-w-[250px] mb-4'>
@@ -18,21 +18,21 @@ const NotFoundPage = () => {
 
       {/* Text content */}
       <div>
-        <h1 className='text-4xl sm:text-6xl font-extrabold text-gray-900 dark:text-white tracking-tighter mb-4 transition-colors duration-300'>
+        <h1 className='text-4xl sm:text-6xl font-extrabold text-gray-900 tracking-tighter mb-4 transition-colors duration-300'>
           Oops! Page Not Found
         </h1>
         
-        <p className='text-lg sm:text-xl text-gray-700 dark:text-gray-300 mb-4 max-w-2xl mx-auto transition-colors duration-300'>
+        <p className='text-lg sm:text-xl text-gray-700 mb-4 max-w-2xl mx-auto transition-colors duration-300'>
           We can't seem to find the page you're looking for.
         </p>
         
-        <p className='text-base text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto transition-colors duration-300'>
+        <p className='text-base text-gray-600 mb-8 max-w-2xl mx-auto transition-colors duration-300'>
           This might have happened because you typed the address incorrectly, the page was moved, or the link you followed is out of date.
         </p>
 
         <Link 
           to='/' 
-          className='relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 dark:from-purple-600 dark:to-indigo-600 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl no-underline'
+          className='relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl no-underline'
         >
           Return to Homepage
         </Link>

@@ -63,41 +63,41 @@ const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartIt
         <div className='py-6'>
             <div className='hidden lg:grid grid-cols-12 gap-6 items-center'>
                 <div className="col-span-6 flex items-center gap-4">
-                    <img src={imgSrc} alt={item.product.name} className='w-20 h-20 object-contain rounded-md flex-shrink-0 bg-gray-100 dark:bg-gray-700 p-1' />
+                    <img src={imgSrc} alt={item.product.name} className='w-20 h-20 object-contain rounded-md flex-shrink-0 bg-gray-100 p-1' />
                     {/* 1. Added 'min-w-0' to allow this flex item to shrink and its content to wrap. */}
                     <div className="min-w-0">
                         {/* 2. Removed 'truncate' so the text can wrap to the next line. */}
-                        <h3 className='font-semibold text-gray-800 dark:text-white text-base'>
+                        <h3 className='font-semibold text-gray-800 text-base'>
                             {item.product.name}
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 mt-1">
                             Price: ₹{parseFloat(item.product.price).toFixed(2)}
                         </p>
                     </div>
                 </div>
 
                 <div className="col-span-2 flex justify-center items-center">
-                    <div className="flex items-center border rounded-lg dark:border-gray-600">
-                        <button onClick={() => handleQuantityChange(quantity - 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 rounded-l-lg disabled:opacity-50 transition" disabled={loading}>
+                    <div className="flex items-center border rounded-lg">
+                        <button onClick={() => handleQuantityChange(quantity - 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 rounded-l-lg disabled:opacity-50 transition" disabled={loading}>
                             <FiMinus />
                         </button>
-                        <span className="px-4 py-1.5 text-center font-medium w-16 dark:text-white border-x dark:border-gray-600">
+                        <span className="px-4 py-1.5 text-center font-medium w-16 border-x">
                             {loading ? <ClipLoader size={18} color={"#4f46e5"} /> : quantity}
                         </span>
-                        <button onClick={() => handleQuantityChange(quantity + 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 rounded-r-lg disabled:opacity-50 transition" disabled={loading}>
+                        <button onClick={() => handleQuantityChange(quantity + 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 rounded-r-lg disabled:opacity-50 transition" disabled={loading}>
                             <FiPlus />
                         </button>
                     </div>
                 </div>
             
-                <div className="col-span-2 text-right font-bold text-gray-900 dark:text-white text-lg">
+                <div className="col-span-2 text-right font-bold text-gray-900 text-lg">
                     ₹{parseFloat(item.total).toFixed(2)}
                 </div>
             
                 <div className="col-span-2 flex justify-end">
                     <button 
                         onClick={deleteCartItem} 
-                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-xs font-semibold rounded-md border border-red-200 hover:bg-red-100 hover:text-red-700 dark:bg-red-900/50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900 dark:hover:text-red-300 transition-colors"
+                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-xs font-semibold rounded-md border border-red-200 hover:bg-red-100 hover:text-red-700 transition-colors"
                         title="Remove item"
                     >
                         <FiTrash2 />
@@ -109,42 +109,42 @@ const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartIt
             {/* --- MOBILE LAYOUT --- */}
             <div className='flex flex-col lg:hidden gap-4'>
                 <div className="flex items-center gap-4">
-                    <img src={imgSrc} alt={item.product.name} className='w-20 h-20 object-contain rounded-md flex-shrink-0 bg-gray-100 dark:bg-gray-700 p-1' />
+                    <img src={imgSrc} alt={item.product.name} className='w-20 h-20 object-contain rounded-md flex-shrink-0 bg-gray-100 p-1' />
                     {/* --- THIS IS THE FIX --- */}
                     <div className="flex-grow min-w-0">
-                        <h3 className='font-semibold text-gray-800 dark:text-white text-base'>
+                        <h3 className='font-semibold text-gray-800 text-base'>
                             {item.product.name}
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-sm text-gray-500 mt-1">
                             Price: ₹{parseFloat(item.product.price).toFixed(2)}
                         </p>
                     </div>
                 </div>
 
                 <div className="flex justify-between items-center">
-                    <span className="font-medium text-gray-600 dark:text-gray-400">Quantity</span>
-                    <div className="flex items-center border rounded-lg dark:border-gray-600">
-                        <button onClick={() => handleQuantityChange(quantity - 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 rounded-l-lg disabled:opacity-50 transition" disabled={loading}>
+                    <span className="font-medium text-gray-600">Quantity</span>
+                    <div className="flex items-center border rounded-lg">
+                        <button onClick={() => handleQuantityChange(quantity - 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 rounded-l-lg disabled:opacity-50 transition" disabled={loading}>
                             <FiMinus />
                         </button>
-                        <span className="px-4 py-1.5 text-center font-medium w-16 dark:text-white border-x dark:border-gray-600">
+                        <span className="px-4 py-1.5 text-center font-medium w-16 border-x">
                             {loading ? <ClipLoader size={18} color={"#4f46e5"} /> : quantity}
                         </span>
-                        <button onClick={() => handleQuantityChange(quantity + 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 dark:hover:bg-gray-700 rounded-r-lg disabled:opacity-50 transition" disabled={loading}>
+                        <button onClick={() => handleQuantityChange(quantity + 1)} className="px-3 py-2 text-indigo-600 hover:bg-indigo-50 rounded-r-lg disabled:opacity-50 transition" disabled={loading}>
                             <FiPlus />
                         </button>
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center border-t pt-4 mt-4 dark:border-gray-700">
-                    <span className="font-bold text-gray-600 dark:text-gray-400">Total</span>
-                    <span className="font-bold text-gray-900 dark:text-white text-lg">₹{parseFloat(item.total).toFixed(2)}</span>
+                <div className="flex justify-between items-center border-t pt-4 mt-4">
+                    <span className="font-bold text-gray-600">Total</span>
+                    <span className="font-bold text-gray-900 text-lg">₹{parseFloat(item.total).toFixed(2)}</span>
                 </div>
 
                 <div className="mt-2">
                     <button 
                         onClick={deleteCartItem} 
-                        className="w-full flex items-center justify-center gap-2 py-2 bg-red-50 text-red-600 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 hover:text-red-700 dark:bg-red-900/50 dark:text-red-400 dark:border-red-800 dark:hover:bg-red-900 dark:hover:text-red-300 transition-colors"
+                        className="w-full flex items-center justify-center gap-2 py-2 bg-red-50 text-red-600 text-sm font-semibold rounded-lg border border-red-200 hover:bg-red-100 hover:text-red-700 transition-colors"
                         title="Remove item"
                     >
                         <FiTrash2 />

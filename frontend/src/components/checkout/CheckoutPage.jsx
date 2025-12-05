@@ -36,9 +36,9 @@ const CheckoutPage = () => {
     }
 
     return (
-        <div className='bg-gray-50 dark:bg-gray-900 min-h-screen py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='bg-gray-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8'>
             <div className='max-w-7xl mx-auto'>
-                <h1 className='text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center'>
+                <h1 className='text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 text-center'>
                     Checkout
                 </h1>
                 {/* --- THIS IS THE RESTORED, CORRECT LAYOUT --- */}

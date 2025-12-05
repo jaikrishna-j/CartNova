@@ -13,6 +13,10 @@ from allauth.socialaccount.models import SocialAccount, SocialApp
 from google_auth_oauthlib.flow import Flow
 from google.oauth2 import credentials # Implicitly used by flow.fetch_token
 from google.auth.exceptions import GoogleAuthError
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token
+from requests_oauthlib import OAuth2Session
+from oauthlib.oauth2.rfc6749.errors import OAuth2Error
 import traceback # For detailed error logging
 
 CustomerUser = get_user_model()
@@ -104,8 +108,10 @@ def google_login(request):
             return Response({"error": "Google API credentials not configured on server."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # --- Exchange Authorization Code for Tokens ---
+        # When using @react-oauth/google with auth-code flow, the redirect URI is 'postmessage'
         # This MUST match one of the Authorized redirect URIs in Google Cloud Console
-        redirect_uri = 'http://127.0.0.1:8000/accounts/google/login/callback/'
+        # Add 'postmessage' to your Google Cloud Console authorized redirect URIs
+        redirect_uri = 'postmessage'
 
         flow = Flow.from_client_config(
             client_config={
@@ -114,20 +120,61 @@ def google_login(request):
                     "client_secret": google_client_secret,
                     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                     "token_uri": "https://oauth2.googleapis.com/token",
-                    "redirect_uris": [redirect_uri],
+                    "redirect_uris": [redirect_uri, "http://localhost:5173", "http://127.0.0.1:5173"],
                     "javascript_origins": ["http://localhost:5173", "http://127.0.0.1:5173"]
                 }
             },
-            scopes=['profile', 'email', 'openid'],
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'],
             redirect_uri=redirect_uri
         )
 
         # Exchange the code
-        flow.fetch_token(code=auth_code)
-        creds = flow.credentials
+        # Handle scope validation issues by using OAuth2Session directly if Flow fails
+        try:
+            flow.fetch_token(code=auth_code)
+            creds = flow.credentials
+        except Exception as oauth_error:
+            error_str = str(oauth_error)
+            # If scope mismatch, use OAuth2Session directly to bypass strict scope validation
+            if 'Scope has changed' in error_str or ('scope' in error_str.lower() and 'changed' in error_str.lower()):
+                print(f"Scope validation error detected, using direct OAuth2Session: {error_str}")
+                # Use OAuth2Session directly to exchange the code without strict scope validation
+                oauth = OAuth2Session(
+                    client_id=google_client_id,
+                    redirect_uri=redirect_uri,
+                    scope=['openid', 'https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+                )
+                token_response = oauth.fetch_token(
+                    'https://oauth2.googleapis.com/token',
+                    code=auth_code,
+                    client_secret=google_client_secret,
+                    include_client_id=True
+                )
+                # Create credentials object from token response
+                from google.oauth2.credentials import Credentials
+                creds = Credentials(
+                    token=token_response.get('access_token'),
+                    refresh_token=token_response.get('refresh_token'),
+                    id_token=token_response.get('id_token'),
+                    token_uri='https://oauth2.googleapis.com/token',
+                    client_id=google_client_id,
+                    client_secret=google_client_secret
+                )
+            else:
+                # Re-raise if it's not a scope-related error
+                raise
 
         # --- Get User Info from ID Token ---
-        idinfo = creds.id_token_jwt
+        # Verify and decode the ID token
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                creds.id_token,
+                google_requests.Request(),
+                google_client_id
+            )
+        except ValueError as e:
+            print(f"Error verifying ID token: {e}")
+            return Response({"error": "Invalid ID token from Google."}, status=status.HTTP_400_BAD_REQUEST)
 
         if not idinfo or 'email' not in idinfo:
              return Response({"error": "Email not found in Google ID token after exchange."}, status=status.HTTP_400_BAD_REQUEST)

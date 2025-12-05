@@ -40,24 +40,24 @@ const OrderHistoryItem = ({ item }) => {
             <img
                 src={itemImage}
                 alt={product?.name || 'Product'}
-                className='w-16 h-16 object-cover rounded-md bg-gray-100 dark:bg-gray-700 flex-shrink-0'
+                className='w-16 h-16 object-cover rounded-md bg-gray-100 flex-shrink-0'
                 onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/80x80/e0e7ff/3f51b5?text=Error'; }}
             />
             <div className='flex-grow text-left'>
-                <Link to={`/products/${product.slug}`} className='font-medium text-sm text-gray-800 dark:text-white line-clamp-2 hover:text-indigo-600 dark:hover:text-indigo-400'>
+                <Link to={`/products/${product.slug}`} className='font-medium text-sm text-gray-800 line-clamp-2 hover:text-indigo-600'>
                     {product?.name || 'Product Name Unavailable'}
                 </Link>
-                <p className='text-xs text-gray-500 dark:text-gray-400'>
+                <p className='text-xs text-gray-500'>
                     Qty: {quantity}
                 </p>
             </div>
             <div className='flex-shrink-0 text-right min-w-[120px]'>
                 {/* --- 2. ADD THE TOTAL PRICE HERE --- */}
-                <p className='text-base font-bold text-indigo-600 dark:text-indigo-400 mb-1'>
+                <p className='text-base font-bold text-indigo-600 mb-1'>
                     ₹{itemTotal}
                 </p>
-                <p className='text-sm font-semibold text-gray-800 dark:text-gray-200'>Order: #{order_id}</p>
-                <p className='text-xs text-gray-500 dark:text-gray-400'>{orderDateTime}</p>
+                <p className='text-sm font-semibold text-gray-800'>Order: #{order_id}</p>
+                <p className='text-xs text-gray-500'>{orderDateTime}</p>
             </div>
         </div>
     );

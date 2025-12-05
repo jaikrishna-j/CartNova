@@ -27,14 +27,14 @@ const PasswordStrengthIndicator = ({ password }) => {
   const strengthLabels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
   const strengthColors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-lime-500', 'bg-green-500'];
   return (
-    <div className="mt-2">
-      <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+    <div className="mt-1.5">
+      <div className="w-full bg-gray-200 rounded-full h-1.5">
         <div
-          className={`h-2 rounded-full ${strength > 0 ? strengthColors[strength - 1] : 'bg-transparent'}`}
+          className={`h-1.5 rounded-full ${strength > 0 ? strengthColors[strength - 1] : 'bg-transparent'}`}
           style={{ width: `${(strength / 4) * 100}%`, transition: 'width 0.3s ease-in-out' }}
         ></div>
       </div>
-      <p className={`text-xs mt-1 ${strength > 0 ? 'text-gray-600 dark:text-gray-400' : 'text-transparent'}`}>
+      <p className={`text-xs mt-0.5 ${strength > 0 ? 'text-gray-600' : 'text-transparent'}`}>
         Strength: {strengthLabels[strength]}
       </p>
     </div>
@@ -42,30 +42,30 @@ const PasswordStrengthIndicator = ({ password }) => {
 };
 
 // --- Style Definitions ---
-const pageStyle = 'min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4';
-const containerStyle = 'w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden';
-const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-12 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
-const rightPanelStyle = 'p-8 sm:p-12 overflow-y-auto max-h-screen';
-const titleStyle = 'text-3xl font-bold text-gray-900 dark:text-white';
-const subtitleStyle = 'text-gray-500 dark:text-gray-400 mt-2';
-const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 ml-1';
-const formStyle = 'space-y-3';
+const pageStyle = 'min-h-screen flex items-center justify-center bg-gray-50 p-2 sm:p-4';
+const containerStyle = 'w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] lg:max-h-[90vh]';
+const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-6 xl:p-8 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
+const rightPanelStyle = 'p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[95vh] lg:max-h-[90vh]';
+const titleStyle = 'text-2xl sm:text-3xl font-bold text-gray-900';
+const subtitleStyle = 'text-gray-500 mt-1 text-sm sm:text-base';
+const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 ml-1';
+const formStyle = 'space-y-2 sm:space-y-2.5';
 const inputGroupStyle = 'relative mt-1';
-const labelStyle = 'block text-sm font-medium text-gray-700 dark:text-gray-300';
+const labelStyle = 'block text-xs sm:text-sm font-medium text-gray-700';
 const iconStyle = 'absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none';
-const iconSvgStyle = 'h-5 w-5 text-gray-400';
-const inputBaseStyle = 'block w-full pl-10 pr-3 py-2 bg-gray-100 dark:bg-gray-700 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
+const iconSvgStyle = 'h-4 w-4 sm:h-5 sm:w-5 text-gray-400';
+const inputBaseStyle = 'block w-full pl-9 sm:pl-10 pr-3 py-1.5 sm:py-2 text-sm bg-gray-100 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
 const inputErrorStyle = 'border-red-500';
-const inputDefaultStyle = 'border-gray-300 dark:border-gray-600';
-const passwordInputStyle = 'block w-full pl-10 pr-10 py-2 bg-gray-100 dark:bg-gray-700 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
-const eyeButtonStyle = 'absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors focus:outline-none';
-const errorTextStyle = 'mt-1 text-xs text-red-600';
-const submitButtonStyle = 'w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 mt-4';
-const separatorStyle = 'relative flex items-center justify-center my-6';
-const separatorLineStyle = 'w-full h-px bg-gray-300 dark:bg-gray-600';
-const separatorTextStyle = 'absolute px-3 bg-white dark:bg-gray-800 text-sm text-gray-500 dark:text-gray-400';
-const socialButtonStyle = 'w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors';
-const gridStyle = "grid grid-cols-1 sm:grid-cols-2 gap-3";
+const inputDefaultStyle = 'border-gray-300';
+const passwordInputStyle = 'block w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-1.5 sm:py-2 text-sm bg-gray-100 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
+const eyeButtonStyle = 'absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-indigo-500 transition-colors focus:outline-none';
+const errorTextStyle = 'mt-0.5 text-xs text-red-600';
+const submitButtonStyle = 'w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 mt-3';
+const separatorStyle = 'relative flex items-center justify-center my-4';
+const separatorLineStyle = 'w-full h-px bg-gray-300';
+const separatorTextStyle = 'absolute px-3 bg-white text-xs sm:text-sm text-gray-500';
+const socialButtonStyle = 'w-full flex items-center justify-center gap-2 sm:gap-3 py-2 px-4 border border-gray-300 rounded-lg text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors';
+const gridStyle = "grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -117,12 +117,12 @@ const RegisterPage = () => {
       <div className={containerStyle}>
         {/* Left Side */}
         <div className={leftPanelStyle}>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={registerAnimation} loop={true} className='w-64 h-64' /></motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-4xl font-extrabold tracking-wider mt-4'>Create Account</h1><p className='mt-4 text-indigo-200 max-w-xs mx-auto'>Join CartNova today and start discovering amazing products!</p></motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={registerAnimation} loop={true} className='w-48 h-48 xl:w-56 xl:h-56' /></motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-2xl xl:text-3xl font-extrabold tracking-wider mt-2 xl:mt-4'>Create Account</h1><p className='mt-2 xl:mt-3 text-sm xl:text-base text-indigo-200 max-w-xs mx-auto'>Join CartNova today and start discovering amazing products!</p></motion.div>
         </div>
         {/* Right Side */}
         <motion.div className={rightPanelStyle} variants={cardVariants} initial='hidden' animate='visible'>
-          <motion.div variants={itemVariants} className='text-center mb-6'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign Up</h2><p className={subtitleStyle}>Already have an account?{' '} <Link to='/login' className={linkStyle}>Sign in</Link></p></motion.div>
+          <motion.div variants={itemVariants} className='text-center mb-4 sm:mb-5'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign Up</h2><p className={subtitleStyle}>Already have an account?{' '} <Link to='/login' className={linkStyle}>Sign in</Link></p></motion.div>
           <form onSubmit={handleStandardSubmit}>
             <div className={formStyle}>
               <div className={gridStyle}>
@@ -138,12 +138,12 @@ const RegisterPage = () => {
               </div>
               <motion.div variants={itemVariants}><label htmlFor='password'className={labelStyle}>Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showPassword ? 'text' : 'password'} id='password' value={password} onChange={(e) => setPassword(e.target.value)} className={getPasswordInputStyle('password')} placeholder='Enter your password' required /><button type='button' onClick={() => setShowPassword(!showPassword)} className={eyeButtonStyle}>{showPassword ? <FiEyeOff /> : <FiEye />}</button></div><PasswordStrengthIndicator password={password} />{validationErrors.password && !Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password}</p>} {validationErrors.password && Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password.join(' ')}</p>}</motion.div>
               <motion.div variants={itemVariants}><label htmlFor='confirmPassword'className={labelStyle}>Confirm Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showConfirmPassword ? 'text' : 'password'} id='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={getPasswordInputStyle('confirm_password')} placeholder='Confirm your password' required /><button type='button' onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={eyeButtonStyle}>{showConfirmPassword ? <FiEyeOff /> : <FiEye />}</button></div> {validationErrors.confirm_password && <p className={errorTextStyle}>{validationErrors.confirm_password[0]}</p>}</motion.div>
-              <motion.div variants={itemVariants} className="flex justify-center pt-2"><ReCAPTCHA ref={recaptchaRef} sitekey="6LdRFfkrAAAAAMGgrtj7nlPy_ZFri__G0dCKbXWZ" /></motion.div>
+              <motion.div variants={itemVariants} className="flex justify-center pt-1 scale-90 sm:scale-100 origin-center"><ReCAPTCHA ref={recaptchaRef} sitekey="6LdRFfkrAAAAAMGgrtj7nlPy_ZFri__G0dCKbXWZ" /></motion.div>
               <motion.button variants={itemVariants} whileHover={{ scale: 1.05, boxShadow: '0px 10px 20px rgba(79, 70, 229, 0.4)' }} whileTap={{ scale: 0.95 }} type='submit' className={submitButtonStyle} disabled={loading}>{loading ? 'Creating Account...' : 'Sign Up'}</motion.button>
             </div>
           </form>
           <motion.div variants={itemVariants} className={separatorStyle}><div className={separatorLineStyle}></div><span className={separatorTextStyle}>Or sign up with</span></motion.div>
-          <motion.div variants={itemVariants} className='space-y-4'><button type="button" onClick={() => triggerGoogleLogin()} className={socialButtonStyle}><FaGoogle className='text-lg' /> <span>Sign up with Google</span></button></motion.div>
+          <motion.div variants={itemVariants} className='space-y-2 sm:space-y-3'><button type="button" onClick={() => triggerGoogleLogin()} className={socialButtonStyle}><FaGoogle className='text-base sm:text-lg' /> <span>Sign up with Google</span></button></motion.div>
         </motion.div>
       </div>
     </div>

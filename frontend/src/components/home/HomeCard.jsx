@@ -28,8 +28,8 @@ const HomeCard = ({ product }) => {
   return (
     <Link to={`/products/${product.slug}`} className="no-underline block h-full group">
       {/* Enhanced card with better animations */}
-      <div className="flex flex-col h-full bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden border border-gray-100 dark:border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-indigo-300 dark:hover:border-indigo-600">
-        <div className="relative w-full overflow-hidden bg-gray-50 dark:bg-gray-700/50 aspect-square group-hover:bg-gray-100 dark:group-hover:bg-gray-700 transition-colors duration-300">
+      <div className="flex flex-col h-full bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:border-indigo-300">
+        <div className="relative w-full overflow-hidden bg-gray-50 aspect-square group-hover:bg-gray-100 transition-colors duration-300">
           <img
             src={imgSrc}
             alt={title || 'Product Image'}
@@ -40,15 +40,15 @@ const HomeCard = ({ product }) => {
 
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className='space-y-2'>
-            <span className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider block truncate">
+            <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider block truncate">
               {categoryName}
             </span>
-            <h5 className="text-base font-bold text-gray-900 dark:text-gray-100 leading-tight line-clamp-2 min-h-[2.5rem] group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+            <h5 className="text-base font-bold text-gray-900 leading-tight line-clamp-2 min-h-[2.5rem] group-hover:text-indigo-600 transition-colors duration-300">
               {displayedTitle}
             </h5>
           </div>
-          <div className="mt-3 flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
-            <h6 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">
+          <div className="mt-3 flex justify-between items-center pt-3 border-t border-gray-100">
+            <h6 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
               ₹{price}
             </h6>
           </div>

@@ -18,14 +18,14 @@ const OrderItem = ({ cartItem }) => {
                 <img 
                     src={imgSrc}
                     alt={cartItem.product.name}
-                    className='w-16 h-16 object-contain rounded-md bg-gray-100 dark:bg-gray-700 p-1' 
+                    className='w-16 h-16 object-contain rounded-md bg-gray-100 p-1' 
                 />
                 <div>
-                    <h4 className='font-semibold text-gray-800 dark:text-white text-base'>{cartItem.product.name}</h4>
-                    <small className="text-gray-500 dark:text-gray-400">{`Quantity: ${cartItem.quantity}`}</small>
+                    <h4 className='font-semibold text-gray-800 text-base'>{cartItem.product.name}</h4>
+                    <small className="text-gray-500">{`Quantity: ${cartItem.quantity}`}</small>
                 </div>
             </div>
-            <span className='font-semibold text-gray-700 dark:text-gray-300'>
+            <span className='font-semibold text-gray-700'>
                 ₹{parseFloat(cartItem.total).toFixed(2)}
             </span>
         </div>
