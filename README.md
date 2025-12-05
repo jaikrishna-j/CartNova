@@ -305,11 +305,3 @@ python manage.py collectstatic --noinput
 - `POST /api/orders/create/` - Create new order
 - `GET /api/orders/{id}/` - Get order details
 
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 👤 Author
-
-**Jaikrishna J**
-- GitHub: [@jaikrishna-j](https://github.com/jaikrishna-j)
