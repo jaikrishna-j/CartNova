@@ -90,7 +90,7 @@ const Header = () => {
           </p>
           <a
             href='#products'
-            className='inline-block bg-indigo-600 text-white text-base sm:text-lg no-underline font-semibold rounded-full px-8 py-4 sm:px-10 sm:py-4 transition-all duration-300 hover:bg-indigo-700 shadow-2xl transform hover:scale-105 hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+            className='inline-block bg-indigo-600 text-white text-base sm:text-lg no-underline font-semibold rounded-full px-6 py-2.5 sm:px-8 sm:py-3 transition-all duration-300 hover:bg-indigo-700 shadow-2xl hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
           >
             Shop Now
           </a>
