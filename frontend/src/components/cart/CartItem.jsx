@@ -97,7 +97,7 @@ const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartIt
                 <div className="col-span-2 flex justify-end">
                     <button 
                         onClick={deleteCartItem} 
-                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-xs font-semibold rounded-md border border-red-200 hover:bg-red-100 hover:text-red-700 transition-colors"
+                        className="flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-xs font-semibold rounded-lg border border-red-200 hover:bg-red-100 hover:text-red-700 transition-colors"
                         title="Remove item"
                     >
                         <FiTrash2 />

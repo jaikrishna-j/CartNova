@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OrderHistoryItemContainer from './OrderHistoryItemContainer';
 import UserInfo from './UserInfo';
+import EditProfileModal from './EditProfileModal';
 import api from '@/api';
 import Spinner from '../ui/Spinner';
 
@@ -9,30 +10,36 @@ const UserProfilePage = () => {
     // This state holds the FULL list of all items
     const [orderItems, setOrderItems] = useState([]); 
     const [loading, setLoading] = useState(true);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     
     // --- NEW STATE for pagination ---
     // This tracks the number of items currently visible
     const [visibleCount, setVisibleCount] = useState(10);
 
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            // Fetch user info and the FULL order history
+            const [userInfoRes, ordersRes] = await Promise.all([
+                api.get("user_info"),
+                api.get("order_history/") // This fetches ALL items
+            ]);
+            setUserInfo(userInfoRes.data);
+            setOrderItems(ordersRes.data); // Set the full list
+        } catch (err) {
+            console.error("Failed to fetch profile data:", err.response ? err.response.data : err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                // Fetch user info and the FULL order history
-                const [userInfoRes, ordersRes] = await Promise.all([
-                    api.get("user_info"),
-                    api.get("order_history/") // This fetches ALL items
-                ]);
-                setUserInfo(userInfoRes.data);
-                setOrderItems(ordersRes.data); // Set the full list
-            } catch (err) {
-                console.error("Failed to fetch profile data:", err.response ? err.response.data : err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchData();
     }, []); // Runs once on component mount
+
+    const handleProfileUpdate = (updatedUserInfo) => {
+        setUserInfo(updatedUserInfo);
+    };
 
     if (loading && !userInfo) { // Allow showing content if userInfo is loaded but orders are still loading
         return (
@@ -67,7 +74,10 @@ const UserProfilePage = () => {
             </h1>
             <div className='space-y-12'>
                 {/* This component is unchanged */}
-                <UserInfo userInfo={userInfo} />
+                <UserInfo 
+                    userInfo={userInfo} 
+                    onEditClick={() => setIsEditModalOpen(true)}
+                />
                 
                 {/* Pass the pagination props to the container */}
                 <OrderHistoryItemContainer 
@@ -77,6 +87,14 @@ const UserProfilePage = () => {
                     onLoadMore={loadMoreItems}
                 />
             </div>
+
+            {/* Edit Profile Modal */}
+            <EditProfileModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                userInfo={userInfo}
+                onUpdate={handleProfileUpdate}
+            />
         </div>
     );
 };

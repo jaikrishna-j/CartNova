@@ -168,7 +168,7 @@ const PaymentSection = () => {
 
                 {/* Razorpay Button */}
                 <button
-                    className={`w-full flex items-center justify-center gap-3 h-12 px-4 bg-sky-500 text-white font-bold shadow-md rounded-[5px] focus:outline-none border border-transparent ${isLoading('razorpay') || loadingGateway ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`w-full flex items-center justify-center gap-3 h-12 px-4 bg-sky-500 text-white font-bold shadow-md rounded-xl focus:outline-none border-none ${isLoading('razorpay') || loadingGateway ? 'opacity-50 cursor-not-allowed' : ''}`}
                     id="razorpay-button"
                     onClick={makeRazorpayPayment}
                     disabled={loadingGateway}

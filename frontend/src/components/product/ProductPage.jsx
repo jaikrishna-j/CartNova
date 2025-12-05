@@ -180,7 +180,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                             <div className='flex flex-wrap gap-4'>
                                 <button
                                     onClick={add_item}
-                                    className={`flex flex-1 sm:flex-none items-center justify-center px-8 py-3 text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
+                                    className={`flex flex-1 sm:flex-none items-center justify-center px-8 py-3 text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed border-none ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
                                     type='button'
                                     disabled={inCart || isAdding}
                                 >

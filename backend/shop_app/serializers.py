@@ -84,9 +84,11 @@ class NewCartItemSerializer(serializers.ModelSerializer):
 # --- UPDATED USER SERIALIZER ---
 class UserSerializer(serializers.ModelSerializer):
     items = serializers.SerializerMethodField()
+    profile_image = serializers.ImageField(required=False, allow_null=True)
+    
     class Meta:
         model = get_user_model()
-        fields = ["id", "username", "first_name", "last_name", "email", "city", "state", "address", "phone", "items"]
+        fields = ["id", "username", "first_name", "last_name", "email", "city", "state", "address", "phone", "profile_image", "items"]
 
     def get_items(self, user):
         # Fetches the 10 most recent *items* from *paid* carts

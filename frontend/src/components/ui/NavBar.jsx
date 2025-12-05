@@ -2,10 +2,13 @@ import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { Link, useSearchParams, useNavigate, NavLink } from 'react-router-dom';
 import { FaCartShopping, FaRegUser } from 'react-icons/fa6';
 import { IoSearch } from 'react-icons/io5';
+import { FiUser } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@/services/apiProducts';
 import { HiOutlineBars3, HiChevronDown } from 'react-icons/hi2';
 import { AuthContext } from '@/context/AuthContext';
+import api from '@/api';
+import { BASE_URL } from '@/api';
 
 const NavBar = ({ numCartItems }) => {
   const { isAuthenticated, setIsAuthenticated, username } = useContext(AuthContext);
@@ -32,6 +35,36 @@ const NavBar = ({ numCartItems }) => {
     queryFn: getCategories,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
+
+  // Fetch user info to get profile image
+  const { data: userInfo } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: async () => {
+      const response = await api.get('user_info');
+      return response.data;
+    },
+    enabled: isAuthenticated,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  // Get profile image URL
+  const getProfileImageUrl = () => {
+    if (userInfo?.profile_image) {
+      try {
+        if (userInfo.profile_image.startsWith('http')) {
+          return userInfo.profile_image;
+        }
+        const imageUrl = new URL(userInfo.profile_image, BASE_URL);
+        return imageUrl.href;
+      } catch (e) {
+        console.error("Error creating profile image URL:", e);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const profileImageUrl = getProfileImageUrl();
 
   const allCategories = useMemo(() => {
     const list = [{ value: 'all', label: 'All Category' }];
@@ -107,7 +140,7 @@ const NavBar = ({ numCartItems }) => {
               <div ref={categoryButtonRef} className='relative flex-shrink-0 z-30'>
                 <button
                   onClick={() => setIsCategoryMenuOpen((prev) => !prev)}
-                  className='bg-indigo-600 text-white text-sm font-medium pl-3 pr-4 py-2 rounded-xl border border-indigo-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 flex items-center justify-center space-x-1 hover:bg-indigo-700 shadow-md hover:shadow-lg'
+                  className='bg-indigo-600 text-white text-sm font-medium pl-3 pr-4 py-2 rounded-xl border-none transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 flex items-center justify-center space-x-1 hover:bg-indigo-700 shadow-md hover:shadow-lg'
                 >
                   <HiOutlineBars3 className='text-lg' />
                   <span>{currentCategoryLabel}</span>
@@ -143,7 +176,7 @@ const NavBar = ({ numCartItems }) => {
               </div>
               <Link
                 to='/store'
-                className='flex-shrink-0 text-indigo-600 border border-indigo-400 text-sm font-medium px-4 py-2 rounded-xl shadow-md flex items-center justify-center no-underline bg-white hover:!bg-indigo-600 hover:!text-white hover:!border-indigo-600 transition-all duration-300'
+                className='flex-shrink-0 text-indigo-600 border-none text-sm font-medium px-4 py-2 rounded-xl shadow-md flex items-center justify-center no-underline bg-white hover:!bg-indigo-600 hover:!text-white transition-all duration-300'
               >
                 Store
               </Link>
@@ -177,7 +210,24 @@ const NavBar = ({ numCartItems }) => {
                       className='flex items-center gap-2 font-medium text-gray-700 hover:text-indigo-600 no-underline transition-colors duration-200'
                       end
                     >
-                      <FaRegUser className='text-xl' />
+                      <div className='relative w-5 h-5 flex items-center justify-center'>
+                        {profileImageUrl ? (
+                          <img
+                            src={profileImageUrl}
+                            alt='Profile'
+                            className='w-5 h-5 rounded-full object-cover border border-gray-300'
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              const iconElement = e.target.nextElementSibling;
+                              if (iconElement) {
+                                iconElement.classList.remove('hidden');
+                                iconElement.classList.add('block');
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <FiUser className={`text-lg ${profileImageUrl ? 'hidden' : 'block'}`} />
+                      </div>
                       {`Hi, ${username}`}
                     </NavLink>
                     <NavLink
@@ -216,7 +266,7 @@ const NavBar = ({ numCartItems }) => {
                 )}
               </div>
               <Link to='/cart' className='relative hidden lg:inline-block'>
-                <div className='bg-indigo-600 rounded-full p-3 flex items-center justify-center hover:bg-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105'>
+                <div className='bg-indigo-600 rounded-full p-3 flex items-center justify-center hover:bg-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border-none'>
                   <FaCartShopping className='text-white text-xl' />
                 </div>
                 {numCartItems > 0 && (
@@ -295,8 +345,26 @@ const NavBar = ({ numCartItems }) => {
                 <NavLink
                   to='/profile'
                   onClick={() => setIsOpen(false)}
-                  className='font-medium text-gray-900 no-underline hover:text-indigo-600 transition-colors duration-200'
+                  className='flex items-center gap-2 font-medium text-gray-900 no-underline hover:text-indigo-600 transition-colors duration-200'
                 >
+                  <div className='relative w-5 h-5 flex items-center justify-center'>
+                    {profileImageUrl ? (
+                      <img
+                        src={profileImageUrl}
+                        alt='Profile'
+                        className='w-5 h-5 rounded-full object-cover border border-gray-300'
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          const iconElement = e.target.nextElementSibling;
+                          if (iconElement) {
+                            iconElement.classList.remove('hidden');
+                            iconElement.classList.add('block');
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <FiUser className={`text-lg ${profileImageUrl ? 'hidden' : 'block'}`} />
+                  </div>
                   {`Hi, ${username}`}
                 </NavLink>
                 <NavLink

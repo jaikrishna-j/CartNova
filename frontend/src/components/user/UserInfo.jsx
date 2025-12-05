@@ -1,22 +1,56 @@
-import pic from '../../assets/profile_pic.jpg';
-import { FiEdit } from 'react-icons/fi';
-// Removed 'FiShoppingBag' and 'OrderHistoryItem' as they are no longer needed here
+import { FiEdit, FiUser } from 'react-icons/fi';
+import { BASE_URL } from '@/api';
 
-const UserInfo = ({userInfo}) => {
+const UserInfo = ({userInfo, onEditClick}) => {
+  // Get profile image URL
+  const getProfileImageUrl = () => {
+    if (userInfo?.profile_image) {
+      try {
+        // If it's already a full URL, return as is
+        if (userInfo.profile_image.startsWith('http')) {
+          return userInfo.profile_image;
+        }
+        // Otherwise, construct the full URL using URL constructor (consistent with other components)
+        const imageUrl = new URL(userInfo.profile_image, BASE_URL);
+        return imageUrl.href;
+      } catch (e) {
+        console.error("Error creating profile image URL:", e);
+        return null;
+      }
+    }
+    return null;
+  };
+
+  const profileImageUrl = getProfileImageUrl();
+
   return (
     <div className='grid grid-cols-1 lg:grid-cols-4 gap-8 items-start'>
       {/* Profile Card */}
       <div className='lg:col-span-1 bg-white rounded-2xl shadow-lg p-6 text-center flex flex-col items-center'>
-        <img
-          src={pic}
-          alt='User Profile'
-          className='w-32 h-32 rounded-full mb-4 ring-4 ring-indigo-200'
-        />
+        <div className='w-32 h-32 rounded-full mb-4 ring-4 ring-indigo-200 overflow-hidden bg-gray-100 flex items-center justify-center'>
+          {profileImageUrl ? (
+            <img
+              src={profileImageUrl}
+              alt='User Profile'
+              className='w-full h-full object-cover'
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextSibling.style.display = 'flex';
+              }}
+            />
+          ) : null}
+          <div className={`w-full h-full flex items-center justify-center ${profileImageUrl ? 'hidden' : ''}`}>
+            <FiUser className='text-5xl text-gray-400' />
+          </div>
+        </div>
         <h4 className='text-2xl font-bold text-gray-900'>
           {`${userInfo.first_name} ${userInfo.last_name}`}
         </h4>
         <p className='text-gray-500'>{userInfo.email}</p>
-        <button className='mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'>
+        <button 
+          onClick={onEditClick}
+          className='mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'
+        >
           <FiEdit />
           Edit Profile
         </button>

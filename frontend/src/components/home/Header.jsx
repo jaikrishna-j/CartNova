@@ -74,7 +74,7 @@ const Header = () => {
         {/* Left Arrow */}
         <button
           onClick={() => handleManualNavigation('prev')}
-          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
+          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-md p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
           aria-label='Previous image'
         >
           <FaChevronLeft className='text-2xl text-white transition-transform duration-300' />
@@ -90,7 +90,7 @@ const Header = () => {
           </p>
           <a
             href='#products'
-            className='inline-block bg-indigo-600 text-white text-base sm:text-lg no-underline font-semibold rounded-full px-6 py-2.5 sm:px-8 sm:py-3 transition-all duration-300 hover:bg-indigo-700 shadow-2xl hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2'
+            className='inline-block bg-indigo-600 text-white text-base sm:text-lg no-underline font-semibold rounded-xl px-6 py-2.5 sm:px-8 sm:py-3 transition-all duration-300 hover:bg-indigo-700 shadow-2xl hover:shadow-indigo-500/50 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 border-none'
           >
             Shop Now
           </a>
@@ -99,7 +99,7 @@ const Header = () => {
         {/* Right Arrow */}
         <button
           onClick={() => handleManualNavigation('next')}
-          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-full p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
+          className='bg-white/10 backdrop-blur-sm border border-white/20 rounded-md p-3 hover:bg-white/20 hover:border-white/30 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50'
           aria-label='Next image'
         >
           <FaChevronRight className='text-2xl text-white transition-transform duration-300' />

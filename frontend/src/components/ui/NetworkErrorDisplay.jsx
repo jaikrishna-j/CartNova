@@ -27,7 +27,7 @@ const NetworkErrorDisplay = ({ title, message }) => {
       
       <button 
         onClick={() => window.location.reload()}
-        className='relative px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out group'
+        className='relative px-8 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 ease-in-out group border-none'
       >
         <span className='absolute inset-0 w-full h-full bg-gradient-to-r from-purple-500 to-indigo-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300'></span>
         <span className='relative z-10'>Refresh Page 🚀</span>

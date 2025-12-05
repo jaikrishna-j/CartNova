@@ -27,11 +27,11 @@ const iconSvgStyle = 'h-5 w-5 text-gray-400';
 const inputStyle = 'block w-full pl-10 pr-3 py-2 sm:py-2.5 bg-gray-100 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
 const passwordInputStyle = 'block w-full pl-10 pr-10 py-2 sm:py-2.5 bg-gray-100 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base';
 const eyeButtonStyle = 'absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-indigo-500 transition-colors focus:outline-none';
-const submitButtonStyle = 'w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm sm:text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50';
+const submitButtonStyle = 'w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm sm:text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50';
 const separatorStyle = 'relative flex items-center justify-center my-4 sm:my-5';
 const separatorLineStyle = 'w-full h-px bg-gray-300';
 const separatorTextStyle = 'absolute px-3 bg-white text-xs sm:text-sm text-gray-500';
-const socialButtonStyle = 'w-full flex items-center justify-center gap-3 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 transition-colors';
+const socialButtonStyle = 'w-full flex items-center justify-center gap-3 py-2.5 sm:py-3 px-4 border border-gray-300 rounded-xl text-sm sm:text-base font-medium text-gray-700 hover:bg-gray-100 transition-colors';
 const bottomTextStyle = 'text-xs sm:text-sm text-center mt-4 sm:mt-6';
 
 

@@ -277,6 +277,33 @@ def user_info(request):
     return Response(serializer.data)
 
 
+@api_view(['PATCH', 'PUT'])
+@permission_classes([IsAuthenticated])
+def update_user(request):
+    """
+    Updates logged-in user's info.
+    """
+    user = request.user
+    data = request.data.copy()
+    
+    # Handle profile image removal
+    if request.data.get('remove_profile_image') == 'true':
+        # Delete the existing profile image if it exists
+        if user.profile_image:
+            user.profile_image.delete(save=False)
+        data['profile_image'] = None
+    
+    # Handle file upload separately if present
+    elif 'profile_image' in request.FILES:
+        data['profile_image'] = request.FILES['profile_image']
+    
+    serializer = UserSerializer(user, data=data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 # --- PayPal: Function to get Access Token ---
 def get_paypal_access_token():
     """ Fetches PayPal OAuth2 token """

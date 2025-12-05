@@ -32,7 +32,7 @@ const NotFoundPage = () => {
 
         <Link 
           to='/' 
-          className='relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl no-underline'
+          className='relative inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold text-lg rounded-xl shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl no-underline border-none'
         >
           Return to Homepage
         </Link>

@@ -2,8 +2,20 @@
     "venvPath": ".",
     "venv": "shopenv",
     "pythonVersion": "3.13",
-    "extraPaths": [
-        "."
-    ]
+    "pythonPlatform": "Windows",
+    "executionEnvironments": [
+        {
+            "root": ".",
+            "pythonVersion": "3.13",
+            "pythonPlatform": "Windows",
+            "extraPaths": [
+                ".",
+                "shopenv/Lib/site-packages"
+            ]
+        }
+    ],
+    "typeCheckingMode": "basic",
+    "reportMissingImports": false,
+    "reportMissingTypeStubs": false
 }
 

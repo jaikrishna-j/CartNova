@@ -28,7 +28,7 @@ const CartSummary = ({ cartTotal, tax }) => {
             
             <Link to="/checkout" className="mt-6 block">
                 <button
-                    className='w-full flex items-center justify-center gap-2 py-3 px-4 bg-indigo-600 text-white font-bold rounded-lg shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105'
+                    className='w-full flex items-center justify-center gap-2 py-3 px-4 bg-indigo-600 text-white font-bold rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105 border-none'
                 >
                     <span>Proceed to Checkout</span>
                     <FiArrowRight />

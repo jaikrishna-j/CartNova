@@ -51,12 +51,12 @@ const PaymentStatusPage = () => {
                 actions: (
                     <>
                         <motion.div variants={itemVariants}>
-                            <Link to="/profile" className="inline-block w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-indigo-700 shadow-lg transform hover:scale-105">
+                            <Link to="/profile" className="inline-block w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-indigo-700 shadow-lg transform hover:scale-105 border-none">
                                 View Order Details
                             </Link>
                         </motion.div>
                         <motion.div variants={itemVariants}>
-                            <Link to="/store" className="inline-block w-full sm:w-auto bg-gray-200 text-gray-800 font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-gray-300">
+                            <Link to="/store" className="inline-block w-full sm:w-auto bg-gray-200 text-gray-800 font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-gray-300 border-none">
                                 Continue Shopping
                             </Link>
                         </motion.div>
@@ -74,12 +74,12 @@ const PaymentStatusPage = () => {
                 actions: (
                      <>
                          <motion.div variants={itemVariants}>
-                             <Link to="/checkout" className="inline-block w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-indigo-700 shadow-lg transform hover:scale-105">
+                             <Link to="/checkout" className="inline-block w-full sm:w-auto bg-indigo-600 text-white font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-indigo-700 shadow-lg transform hover:scale-105 border-none">
                                  Try Again
                              </Link>
                          </motion.div>
                          <motion.div variants={itemVariants}>
-                             <Link to="/" className="inline-block w-full sm:w-auto bg-gray-200 text-gray-800 font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-gray-300">
+                             <Link to="/" className="inline-block w-full sm:w-auto bg-gray-200 text-gray-800 font-semibold rounded-xl px-6 py-3 transition duration-300 hover:bg-gray-300 border-none">
                                  Continue Shopping
                              </Link>
                          </motion.div>
