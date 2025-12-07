@@ -81,4 +81,20 @@ html {
   ::selection {
     @apply bg-indigo-200 text-indigo-900;
   }
+  
+  /* Ensure mobile menu stays on top with very high z-index on mobile screens */
+  @media (max-width: 1023px) {
+    /* Ensure mobile menu stays on top and isolates content */
+    body.mobile-menu-open nav[class*="NavBar"] {
+      z-index: 999999 !important;
+      isolation: isolate !important;
+    }
+    
+    /* Ensure mobile menu container isolates its content with very high z-index */
+    body.mobile-menu-open nav[class*="NavBar"] > div[class*="fixed"][class*="z-"] {
+      isolation: isolate !important;
+      contain: layout style paint !important;
+      z-index: 999999 !important;
+    }
+  }
 }

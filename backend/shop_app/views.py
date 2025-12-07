@@ -520,7 +520,20 @@ def initiate_payment(request):
                 }
             )
             print(f"Transaction {transaction_obj.ref} {'created' if created else 'updated'}.")
-            response_data = {'gateway': 'paypal', 'order_id': paypal_order['id']}
+            
+            # Extract approval URL from PayPal order links
+            approval_url = None
+            if 'links' in paypal_order:
+                for link in paypal_order['links']:
+                    if link.get('rel') == 'approve':
+                        approval_url = link.get('href')
+                        break
+            
+            response_data = {
+                'gateway': 'paypal', 
+                'order_id': paypal_order['id'],
+                'approval_url': approval_url
+            }
             return Response(response_data, status=status.HTTP_200_OK)
 
         else:

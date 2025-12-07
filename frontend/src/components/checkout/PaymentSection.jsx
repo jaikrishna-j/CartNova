@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPaypal } from 'react-icons/fa';
 // import { SiGooglepay } from 'react-icons/si'; // Removed GPay icon
 import { RiShieldCheckLine } from 'react-icons/ri';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
 const PaymentSection = () => {
     const cart_code = localStorage.getItem("cart_code");
@@ -77,94 +77,123 @@ const PaymentSection = () => {
             });
     }
 
-    // --- PAYPAL: Create Order Function ---
-    const createPayPalOrder = (data, actions) => {
+    // --- PAYPAL: Custom Button Handler ---
+    const handlePayPalPayment = async () => {
+        if (loadingGateway) return;
+        
         setLoadingGateway('paypal');
-        return api.post("initiate_payment/", { cart_code, gateway: 'paypal' })
-            .then(res => {
-                console.log("PayPal Initiation Response:", res.data);
-                if (res.data && res.data.order_id) {
-                    return res.data.order_id;
-                } else {
-                    throw new Error("Invalid order_id from backend for PayPal");
-                }
-            })
-            .catch(err => {
-                console.error("Error initiating PayPal:", err.response ? err.response.data : err.message);
-                alert(`Could not start PayPal payment. ${err.response?.data?.error || 'Please try again.'}`);
-                setLoadingGateway(null);
-                return null;
-            });
-    };
-
-    // --- PAYPAL: On Approve Function ---
-    const onPayPalApprove = (data, actions) => {
-        setLoadingGateway('verifying');
-        console.log("PayPal Payment Success (Frontend):", data);
-        return api.post('verify_payment/', {
-            gateway: 'paypal',
-            paypal_order_id: data.orderID
-        })
-        .then(verifyRes => {
-            console.log("Backend Verification OK:", verifyRes.data);
-            if (verifyRes.data.status === 'success') {
-                localStorage.removeItem("cart_code");
-                window.location.href = `/payment-status?status=success&ref=${data.orderID}`;
-            } else {
-                throw new Error("Backend verification failed");
+        
+        try {
+            // Step 1: Create order on backend and get approval URL
+            const res = await api.post("initiate_payment/", { cart_code, gateway: 'paypal' });
+            console.log("PayPal Initiation Response:", res.data);
+            
+            if (!res.data || !res.data.order_id) {
+                throw new Error("Invalid order_id from backend for PayPal");
             }
-        })
-        .catch(verifyErr => {
-            console.error("Backend Verification FAILED:", verifyErr.response ? verifyErr.response.data : verifyErr.message);
-            alert("Payment verification failed. Please contact support.");
-            window.location.href = `/payment-status?status=failure&ref=${data.orderID}`;
-        });
-    };
-
-    // --- PAYPAL: On Error Function ---
-    const onPayPalError = (err) => {
-         console.error("PayPal Error:", err);
-         alert("An error occurred with the PayPal transaction. Please try again.");
-         setLoadingGateway(null);
+            
+            const orderId = res.data.order_id;
+            const approvalUrl = res.data.approval_url;
+            
+            // Step 2: Use PayPal SDK programmatically if approval URL not available, otherwise redirect
+            if (approvalUrl) {
+                // Redirect to PayPal approval page
+                // PayPal will redirect back with token, which we'll handle on return
+                window.location.href = approvalUrl;
+            } else if (window.paypal && window.paypal.Buttons) {
+                // Fallback: Use PayPal SDK programmatically
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.cssText = 'position: fixed; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; z-index: -1;';
+                document.body.appendChild(buttonContainer);
+                
+                window.paypal.Buttons({
+                    createOrder: () => orderId,
+                    onApprove: async (data) => {
+                        setLoadingGateway('verifying');
+                        try {
+                            const verifyRes = await api.post('verify_payment/', {
+                                gateway: 'paypal',
+                                paypal_order_id: data.orderID
+                            });
+                            
+                            if (verifyRes.data.status === 'success') {
+                                localStorage.removeItem("cart_code");
+                                window.location.href = `/payment-status?status=success&ref=${data.orderID}`;
+                            } else {
+                                throw new Error("Backend verification failed");
+                            }
+                        } catch (verifyErr) {
+                            console.error("Backend Verification FAILED:", verifyErr.response ? verifyErr.response.data : verifyErr.message);
+                            alert("Payment verification failed. Please contact support.");
+                            window.location.href = `/payment-status?status=failure&ref=${data.orderID}`;
+                        }
+                    },
+                    onError: (err) => {
+                        console.error("PayPal Error:", err);
+                        alert("An error occurred with the PayPal transaction. Please try again.");
+                        setLoadingGateway(null);
+                    },
+                    onCancel: () => {
+                        console.log("PayPal payment cancelled");
+                        setLoadingGateway(null);
+                    }
+                }).render(buttonContainer).then(() => {
+                    const paypalButton = buttonContainer.querySelector('button');
+                    if (paypalButton) {
+                        paypalButton.click();
+                    }
+                    setTimeout(() => {
+                        if (buttonContainer.parentNode) {
+                            buttonContainer.parentNode.removeChild(buttonContainer);
+                        }
+                    }, 5000);
+                }).catch((err) => {
+                    console.error("Error rendering PayPal button:", err);
+                    setLoadingGateway(null);
+                    if (buttonContainer.parentNode) {
+                        buttonContainer.parentNode.removeChild(buttonContainer);
+                    }
+                    alert("Could not initialize PayPal. Please try again.");
+                });
+            } else {
+                throw new Error("PayPal SDK not loaded and approval URL not available.");
+            }
+        } catch (err) {
+            console.error("Error initiating PayPal:", err.response ? err.response.data : err.message);
+            alert(`Could not start PayPal payment. ${err.response?.data?.error || err.message || 'Please try again.'}`);
+            setLoadingGateway(null);
+        }
     };
 
     const isLoading = (gateway) => loadingGateway === gateway;
 
     return (
         <div className='lg:sticky lg:top-20 bg-white rounded-2xl sm:rounded-xl shadow-lg border border-gray-200 self-start'>
-            <div className='bg-indigo-600 text-white rounded-t-2xl sm:rounded-t-xl px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 lg:py-4'>
+            <div className='bg-indigo-600 text-white rounded-t-2xl sm:rounded-t-xl px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 lg:pt-2 lg:pb-4'>
                 <h2 className='text-sm sm:text-base md:text-lg lg:text-xl font-bold'>Payment Options</h2>
             </div>
-            <div className='p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4'>
+            <div className='p-4 sm:p-5 lg:pt-3 lg:px-6 lg:pb-6 space-y-3 sm:space-y-4'>
                 
                 {/* GPay Button Removed */}
 
-                {/* PayPal Button Container */}
-                <div className={`relative ${loadingGateway && loadingGateway !== 'paypal' ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                    {/* Show loader on top if paypal is processing or script is loading */}
-                    {(isLoading('paypal') || loadingGateway === 'verifying' || isPending) && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/30 z-20 rounded-2xl sm:rounded-xl">
-                             <svg className="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                             </svg>
-                        </div>
+                {/* PayPal Custom Button */}
+                <button
+                    className={`w-full flex items-center justify-center gap-2 sm:gap-3 h-10 sm:h-12 px-3 sm:px-4 bg-[#0070ba] text-white text-xs sm:text-sm md:text-base font-bold shadow-md rounded-lg sm:rounded-xl focus:outline-none border-none transition-all relative ${isLoading('paypal') || loadingGateway === 'verifying' || isPending || (loadingGateway && loadingGateway !== 'paypal') ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#005ea6]'}`}
+                    onClick={handlePayPalPayment}
+                    disabled={isLoading('paypal') || loadingGateway === 'verifying' || isPending || (loadingGateway && loadingGateway !== 'paypal')}
+                >
+                    {isLoading('paypal') || loadingGateway === 'verifying' ? (
+                        <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    ) : (
+                        <FaPaypal className="text-base sm:text-lg" />
                     )}
-                    <PayPalButtons
-                        style={{
-                            layout: "horizontal",
-                            color: "blue",
-                            shape: "rect",
-                            label: "pay",
-                            tagline: false,
-                            height: 48,
-                        }}
-                        createOrder={createPayPalOrder}
-                        onApprove={onPayPalApprove}
-                        onError={onPayPalError}
-                        disabled={loadingGateway && loadingGateway !== 'paypal'}
-                    />
-                </div>
+                    <span>
+                        {isLoading('paypal') ? 'Processing...' : loadingGateway === 'verifying' ? 'Verifying...' : 'Pay with PayPal'}
+                    </span>
+                </button>
 
                 {/* Razorpay Button */}
                 <button

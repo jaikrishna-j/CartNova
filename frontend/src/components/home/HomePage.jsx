@@ -68,7 +68,7 @@ const HomePage = () => {
             )}
             
             {numOfPages > 1 && (
-                <div className='flex justify-center w-full my-6 px-4'>
+                <div className='flex justify-center w-full my-6 sm:my-8 md:my-10 px-4'>
                     <PagePagination
                         page={page}
                         numOfPages={numOfPages}

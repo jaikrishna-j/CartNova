@@ -17,24 +17,49 @@ import PaymentStatusPage from "./components/payment/PaymentStatusPage";
 import CustomToastContainer from "./components/ui/CustomToastContainer";
 import RegisterPage from "./components/user/RegisterPage";
 
-const App = () => {
+// Inner component that has access to AuthContext
+const AppRoutes = () => {
   const [numCartItems, setNumberCartItems] = useState(0);
   const cart_code = localStorage.getItem("cart_code");
 
   useEffect(function () {
+    // Fetch cart stats if we have a cart_code
     if (cart_code) {
       api.get(`get_cart_stat?cart_code=${cart_code}`)
         .then(res => {
-          setNumberCartItems(res.data.num_of_items);
+          // Ensure we get a valid number, default to 0 if invalid
+          const numItems = res.data.num_of_items || 0;
+          setNumberCartItems(numItems);
         })
         .catch(err => {
           console.log(err.message);
+          setNumberCartItems(0);
         });
+    } else {
+      setNumberCartItems(0);
     }
+  }, [cart_code]);
+  
+  // Also listen for cart updates from other components
+  useEffect(function () {
+    const handleCartUpdate = () => {
+      const currentCartCode = localStorage.getItem("cart_code");
+      if (currentCartCode) {
+        api.get(`get_cart_stat?cart_code=${currentCartCode}`)
+          .then(res => {
+            setNumberCartItems(res.data.num_of_items || 0);
+          })
+          .catch(() => setNumberCartItems(0));
+      }
+    };
+    
+    // Listen for custom event when cart is updated
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
   }, []);
 
   return (
-    <AuthProvider>
+    <>
       {/* This renders your toast container */}
       <CustomToastContainer />
       
@@ -60,6 +85,14 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <AppRoutes />
     </AuthProvider>
   );
 };

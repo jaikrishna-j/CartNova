@@ -5,7 +5,7 @@ import { IoSearch } from 'react-icons/io5';
 import { FiUser, FiX } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@/services/apiProducts';
-import { HiOutlineBars3, HiChevronDown } from 'react-icons/hi2';
+import { HiOutlineBars3, HiChevronDown, HiHome } from 'react-icons/hi2';
 import { AuthContext } from '@/context/AuthContext';
 import api from '@/api';
 import { BASE_URL } from '@/api';
@@ -22,6 +22,18 @@ const NavBar = ({ numCartItems }) => {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  // Add/remove class to body when menu is open to hide checkout content
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('mobile-menu-open');
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+    }
+    return () => {
+      document.body.classList.remove('mobile-menu-open');
+    };
+  }, [isOpen]);
 
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '');
   const [selectedCategory, setSelectedCategory] = useState(
@@ -212,7 +224,7 @@ const NavBar = ({ numCartItems }) => {
                       className='flex items-center gap-2 font-medium text-gray-700 hover:text-indigo-600 no-underline transition-colors duration-200'
                       end
                     >
-                      <div className='relative w-5 h-5 flex items-center justify-center'>
+                      <div className='relative w-5 h-5 flex items-center justify-center flex-shrink-0'>
                         {profileImageUrl ? (
                           <img
                             src={profileImageUrl}
@@ -230,7 +242,7 @@ const NavBar = ({ numCartItems }) => {
                         ) : null}
                         <FiUser className={`text-lg ${profileImageUrl ? 'hidden' : 'block'}`} />
                       </div>
-                      {`Hi, ${username}`}
+                      <span>{`Hi, ${username}`}</span>
                     </NavLink>
                     <NavLink
                       onClick={logout}
@@ -271,7 +283,7 @@ const NavBar = ({ numCartItems }) => {
                 <div className='bg-indigo-600 rounded-full p-3 flex items-center justify-center hover:bg-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 border-none'>
                   <FaCartShopping className='text-white text-xl' />
                 </div>
-                {numCartItems > 0 && (
+                {isAuthenticated && numCartItems > 0 && (
                   <span className='absolute -top-1 -right-3 bg-red-500 text-white text-xs font-bold px-[8px] py-1 flex items-center justify-center rounded-full shadow-lg animate-pulse'>
                     {numCartItems}
                   </span>
@@ -307,21 +319,27 @@ const NavBar = ({ numCartItems }) => {
         {/* Mobile Menu Overlay with Blur */}
         {isOpen && (
           <div
-            className='fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden'
+            className='fixed inset-0 bg-black/40 backdrop-blur-sm z-[999998] lg:hidden'
             onClick={() => setIsOpen(false)}
           />
         )}
 
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${
+          className={`lg:hidden fixed inset-0 z-[999999] flex items-center justify-center transition-all duration-300 ease-in-out ${
             isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
           onClick={() => setIsOpen(false)}
         >
           <div 
-            className='bg-white border border-gray-200 shadow-2xl rounded-2xl mx-4 w-full max-w-md overflow-hidden relative'
+            className='bg-white border border-gray-200 shadow-2xl rounded-2xl mx-4 w-full max-w-md overflow-hidden relative z-[999999] isolate'
             onClick={(e) => e.stopPropagation()}
+            style={{ 
+              isolation: 'isolate',
+              contain: 'layout style paint',
+              position: 'relative',
+              zIndex: 999999
+            }}
           >
             {/* Close Button */}
             <button
@@ -383,17 +401,7 @@ const NavBar = ({ numCartItems }) => {
                   Navigation
                 </h3>
                 <div className='space-y-1.5'>
-                  <Link
-                    to='/store'
-                    onClick={() => setIsOpen(false)}
-                    className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
-                  >
-                    <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
-                      <HiOutlineBars3 className='text-indigo-600 group-hover:text-white transition-colors duration-200 text-sm' />
-                    </div>
-                    <span>Store</span>
-                  </Link>
-                  
+                  {/* User/Auth Links First */}
                   {isAuthenticated ? (
                     <>
                       <NavLink
@@ -401,7 +409,7 @@ const NavBar = ({ numCartItems }) => {
                         onClick={() => setIsOpen(false)}
                         className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
                       >
-                        <div className='w-6 h-6 rounded-md flex items-center justify-center overflow-hidden bg-gray-100 group-hover:bg-indigo-600 transition-colors duration-200'>
+                        <div className='w-6 h-6 rounded-md flex items-center justify-center overflow-hidden bg-gray-100 group-hover:bg-indigo-600 transition-colors duration-200 flex-shrink-0'>
                           {profileImageUrl ? (
                             <img
                               src={profileImageUrl}
@@ -419,7 +427,7 @@ const NavBar = ({ numCartItems }) => {
                           ) : null}
                           <FiUser className={`text-sm text-gray-600 group-hover:text-white transition-colors duration-200 ${profileImageUrl ? 'hidden' : 'block'}`} />
                         </div>
-                        <span>{`Hi, ${username}`}</span>
+                        <span className='flex-shrink-0'>{`Hi, ${username}`}</span>
                       </NavLink>
                       <NavLink
                         to='/'
@@ -457,6 +465,30 @@ const NavBar = ({ numCartItems }) => {
                     </>
                   )}
                   
+                  {/* Divider between auth and navigation */}
+                  <div className='border-t border-gray-200 my-1'></div>
+                  
+                  {/* Navigation Links */}
+                  <Link
+                    to='/'
+                    onClick={() => setIsOpen(false)}
+                    className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                  >
+                    <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                      <HiHome className='text-indigo-600 group-hover:text-white transition-colors duration-200 text-sm' />
+                    </div>
+                    <span>Home</span>
+                  </Link>
+                  <Link
+                    to='/store'
+                    onClick={() => setIsOpen(false)}
+                    className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                  >
+                    <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                      <HiOutlineBars3 className='text-indigo-600 group-hover:text-white transition-colors duration-200 text-sm' />
+                    </div>
+                    <span>Store</span>
+                  </Link>
                   <Link
                     to='/cart'
                     onClick={() => setIsOpen(false)}
@@ -464,14 +496,14 @@ const NavBar = ({ numCartItems }) => {
                   >
                     <div className='relative w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
                       <FaCartShopping className='text-sm text-gray-600 group-hover:text-white transition-colors duration-200' />
-                      {numCartItems > 0 && (
+                      {isAuthenticated && numCartItems > 0 && (
                         <span className='absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-pulse shadow-lg border-2 border-white'>
                           {numCartItems > 9 ? '9+' : numCartItems}
                         </span>
                       )}
                     </div>
                     <span>Cart</span>
-                    {numCartItems > 0 && (
+                    {isAuthenticated && numCartItems > 0 && (
                       <span className='ml-auto bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md animate-bounce'>
                         {numCartItems} {numCartItems === 1 ? 'item' : 'items'}
                       </span>

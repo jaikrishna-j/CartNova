@@ -34,7 +34,10 @@ const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartIt
                     const newTotal = updatedItems.reduce((acc, curr) => acc + curr.total, 0);
                     const newNumItems = updatedItems.reduce((acc, curr) => acc + curr.quantity, 0);
                     setCartTotal(newTotal);
-                    setNumberCartItems(newNumItems);
+                    // Update cart count in navbar
+                    if (setNumberCartItems) {
+                        setNumberCartItems(newNumItems);
+                    }
                 })
                 .catch(err => toast.error("Failed to remove item.")); // This will now use react-hot-toast
         }
@@ -50,10 +53,14 @@ const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartIt
             .then(res => {
                 const updatedItems = cartItems.map(ci => ci.id === item.id ? res.data.data : ci);
                 setCartItems(updatedItems);
-                const newTotal = updatedItems.reduce((acc, curr) => acc + curr.total, 0);
-                const newNumItems = updatedItems.reduce((acc, curr) => acc + curr.quantity, 0);
-                setCartTotal(newTotal);
-                setNumberCartItems(newNumItems);
+                    const newTotal = updatedItems.reduce((acc, curr) => acc + curr.total, 0);
+                    const newNumItems = updatedItems.reduce((acc, curr) => acc + curr.quantity, 0);
+                    setCartTotal(newTotal);
+                    if (setNumberCartItems) {
+                        setNumberCartItems(newNumItems);
+                    }
+                    // Dispatch custom event to update cart count globally
+                    window.dispatchEvent(new CustomEvent('cartUpdated'));
             })
             .catch(err => toast.error("Failed to update cart.")) // This will now use react-hot-toast
             .finally(() => setLoading(false));

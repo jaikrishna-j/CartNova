@@ -36,7 +36,7 @@ Go to Store
     }
 
     return (
-        <div className='bg-gray-50 min-h-screen py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8'>
+        <div className='bg-gray-50 min-h-screen py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8 checkout-page-content'>
             <div className='max-w-7xl mx-auto'>
                 <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 md:mb-8 text-center'>
                     Checkout

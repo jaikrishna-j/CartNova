@@ -49,7 +49,7 @@ const UserInfo = ({userInfo, onEditClick}) => {
         <p className='text-xs sm:text-sm md:text-base text-gray-500 mt-1'>{userInfo.email}</p>
         <button 
           onClick={onEditClick}
-          className='mt-3 sm:mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white text-xs sm:text-sm font-semibold py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'
+          className='mt-3 sm:mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white text-xs sm:text-sm font-semibold py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'
         >
           <FiEdit className="text-sm sm:text-base" />
           Edit Profile

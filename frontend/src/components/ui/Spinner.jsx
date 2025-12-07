@@ -14,13 +14,13 @@ const Spinner = ({loading}) => {
     const updateSize = () => {
       if (window.innerWidth < 640) {
         // Mobile screens - medium
-        setSize(45);
+        setSize(65);
       } else if (window.innerWidth < 1024) {
         // Tablet screens
-        setSize(55);
+        setSize(75);
       } else {
         // Laptop/Desktop screens - medium big
-        setSize(70);
+        setSize(80);
       }
     };
 

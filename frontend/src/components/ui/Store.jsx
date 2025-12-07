@@ -104,7 +104,7 @@ const Store = ({
                         })()}
 
                         {totalPages > 1 && (
-                            <div className='mt-10'>
+                            <div className='mt-8 sm:mt-10 md:mt-12 w-full flex justify-center'>
                                 <PagePagination 
                                     numOfPages={totalPages} 
                                     handleSetPage={handleSetPage} 

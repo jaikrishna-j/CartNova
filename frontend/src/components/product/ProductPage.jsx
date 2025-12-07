@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import ProductPagePlaceHolder from './ProductPagePlaceHolder';
 import RelatedProducts from './RelatedProducts';
 import { getProductDetail } from '@/services/apiProducts';
 import api, { BASE_URL } from '@/api';
 import { FiShoppingCart } from 'react-icons/fi';
+import { AuthContext } from '@/context/AuthContext';
 
 // --- THIS IS THE ONLY CHANGE ---
 import toast from 'react-hot-toast'; // Change this import from 'sonner'
@@ -14,6 +15,7 @@ import Spinner from '../ui/Spinner';
 
 const ProductPage = ({ setNumberCartItems }) => {
     const { slug } = useParams();
+    const { isAuthenticated } = useContext(AuthContext);
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [isAdding, setIsAdding] = useState(false);
@@ -73,6 +75,7 @@ const ProductPage = ({ setNumberCartItems }) => {
         if (!product || isAdding) {
             return;
         }
+
         setIsAdding(true);
         setError(null);
 
@@ -99,9 +102,12 @@ const ProductPage = ({ setNumberCartItems }) => {
 
             api.get(`get_cart_stat?cart_code=${currentCartCode}`)
                 .then(statRes => {
+                    const numItems = statRes.data.num_of_items || 0;
                     if (setNumberCartItems) {
-                        setNumberCartItems(statRes.data.num_of_items);
+                        setNumberCartItems(numItems);
                     }
+                    // Dispatch custom event to update cart count globally
+                    window.dispatchEvent(new CustomEvent('cartUpdated'));
                 })
                 .catch(statErr => console.error("Failed to update cart count:", statErr));
 

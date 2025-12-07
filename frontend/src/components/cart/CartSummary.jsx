@@ -1,11 +1,23 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiArrowRight, FiLock } from 'react-icons/fi';
+import { AuthContext } from '@/context/AuthContext';
+import toast from 'react-hot-toast';
 
 const CartSummary = ({ cartTotal, tax }) => {
+    const { isAuthenticated } = useContext(AuthContext);
+    const navigate = useNavigate();
     const subTotal = cartTotal.toFixed(2);
     const cartTax = tax.toFixed(2);
     const total = (cartTotal + tax).toFixed(2);
+
+    const handleCheckoutClick = (e) => {
+        if (!isAuthenticated) {
+            e.preventDefault();
+            toast.error("Please sign in to proceed to checkout.");
+            navigate('/login');
+        }
+    };
 
     return (
         <div className='lg:sticky lg:top-24 bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm'>
@@ -26,7 +38,7 @@ const CartSummary = ({ cartTotal, tax }) => {
                 </div>
             </div>
             
-            <Link to="/checkout" className="mt-4 sm:mt-6 block">
+            <Link to="/checkout" className="mt-4 sm:mt-6 block" onClick={handleCheckoutClick}>
                 <button
                     className='w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 px-4 bg-indigo-600 text-white text-sm sm:text-base font-bold rounded-xl shadow-md hover:bg-indigo-700 transition-all transform hover:scale-105 border-none'
                 >

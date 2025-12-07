@@ -8,11 +8,11 @@ import { FiShoppingBag } from 'react-icons/fi'
 import useCartData from '@/hooks/useCartData'
 
 const CartPage = ({ setNumberCartItems }) => {
-    
   const {cartItems, setCartItems, cartTotal, setCartTotal, loading, tax} = useCartData()
 
   const numItems = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
 
+  // Show loading state
   if (loading) {
     return (
       <div className='flex justify-center items-center min-h-[calc(100vh-8rem)]'>
@@ -21,6 +21,7 @@ const CartPage = ({ setNumberCartItems }) => {
     )
   }
 
+  // Show empty cart message if no items
   if (!cartItems || cartItems.length < 1) {
     return (
       <div className='min-h-[calc(100vh-8rem)] flex items-center justify-center bg-white'>
