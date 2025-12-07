@@ -1,5 +1,5 @@
 import { ClipLoader } from "react-spinners";
-
+import { useState, useEffect } from "react";
 
 const override = {
   display: "block",
@@ -8,11 +8,32 @@ const override = {
 };
 
 const Spinner = ({loading}) => {
+  const [size, setSize] = useState(50);
+
+  useEffect(() => {
+    const updateSize = () => {
+      if (window.innerWidth < 640) {
+        // Mobile screens - medium
+        setSize(45);
+      } else if (window.innerWidth < 1024) {
+        // Tablet screens
+        setSize(55);
+      } else {
+        // Laptop/Desktop screens - medium big
+        setSize(70);
+      }
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   return (
     <ClipLoader
         loading={loading}
         cssOverride={override}
-        size={450}
+        size={size}
         aria-label="Loading Spinner"
         data-testid="loader"
       />

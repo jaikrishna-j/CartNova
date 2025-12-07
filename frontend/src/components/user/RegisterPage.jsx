@@ -46,7 +46,7 @@ const pageStyle = 'min-h-screen flex items-center justify-center bg-gray-50 p-2 
 const containerStyle = 'w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] lg:max-h-[90vh]';
 const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-6 xl:p-8 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
 const rightPanelStyle = 'p-4 sm:p-6 lg:p-8 overflow-y-auto max-h-[95vh] lg:max-h-[90vh]';
-const titleStyle = 'text-2xl sm:text-3xl font-bold text-gray-900';
+const titleStyle = 'text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900';
 const subtitleStyle = 'text-gray-500 mt-1 text-sm sm:text-base';
 const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 ml-1';
 const formStyle = 'space-y-2 sm:space-y-2.5';
@@ -117,8 +117,8 @@ const RegisterPage = () => {
       <div className={containerStyle}>
         {/* Left Side */}
         <div className={leftPanelStyle}>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={registerAnimation} loop={true} className='w-48 h-48 xl:w-56 xl:h-56' /></motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-2xl xl:text-3xl font-extrabold tracking-wider mt-2 xl:mt-4'>Create Account</h1><p className='mt-2 xl:mt-3 text-sm xl:text-base text-indigo-200 max-w-xs mx-auto'>Join CartNova today and start discovering amazing products!</p></motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={registerAnimation} loop={true} className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 xl:w-56 xl:h-56' /></motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-xl sm:text-2xl md:text-2xl xl:text-3xl font-extrabold tracking-wider mt-2 xl:mt-4'>Create Account</h1><p className='mt-2 xl:mt-3 text-xs sm:text-sm md:text-sm xl:text-base text-indigo-200 max-w-xs mx-auto'>Join CartNova today and start discovering amazing products!</p></motion.div>
         </div>
         {/* Right Side */}
         <motion.div className={rightPanelStyle} variants={cardVariants} initial='hidden' animate='visible'>

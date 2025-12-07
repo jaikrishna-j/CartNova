@@ -24,10 +24,10 @@ const UserInfo = ({userInfo, onEditClick}) => {
   const profileImageUrl = getProfileImageUrl();
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-4 gap-8 items-start'>
+    <div className='grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 items-start'>
       {/* Profile Card */}
-      <div className='lg:col-span-1 bg-white rounded-2xl shadow-lg p-6 text-center flex flex-col items-center'>
-        <div className='w-32 h-32 rounded-full mb-4 ring-4 ring-indigo-200 overflow-hidden bg-gray-100 flex items-center justify-center'>
+      <div className='lg:col-span-1 bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 text-center flex flex-col items-center'>
+        <div className='w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full mb-3 sm:mb-4 ring-2 sm:ring-4 ring-indigo-200 overflow-hidden bg-gray-100 flex items-center justify-center'>
           {profileImageUrl ? (
             <img
               src={profileImageUrl}
@@ -40,29 +40,29 @@ const UserInfo = ({userInfo, onEditClick}) => {
             />
           ) : null}
           <div className={`w-full h-full flex items-center justify-center ${profileImageUrl ? 'hidden' : ''}`}>
-            <FiUser className='text-5xl text-gray-400' />
+            <FiUser className='text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-gray-400' />
           </div>
         </div>
-        <h4 className='text-2xl font-bold text-gray-900'>
+        <h4 className='text-lg sm:text-xl md:text-2xl font-bold text-gray-900'>
           {`${userInfo.first_name} ${userInfo.last_name}`}
         </h4>
-        <p className='text-gray-500'>{userInfo.email}</p>
+        <p className='text-xs sm:text-sm md:text-base text-gray-500 mt-1'>{userInfo.email}</p>
         <button 
           onClick={onEditClick}
-          className='mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'
+          className='mt-3 sm:mt-4 w-full flex items-center justify-center gap-2 bg-indigo-600 text-white text-xs sm:text-sm font-semibold py-2 sm:py-2.5 px-3 sm:px-4 rounded-lg sm:rounded-xl shadow-md hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 border-none'
         >
-          <FiEdit />
+          <FiEdit className="text-sm sm:text-base" />
           Edit Profile
         </button>
       </div>
 
       {/* Account Overview Card */}
-      <div className='lg:col-span-3 bg-white rounded-2xl shadow-lg'>
-        <div className='bg-indigo-600 text-white p-3 rounded-t-2xl'>
-          <h5 className='text-xl font-bold'>Account Overview</h5>
+      <div className='lg:col-span-3 bg-white rounded-xl sm:rounded-2xl shadow-lg'>
+        <div className='bg-indigo-600 text-white p-2.5 sm:p-3 rounded-t-xl sm:rounded-t-2xl'>
+          <h5 className='text-base sm:text-lg md:text-xl font-bold'>Account Overview</h5>
         </div>
-        <div className='p-6'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-gray-700'>
+        <div className='p-4 sm:p-5 lg:p-6'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 sm:gap-x-6 lg:gap-x-8 gap-y-3 sm:gap-y-4 text-sm sm:text-base text-gray-700'>
             <p>
               <strong className='font-semibold text-gray-800'>Full Name:</strong> {`${userInfo.first_name} ${userInfo.last_name}`}
             </p>

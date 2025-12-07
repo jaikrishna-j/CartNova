@@ -68,11 +68,11 @@ const UserProfilePage = () => {
     };
 
     return (
-        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-            <h1 className='text-4xl font-extrabold text-gray-900 mb-8'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12'>
+            <h1 className='text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 lg:mb-8'>
                 My Profile
             </h1>
-            <div className='space-y-12'>
+            <div className='space-y-6 sm:space-y-8 lg:space-y-12'>
                 {/* This component is unchanged */}
                 <UserInfo 
                     userInfo={userInfo} 

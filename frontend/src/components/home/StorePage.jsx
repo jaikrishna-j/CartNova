@@ -10,7 +10,13 @@ const StorePage = () => {
     const [allCategories, setAllCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [isCategoryListOpen, setIsCategoryListOpen] = useState(true);
+    const [isCategoryListOpen, setIsCategoryListOpen] = useState(() => {
+        // Set initial state based on screen size - closed on mobile, open on desktop
+        if (typeof window !== 'undefined') {
+            return window.innerWidth >= 1024;
+        }
+        return true;
+    });
 
     const [searchParams, setSearchParams] = useSearchParams();
     const urlPage = parseInt(searchParams.get('page') || '1', 10);
@@ -41,6 +47,25 @@ const StorePage = () => {
 
         fetchStoreData();
     }, [urlPage, urlQuery, urlCategory]);
+
+    // Handle window resize to update category dropdown state for mobile/desktop
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth >= 1024) {
+                // Desktop: keep it open
+                setIsCategoryListOpen(true);
+            } else {
+                // Mobile: keep it closed
+                setIsCategoryListOpen(false);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        // Set initial state on mount
+        handleResize();
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleSetPage = (newPage) => {
         searchParams.set('page', newPage);

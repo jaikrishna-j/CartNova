@@ -13,19 +13,19 @@ const OrderItem = ({ cartItem }) => {
     }
 
     return (
-        <div className='flex justify-between items-center'>
-            <div className='flex items-center gap-4'>
+        <div className='flex justify-between items-center gap-2 sm:gap-4'>
+            <div className='flex items-center gap-2 sm:gap-3 lg:gap-4 min-w-0 flex-1'>
                 <img 
                     src={imgSrc}
                     alt={cartItem.product.name}
-                    className='w-16 h-16 object-contain rounded-md bg-gray-100 p-1' 
+                    className='w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 object-contain rounded-md bg-gray-100 p-1 flex-shrink-0' 
                 />
-                <div>
-                    <h4 className='font-semibold text-gray-800 text-base'>{cartItem.product.name}</h4>
-                    <small className="text-gray-500">{`Quantity: ${cartItem.quantity}`}</small>
+                <div className='min-w-0 flex-1'>
+                    <h4 className='font-semibold text-gray-800 text-xs sm:text-sm md:text-base leading-tight truncate'>{cartItem.product.name}</h4>
+                    <small className="text-xs sm:text-sm text-gray-500">{`Quantity: ${cartItem.quantity}`}</small>
                 </div>
             </div>
-            <span className='font-semibold text-gray-700'>
+            <span className='font-semibold text-gray-700 text-xs sm:text-sm md:text-base flex-shrink-0'>
                 ₹{parseFloat(cartItem.total).toFixed(2)}
             </span>
         </div>

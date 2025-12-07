@@ -131,11 +131,11 @@ const PaymentSection = () => {
     const isLoading = (gateway) => loadingGateway === gateway;
 
     return (
-        <div className='lg:sticky lg:top-24 bg-white rounded-xl shadow-lg border border-gray-200'>
-            <div className='bg-indigo-600 text-white rounded-t-xl px-6 py-4'>
-                <h2 className='text-xl font-bold'>Payment Options</h2>
+        <div className='lg:sticky lg:top-20 bg-white rounded-2xl sm:rounded-xl shadow-lg border border-gray-200 self-start'>
+            <div className='bg-indigo-600 text-white rounded-t-2xl sm:rounded-t-xl px-3 sm:px-4 lg:px-6 py-2.5 sm:py-3 lg:py-4'>
+                <h2 className='text-sm sm:text-base md:text-lg lg:text-xl font-bold'>Payment Options</h2>
             </div>
-            <div className='p-6 space-y-4'>
+            <div className='p-4 sm:p-5 lg:p-6 space-y-3 sm:space-y-4'>
                 
                 {/* GPay Button Removed */}
 
@@ -143,8 +143,8 @@ const PaymentSection = () => {
                 <div className={`relative ${loadingGateway && loadingGateway !== 'paypal' ? 'opacity-50 cursor-not-allowed' : ''}`}>
                     {/* Show loader on top if paypal is processing or script is loading */}
                     {(isLoading('paypal') || loadingGateway === 'verifying' || isPending) && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-white/30 z-20 rounded-xl">
-                             <svg className="animate-spin h-6 w-6 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <div className="absolute inset-0 flex items-center justify-center bg-white/30 z-20 rounded-2xl sm:rounded-xl">
+                             <svg className="animate-spin h-5 w-5 sm:h-6 sm:w-6 text-indigo-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                              </svg>
@@ -168,12 +168,12 @@ const PaymentSection = () => {
 
                 {/* Razorpay Button */}
                 <button
-                    className={`w-full flex items-center justify-center gap-3 h-12 px-4 bg-sky-500 text-white font-bold shadow-md rounded-xl focus:outline-none border-none ${isLoading('razorpay') || loadingGateway ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`w-full flex items-center justify-center gap-2 sm:gap-3 h-10 sm:h-12 px-3 sm:px-4 bg-sky-500 text-white text-xs sm:text-sm md:text-base font-bold shadow-md rounded-lg sm:rounded-xl focus:outline-none border-none transition-all ${isLoading('razorpay') || loadingGateway ? 'opacity-50 cursor-not-allowed' : 'hover:bg-sky-600'}`}
                     id="razorpay-button"
                     onClick={makeRazorpayPayment}
                     disabled={loadingGateway}
                 >
-                    {isLoading('razorpay') ? ( <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> ) : ( <RiShieldCheckLine size={20} /> )}
+                    {isLoading('razorpay') ? ( <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> ) : ( <RiShieldCheckLine className="text-base sm:text-lg" /> )}
                     <span>{isLoading('razorpay') ? 'Processing...' : 'Pay with Razorpay'}</span>
                 </button>
             </div>

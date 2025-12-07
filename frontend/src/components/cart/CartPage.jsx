@@ -45,16 +45,16 @@ const CartPage = ({ setNumberCartItems }) => {
 
   return (
     <div className='bg-white min-h-screen'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
-        <div className='mb-8'>
-          <h1 className='text-3xl md:text-4xl font-bold text-gray-900'>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12'>
+        <div className='mb-6 sm:mb-8'>
+          <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900'>
             Your Cart
           </h1>
-          <p className='mt-2 text-gray-500'>
+          <p className='mt-2 text-xs sm:text-sm md:text-base text-gray-500'>
             You have {numItems} item{numItems !== 1 && 's'} in your cart.
           </p>
         </div>
-        <div className='grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start'>
+        <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start'>
           <div className='lg:col-span-8'>
             <div className='divide-y divide-gray-200'>
               {cartItems.map(item => (
@@ -69,7 +69,7 @@ const CartPage = ({ setNumberCartItems }) => {
               ))}
             </div>
           </div>
-          <div className='lg:col-span-4'>
+          <div className='lg:col-span-4 mt-6 lg:mt-0'>
             <CartSummary cartTotal={cartTotal} tax={tax} />
           </div>
         </div>

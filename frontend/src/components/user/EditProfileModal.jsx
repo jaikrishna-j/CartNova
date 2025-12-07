@@ -149,41 +149,45 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-2 sm:p-4 bg-black bg-opacity-50 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] my-4 sm:my-0 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="sticky top-0 bg-indigo-600 text-white p-6 rounded-t-2xl flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Edit Profile</h2>
+        <div className="bg-indigo-600 text-white py-2.5 px-4 sm:py-3 sm:px-5 md:py-4 md:px-6 rounded-t-2xl flex items-center justify-between flex-shrink-0 z-30 relative pr-12 sm:pr-14 md:pr-16">
+          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold">Edit Profile</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-indigo-700 rounded-full transition-colors border-none"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full transition-colors border-none z-40 shadow-md"
             aria-label="Close modal"
           >
-            <FiX className="text-xl" />
+            <FiX className="text-base sm:text-lg md:text-xl text-white" />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        {/* Scrollable Content */}
+        <div className="overflow-y-auto flex-1 overflow-x-hidden overscroll-contain">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6 pb-6 sm:pb-8 pt-16 sm:pt-20 md:pt-24">
           {/* Profile Image Upload */}
-          <div className="flex flex-col items-center space-y-4">
+          <div className="flex flex-col items-center space-y-3 sm:space-y-4 -mt-2 sm:-mt-4 md:-mt-6 relative z-10">
             <div className="relative">
-              <div className="w-32 h-32 rounded-full overflow-hidden ring-4 ring-indigo-200 bg-gray-100">
-                {previewImage && !removeImage ? (
-                  <img
-                    src={previewImage}
-                    alt="Profile preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                    <FiUser className="text-4xl text-gray-400" />
-                  </div>
-                )}
+              <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full overflow-visible ring-4 ring-indigo-200 bg-gray-100 shadow-lg">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  {previewImage && !removeImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Profile preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                      <FiUser className="text-3xl sm:text-4xl text-gray-400" />
+                    </div>
+                  )}
+                </div>
               </div>
               <label
                 htmlFor="profile-image-upload"
-                className="absolute bottom-0 right-0 bg-indigo-600 text-white p-2 rounded-full cursor-pointer hover:bg-indigo-700 transition-colors shadow-lg z-10 border-none"
+                className="absolute bottom-0 right-0 bg-indigo-600 text-white w-10 h-10 flex items-center justify-center rounded-full cursor-pointer hover:bg-indigo-700 transition-colors shadow-lg z-10 border-none"
               >
                 <FiUpload className="text-lg" />
               </label>
@@ -191,7 +195,7 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-0 right-0 bg-red-500 text-white p-2 rounded-full cursor-pointer hover:bg-red-600 transition-colors shadow-lg z-10 border-none"
+                  className="absolute top-0 right-0 bg-red-500 text-white w-10 h-10 flex items-center justify-center rounded-full cursor-pointer hover:bg-red-600 transition-colors shadow-lg z-10 border-none"
                   title="Remove photo"
                 >
                   <FiTrash2 className="text-sm" />
@@ -205,7 +209,7 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                 className="hidden"
               />
             </div>
-            <p className="text-sm text-gray-500 text-center">
+            <p className="text-xs sm:text-sm text-gray-500 text-center px-2">
               {previewImage && !removeImage 
                 ? 'Click the upload icon to change or trash icon to remove your profile photo'
                 : 'Click the upload icon to add your profile photo'}
@@ -213,14 +217,14 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
           </div>
 
           {/* Form Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
             {/* First Name */}
             <div>
-              <label htmlFor="first_name" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="first_name" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 First Name *
               </label>
               <div className="relative">
-                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="text"
                   id="first_name"
@@ -228,18 +232,18 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                   value={formData.first_name}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* Last Name */}
             <div>
-              <label htmlFor="last_name" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="last_name" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 Last Name *
               </label>
               <div className="relative">
-                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="text"
                   id="last_name"
@@ -247,18 +251,18 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                   value={formData.last_name}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* Username */}
             <div>
-              <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="username" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 Username *
               </label>
               <div className="relative">
-                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="text"
                   id="username"
@@ -266,18 +270,18 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                   value={formData.username}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 Email *
               </label>
               <div className="relative">
-                <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="email"
                   id="email"
@@ -285,84 +289,85 @@ const EditProfileModal = ({ isOpen, onClose, userInfo, onUpdate }) => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 Phone
               </label>
               <div className="relative">
-                <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiPhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="tel"
                   id="phone"
                   name="phone"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* City */}
             <div>
-              <label htmlFor="city" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="city" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 City
               </label>
               <div className="relative">
-                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="text"
                   id="city"
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
 
             {/* State/Country */}
             <div className="md:col-span-2">
-              <label htmlFor="state" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="state" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 sm:mb-2">
                 State/Country
               </label>
               <div className="relative">
-                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm sm:text-base" />
                 <input
                   type="text"
                   id="state"
                   name="state"
                   value={formData.state}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+                  className="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
               </div>
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4 pt-4">
+          <div className="flex gap-3 sm:gap-4 pt-3 sm:pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed border-none outline-none"
             >
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

@@ -28,21 +28,21 @@ const Store = ({
 
     return (
         <div className='bg-white min-h-screen'>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-8 sm:pb-12">
                 
-                <h1 className='text-4xl font-extrabold text-gray-900 mb-8 tracking-tighter border-b pb-4 border-indigo-200'>
+                <h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 md:mb-8 tracking-tighter border-b pb-2 sm:pb-3 md:pb-4 border-indigo-200'>
                     The Store Front
                 </h1>
 
-                <div className='grid grid-cols-1 lg:grid-cols-4 gap-x-12 items-start'> 
+                <div className='grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-x-12 items-start'> 
                     
-                    <aside className='mb-8 lg:mb-0 lg:col-span-1 z-10'> 
-                        <div className='p-6 bg-white rounded-xl shadow-lg border border-indigo-200 lg:sticky lg:top-24 select-none transition-colors duration-300'>
+                    <aside className='mb-4 sm:mb-6 lg:mb-0 lg:col-span-1 z-10'> 
+                        <div className={`bg-white rounded-xl border border-indigo-200 lg:sticky lg:top-24 select-none transition-all duration-300 ${isCategoryListOpen ? 'p-6' : 'py-2.5 px-4'}`}>
                             <button
                                 onClick={() => setIsCategoryListOpen(prev => !prev)}
                                 className='w-full flex justify-between items-center focus:outline-none border-none p-0 cursor-pointer bg-transparent hover:opacity-80 transition-opacity duration-200' 
                             >
-                                <h2 className='text-lg font-bold text-indigo-600'>
+                                <h2 className='text-base sm:text-lg font-bold text-indigo-600'>
                                     Categories
                                 </h2>
                                 {isCategoryListOpen ? (
@@ -52,7 +52,7 @@ const Store = ({
                                 )}
                             </button>
 
-                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCategoryListOpen ? 'max-h-[800px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isCategoryListOpen ? 'max-h-[800px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
                                 <ul className='space-y-2 list-none p-0 m-0'> 
                                     {allCategories.map((category) => (
                                         <li key={category.value} className='my-0'> 
@@ -73,10 +73,10 @@ const Store = ({
                         </div>
                     </aside>
 
-                    <main className='lg:col-span-3 pt-6'>
+                    <main className='lg:col-span-3 pt-4 sm:pt-6'>
                         
-                        <div className="flex items-center justify-between mb-6 p-4 bg-white rounded-xl shadow-md border border-gray-200">
-                            <p className="text-sm text-gray-600">
+                        <div className="flex items-center justify-between mb-4 sm:mb-6">
+                            <p className="text-xs sm:text-sm text-gray-600">
                                 Showing <span className="font-semibold text-indigo-600">{productData?.count ?? 0}</span> results
                             </p>
                         </div>
@@ -94,8 +94,8 @@ const Store = ({
                                 );
                             } else {
                                 return (
-                                    <div className='text-center py-20 bg-white rounded-xl mt-8 shadow-md border border-gray-200'>
-                                        <p className='text-xl font-medium text-gray-600'>
+                                    <div className='text-center py-12 sm:py-16 md:py-20 bg-white rounded-xl mt-6 sm:mt-8 shadow-md border border-gray-200'>
+                                        <p className='text-sm sm:text-base md:text-lg lg:text-xl font-medium text-gray-600'>
                                             No products found matching your filter criteria.
                                         </p>
                                     </div>

@@ -16,8 +16,8 @@ const pageStyle = 'h-screen overflow-hidden flex items-center justify-center bg-
 const containerStyle = 'w-full max-w-5xl mx-auto max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden';
 const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-8 lg:p-12 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
 const rightPanelStyle = 'p-6 sm:p-8 lg:p-12 overflow-y-auto';
-const titleStyle = 'text-2xl sm:text-3xl font-bold text-gray-900';
-const subtitleStyle = 'text-sm sm:text-base text-gray-500 mt-1 sm:mt-2';
+const titleStyle = 'text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900';
+const subtitleStyle = 'text-xs sm:text-sm md:text-base text-gray-500 mt-1 sm:mt-2';
 const linkStyle = 'font-medium text-indigo-600 hover:text-indigo-500 ml-1';
 const formStyle = 'space-y-3 sm:space-y-4';
 const inputGroupStyle = 'relative mt-1';
@@ -159,8 +159,8 @@ const LoginPage = () => {
       <div className={containerStyle}>
         {/* Left Side */}
         <div className={leftPanelStyle}>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={loginAnimation} loop={true} className='w-48 h-48 lg:w-64 lg:h-64' /></motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-3xl lg:text-4xl font-extrabold tracking-wider mt-2 lg:mt-4'>Welcome Back!</h1><p className='mt-2 lg:mt-4 text-sm lg:text-base text-indigo-200 max-w-xs mx-auto'>It's great to see you again. Your next premium find is just a click away.</p></motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={loginAnimation} loop={true} className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64' /></motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wider mt-2 lg:mt-4'>Welcome Back!</h1><p className='mt-2 lg:mt-4 text-xs sm:text-sm md:text-sm lg:text-base text-indigo-200 max-w-xs mx-auto'>It's great to see you again. Your next premium find is just a click away.</p></motion.div>
         </div>
         {/* Right Side */}
         <motion.div className={rightPanelStyle} variants={cardVariants} initial='hidden' animate='visible'>

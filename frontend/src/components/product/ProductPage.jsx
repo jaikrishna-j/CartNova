@@ -148,11 +148,11 @@ const ProductPage = ({ setNumberCartItems }) => {
         <div className='bg-white'>
             <section className='py-8 md:py-12'>
                 <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <div className='flex flex-col md:flex-row gap-8 md:gap-16 items-start'>
-                        {/* Image Section */}
-                        <div className='w-full md:w-1/2 bg-gray-100 rounded-xl p-4 md:aspect-square'>
+                    <div className='flex flex-col md:flex-row gap-4 md:gap-16 items-start'>
+                        {/* Image Section - Fixed reduced size for mobile */}
+                        <div className='w-full md:w-1/2 bg-gray-100 rounded-xl p-2 md:p-4 h-64 sm:h-80 md:h-auto md:aspect-square flex items-center justify-center'>
                             <img
-                                className='w-full h-full object-contain rounded-lg'
+                                className='w-full h-full max-w-full max-h-full object-contain rounded-lg'
                                 src={imgSrc}
                                 alt={productName}
                                 onError={e => {
@@ -161,26 +161,26 @@ const ProductPage = ({ setNumberCartItems }) => {
                                 }}
                             />
                         </div>
-                        {/* Details Section */}
+                        {/* Details Section - Reduced text sizes for mobile */}
                         <div className='w-full md:w-1/2 p-2'>
-                            <div className='text-sm text-gray-500 mb-2'>
+                            <div className='text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2'>
                                 SKU: {product.id || 'N/A'}
                             </div>
-                            <h1 className='text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight'>
+                            <h1 className='text-lg sm:text-xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2 sm:mb-4 leading-tight line-clamp-3 md:line-clamp-none'>
                                 {productName}
                             </h1>
-                            <div className='flex items-baseline mb-6'>
-                                <span className='text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600'>
+                            <div className='flex items-baseline mb-4 sm:mb-6'>
+                                <span className='text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600'>
                                     ₹{productPrice}
                                 </span>
                             </div>
-                            <p className='text-gray-600 leading-relaxed mb-8 text-lg'>
+                            <p className='text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8'>
                                 {productDescription}
                             </p>
                             <div className='flex flex-wrap gap-4'>
                                 <button
                                     onClick={add_item}
-                                    className={`flex flex-1 sm:flex-none items-center justify-center px-8 py-3 text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed border-none ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
+                                    className={`flex flex-1 sm:flex-none items-center justify-center px-4 sm:px-8 py-2 sm:py-3 text-sm sm:text-lg font-medium text-white bg-indigo-600 rounded-xl shadow-lg hover:bg-indigo-700 transition duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed border-none ${isAdding ? 'opacity-70 cursor-wait' : ''}`}
                                     type='button'
                                     disabled={inCart || isAdding}
                                 >

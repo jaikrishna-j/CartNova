@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { Link, useSearchParams, useNavigate, NavLink } from 'react-router-dom';
 import { FaCartShopping, FaRegUser } from 'react-icons/fa6';
 import { IoSearch } from 'react-icons/io5';
-import { FiUser } from 'react-icons/fi';
+import { FiUser, FiX } from 'react-icons/fi';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@/services/apiProducts';
 import { HiOutlineBars3, HiChevronDown } from 'react-icons/hi2';
@@ -130,7 +130,7 @@ const NavBar = ({ numCartItems }) => {
             {/* 1. LEFT: Logo */}
             <Link
               to='/'
-              className='flex-shrink-0 text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 uppercase no-underline tracking-wider hover:from-indigo-700 hover:to-purple-700 transition-all duration-300'
+              className='flex-shrink-0 text-lg sm:text-xl md:text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 uppercase no-underline tracking-wider hover:from-indigo-700 hover:to-purple-700 transition-all duration-300'
             >
               CartNova
             </Link>
@@ -151,20 +151,22 @@ const NavBar = ({ numCartItems }) => {
                   />
                 </button>
                 {isCategoryMenuOpen && (
-                  <div className='absolute top-full mt-2 left-0 lg:left-auto lg:w-56 w-full min-w-0 max-w-[min(100vw-2rem,100%)] lg:max-w-56 bg-white lg:bg-transparent rounded-xl shadow-2xl lg:shadow-none border border-gray-200 lg:border-transparent py-1 max-h-[calc(100vh-12rem)] overflow-y-auto z-50'>
+                  <div className='absolute top-full mt-2 left-0 lg:left-auto lg:w-56 w-full min-w-0 max-w-[min(100vw-2rem,100%)] lg:max-w-56 bg-white rounded-xl shadow-2xl border-2 border-gray-200 py-2 max-h-[calc(100vh-12rem)] overflow-y-auto z-50'>
                     {categoriesPending ? (
                       <div className='text-center py-2 text-sm text-gray-500'>
                         Loading...
                       </div>
                     ) : (
-                      allCategories.map((cat) => (
+                      allCategories.map((cat, index) => (
                         <button
                           key={cat.value}
                           onClick={() => handleCategorySelect(cat.value)}
-                          className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                          className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors duration-200 ${
                             selectedCategory === cat.value
                               ? 'bg-indigo-100 text-indigo-700 font-bold'
                               : 'text-gray-700 hover:bg-indigo-50'
+                          } ${index === 0 ? 'rounded-t-lg' : ''} ${
+                            index === allCategories.length - 1 ? 'rounded-b-lg' : ''
                           }`}
                         >
                           {cat.label}
@@ -182,14 +184,14 @@ const NavBar = ({ numCartItems }) => {
               </Link>
               <form
                 onSubmit={handleSearchSubmit}
-                className='flex w-[50%] items-stretch shadow-md overflow-hidden rounded-xl border border-gray-200'
+                className='flex w-[50%] items-stretch shadow-md overflow-hidden rounded-xl border-2 border-gray-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-200'
               >
                 <input
                   type='text'
                   placeholder='Search products...'
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className='flex-grow bg-white px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none ring-0 focus:ring-0'
+                  className='flex-grow bg-white px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none ring-0 focus:ring-0 rounded-l-xl'
                 />
                 <button
                   type='submit'
@@ -302,107 +304,182 @@ const NavBar = ({ numCartItems }) => {
           </div>
         </div>
 
+        {/* Mobile Menu Overlay with Blur */}
+        {isOpen && (
+          <div
+            className='fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden'
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+
         {/* Mobile Menu */}
         <div
-          className={`lg:hidden transition-all duration-500 ease-in-out overflow-hidden ${
-            isOpen ? 'max-h-screen' : 'max-h-0'
+          className={`lg:hidden fixed inset-0 z-50 flex items-center justify-center transition-all duration-300 ease-in-out ${
+            isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
+          onClick={() => setIsOpen(false)}
         >
-          <div className='flex flex-col items-center space-y-4 py-6 bg-white border-t border-gray-200 px-4'>
-            <form
-              onSubmit={handleSearchSubmit}
-              className='flex flex-col w-full max-w-md space-y-2'
-            >
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className='bg-gray-100 border border-gray-300 text-gray-700 text-sm px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 w-full'
-              >
-                {allCategories.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              <div className='flex bg-gray-100 rounded-lg overflow-hidden border border-gray-300'>
-                <input
-                  type='text'
-                  placeholder='Search products...'
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className='flex-grow bg-transparent px-3 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none'
-                />
-                <button
-                  type='submit'
-                  className='bg-indigo-600 text-white px-3 hover:bg-indigo-700 transition duration-200 border-none'
-                >
-                  <IoSearch />
-                </button>
-              </div>
-            </form>
-            {isAuthenticated ? (
-              <>
-                <NavLink
-                  to='/profile'
-                  onClick={() => setIsOpen(false)}
-                  className='flex items-center gap-2 font-medium text-gray-900 no-underline hover:text-indigo-600 transition-colors duration-200'
-                >
-                  <div className='relative w-5 h-5 flex items-center justify-center'>
-                    {profileImageUrl ? (
-                      <img
-                        src={profileImageUrl}
-                        alt='Profile'
-                        className='w-5 h-5 rounded-full object-cover border border-gray-300'
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          const iconElement = e.target.nextElementSibling;
-                          if (iconElement) {
-                            iconElement.classList.remove('hidden');
-                            iconElement.classList.add('block');
-                          }
-                        }}
-                      />
-                    ) : null}
-                    <FiUser className={`text-lg ${profileImageUrl ? 'hidden' : 'block'}`} />
-                  </div>
-                  {`Hi, ${username}`}
-                </NavLink>
-                <NavLink
-                  to='/'
-                  onClick={() => { logout(); setIsOpen(false); }}
-                  className='font-medium no-underline text-gray-900 hover:text-indigo-600 transition-colors duration-200'
-                >
-                  Logout
-                </NavLink>
-              </>
-            ) : (
-              <>
-                <NavLink
-                  to='/login'
-                  onClick={() => setIsOpen(false)}
-                  className='font-medium no-underline text-gray-900 hover:text-indigo-600 transition-colors duration-200'
-                >
-                  Sign in
-                </NavLink>
-                <NavLink
-                  to='/register'
-                  onClick={() => setIsOpen(false)}
-                  className='font-medium no-underline text-gray-900 hover:text-indigo-600 transition-colors duration-200'
-                >
-                  Register
-                </NavLink>
-              </>
-            )}
-            <Link
-              to='/cart'
+          <div 
+            className='bg-white border border-gray-200 shadow-2xl rounded-2xl mx-4 w-full max-w-md overflow-hidden relative'
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
               onClick={() => setIsOpen(false)}
-              className='flex items-center gap-2 no-underline font-medium text-gray-900 hover:text-indigo-600 transition-colors duration-200'
+              className='absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 z-10 border-none outline-none'
+              aria-label='Close menu'
             >
-              <FaCartShopping />
-              <span>
-                Cart {numCartItems > 0 && <span className='font-bold'>({numCartItems})</span>}
-              </span>
-            </Link>
+              <FiX className='text-gray-600 text-lg' />
+            </button>
+            
+            <div className='flex flex-col space-y-3 py-4 px-3'>
+              {/* Search and Category Section */}
+              <div className='space-y-2'>
+                <h3 className='text-xs font-semibold text-gray-700 uppercase tracking-wide px-1'>
+                  Search & Browse
+                </h3>
+                <form
+                  onSubmit={handleSearchSubmit}
+                  className='flex flex-col w-full space-y-2'
+                >
+                  <div className='relative'>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className='w-full bg-white border-2 border-gray-200 text-gray-700 text-xs px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none cursor-pointer transition-all duration-200 hover:border-indigo-300'
+                    >
+                      {allCategories.map((cat) => (
+                        <option key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </option>
+                      ))}
+                    </select>
+                    <HiChevronDown className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-sm' />
+                  </div>
+                  <div className='flex bg-white rounded-lg overflow-hidden border-2 border-gray-200 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-200'>
+                    <input
+                      type='text'
+                      placeholder='Search products...'
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className='w-[80%] bg-transparent px-3 py-2 text-gray-800 placeholder-gray-400 focus:outline-none text-xs border-none'
+                    />
+                    <button
+                      type='submit'
+                      className='w-[20%] bg-indigo-600 text-white hover:bg-indigo-700 transition duration-200 border-none flex items-center justify-center rounded-r-lg'
+                    >
+                      <IoSearch className='text-base' />
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              {/* Divider */}
+              <div className='border-t border-gray-200 my-1'></div>
+
+              {/* Navigation Links Section */}
+              <div className='space-y-2'>
+                <h3 className='text-xs font-semibold text-gray-700 uppercase tracking-wide px-1'>
+                  Navigation
+                </h3>
+                <div className='space-y-1.5'>
+                  <Link
+                    to='/store'
+                    onClick={() => setIsOpen(false)}
+                    className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                  >
+                    <div className='w-6 h-6 bg-indigo-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                      <HiOutlineBars3 className='text-indigo-600 group-hover:text-white transition-colors duration-200 text-sm' />
+                    </div>
+                    <span>Store</span>
+                  </Link>
+                  
+                  {isAuthenticated ? (
+                    <>
+                      <NavLink
+                        to='/profile'
+                        onClick={() => setIsOpen(false)}
+                        className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                      >
+                        <div className='w-6 h-6 rounded-md flex items-center justify-center overflow-hidden bg-gray-100 group-hover:bg-indigo-600 transition-colors duration-200'>
+                          {profileImageUrl ? (
+                            <img
+                              src={profileImageUrl}
+                              alt='Profile'
+                              className='w-full h-full object-cover'
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                const iconElement = e.target.nextElementSibling;
+                                if (iconElement) {
+                                  iconElement.classList.remove('hidden');
+                                  iconElement.classList.add('block');
+                                }
+                              }}
+                            />
+                          ) : null}
+                          <FiUser className={`text-sm text-gray-600 group-hover:text-white transition-colors duration-200 ${profileImageUrl ? 'hidden' : 'block'}`} />
+                        </div>
+                        <span>{`Hi, ${username}`}</span>
+                      </NavLink>
+                      <NavLink
+                        to='/'
+                        onClick={() => { logout(); setIsOpen(false); }}
+                        className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 no-underline transition-all duration-200 group text-sm'
+                      >
+                        <div className='w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center group-hover:bg-red-600 transition-colors duration-200'>
+                          <FiUser className='text-sm text-gray-600 group-hover:text-white transition-colors duration-200' />
+                        </div>
+                        <span>Logout</span>
+                      </NavLink>
+                    </>
+                  ) : (
+                    <>
+                      <NavLink
+                        to='/login'
+                        onClick={() => setIsOpen(false)}
+                        className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                      >
+                        <div className='w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                          <FiUser className='text-sm text-gray-600 group-hover:text-white transition-colors duration-200' />
+                        </div>
+                        <span>Sign in</span>
+                      </NavLink>
+                      <NavLink
+                        to='/register'
+                        onClick={() => setIsOpen(false)}
+                        className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group text-sm'
+                      >
+                        <div className='w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                          <FiUser className='text-sm text-gray-600 group-hover:text-white transition-colors duration-200' />
+                        </div>
+                        <span>Register</span>
+                      </NavLink>
+                    </>
+                  )}
+                  
+                  <Link
+                    to='/cart'
+                    onClick={() => setIsOpen(false)}
+                    className='flex items-center gap-2 px-3 py-2 rounded-lg font-medium text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 no-underline transition-all duration-200 group relative text-sm'
+                  >
+                    <div className='relative w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-200'>
+                      <FaCartShopping className='text-sm text-gray-600 group-hover:text-white transition-colors duration-200' />
+                      {numCartItems > 0 && (
+                        <span className='absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-pulse shadow-lg border-2 border-white'>
+                          {numCartItems > 9 ? '9+' : numCartItems}
+                        </span>
+                      )}
+                    </div>
+                    <span>Cart</span>
+                    {numCartItems > 0 && (
+                      <span className='ml-auto bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md animate-bounce'>
+                        {numCartItems} {numCartItems === 1 ? 'item' : 'items'}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </nav>

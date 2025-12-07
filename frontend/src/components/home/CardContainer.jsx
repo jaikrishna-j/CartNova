@@ -10,7 +10,7 @@ const CardContainer = ({ products, isSearch = false }) => {
       id="products"
     >
       {!isSearch && (
-        <h4 className="text-center text-3xl sm:text-4xl mt-12 font-extrabold text-gray-800 mb-8 tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+        <h4 className="text-center text-xl sm:text-2xl md:text-3xl lg:text-4xl mt-8 sm:mt-12 font-extrabold text-gray-800 mb-6 sm:mb-8 tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
           Our Featured Products
         </h4>
       )}
@@ -32,7 +32,7 @@ const CardContainer = ({ products, isSearch = false }) => {
         </div>
 
         {products.length === 0 && (
-          <p className="text-center text-xl text-gray-500 mt-12">No products found.</p>
+          <p className="text-center text-base sm:text-lg md:text-xl text-gray-500 mt-8 sm:mt-12">No products found.</p>
         )}
       </div>
     </section>
