@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -17,16 +18,32 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from backend/.env when available
+ENV_FILE = BASE_DIR / ".env"
+if ENV_FILE.exists():
+    try:
+        from dotenv import load_dotenv  # type: ignore[import-unresolved]
+
+        load_dotenv(ENV_FILE)
+    except ImportError:
+        # If python-dotenv is not installed, silently continue; environment
+        # variables must be provided by the host environment instead.
+        pass
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yfj7ihudhm#$x6%lln*$uo7xc*h6c2r*t$2!wo7xrxc+b@=^#s'
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False # Kept as False per user request
+DEBUG = os.environ.get("DEBUG", "False").lower() in ("1", "true", "yes")
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get("ALLOWED_HOSTS", "*").split(",")
+    if host.strip()
+]
 
 # Application definition
 
@@ -137,11 +154,11 @@ WSGI_APPLICATION = 'cartnova.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cartnova_db',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.environ.get('DB_NAME', ''),
+        'USER': os.environ.get('DB_USER', ''),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
@@ -186,12 +203,14 @@ SIMPLE_JWT = {
 }
 
 # --- Payment Gateway Settings ---
-RAZORPAY_KEY_ID = "rzp_test_RYxqcoMp46Y3yc"
-RAZORPAY_KEY_SECRET = "00TFJQzdxdIlYP6EjbmxwMo5"
-PAYPAL_CLIENT_ID = "AVj6zN6mWe-5begZfoXssJKTmZfupJ1LWU346-BX5sryyyVrpmP64xYYJBE6f55uYQkB-1xaf45IYFFx"
-PAYPAL_CLIENT_SECRET = "EC0zftmhmxyd_XoAAxsnhabrn56caIyUOce5K7i-6jyJErvdJTT6obtqIRm9cX2P9HPLTok5O8fvrtee"
-PAYPAL_API_BASE_URL = "https://api-m.sandbox.paypal.com" # Use the API URL
+RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "")
+RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "")
+PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
+PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
+PAYPAL_API_BASE_URL = os.getenv(
+    "PAYPAL_API_BASE_URL", "https://api-m.sandbox.paypal.com"
+) # Use the API URL
 
 # --- reCAPTCHA Keys ---
-GOOGLE_RECAPTCHA_SITE_KEY = '6LdRFfkrAAAAAMGgrtj7nlPy_ZFri__G0dCKbXWZ'
-GOOGLE_RECAPTCHA_SECRET_KEY = '6LdRFfkrAAAAAGIBfe3arHdmMBzkrS2wl2xTZeFX'
+GOOGLE_RECAPTCHA_SITE_KEY = os.getenv("GOOGLE_RECAPTCHA_SITE_KEY", "")
+GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv("GOOGLE_RECAPTCHA_SECRET_KEY", "")
