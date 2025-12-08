@@ -24,7 +24,7 @@ This guide will help you deploy the CartNova backend to Render.
 - **Name**: `cartnova-backend` (or your preferred name)
 - **Environment**: `Python 3`
 - **Root Directory**: `backend` ⚠️ **CRITICAL: Set this to `backend`**
-- **Build Command**: `pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput`
+- **Build Command**: `pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate --noinput && python manage.py create_admin || true`
 - **Start Command**: `gunicorn cartnova.wsgi:application --bind 0.0.0.0:$PORT`
 
 **Note**: If Root Directory is set to `backend`, the Procfile will automatically be used. Otherwise, use the commands above.
@@ -77,6 +77,15 @@ PAYPAL_API_BASE_URL=https://api-m.sandbox.paypal.com
 GOOGLE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
 GOOGLE_RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
 ```
+
+#### Admin Credentials (for automatic superuser creation):
+```
+ADMIN_USERNAME=krish
+ADMIN_PASSWORD=krish365
+ADMIN_EMAIL=admin@cartnova.com
+```
+
+**Note**: The admin user will be automatically created during deployment if it doesn't exist. You can access the admin panel at `https://your-backend.onrender.com/admin/` using these credentials.
 
 #### Optional Security Settings:
 ```
