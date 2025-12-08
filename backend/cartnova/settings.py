@@ -81,18 +81,34 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Add your React frontend development server URL here
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:5173',
-]
+# Add WhiteNoise middleware if available (for production)
+try:
+    import whitenoise
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+except ImportError:
+    pass  # WhiteNoise not installed, skip it (fine for development)
 
-# CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # React development server (example)
-    "http://localhost:5174",  # Vue development server (example)
-    "http://localhost:5175",  # Alternative localhost format (example)
+# CSRF and CORS settings - Environment aware
+# Get frontend URL from environment (for Vercel deployment)
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+
+# CSRF Trusted Origins - Add your Vercel frontend URL here via environment variable
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',  # Development
 ]
-CORS_ALLOW_ALL_ORIGINS = True # Kept as True per user request
+if FRONTEND_URL and FRONTEND_URL not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL)
+
+# CORS settings - Environment aware
+CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False").lower() in ("1", "true", "yes")
+if not CORS_ALLOW_ALL_ORIGINS:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",  # Development
+    ]
+    if FRONTEND_URL and FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+else:
+    CORS_ALLOWED_ORIGINS = []
 
 ROOT_URLCONF = 'cartnova.urls'
 
@@ -184,6 +200,25 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# WhiteNoise configuration for static files (only if whitenoise is installed)
+try:
+    import whitenoise
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+except ImportError:
+    pass  # Use default static files storage if whitenoise not available
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "False").lower() in ("1", "true", "yes")
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.CustomerUser' # Correct
 
@@ -207,10 +242,10 @@ RAZORPAY_KEY_ID = os.environ.get("RAZORPAY_KEY_ID", "")
 RAZORPAY_KEY_SECRET = os.environ.get("RAZORPAY_KEY_SECRET", "")
 PAYPAL_CLIENT_ID = os.environ.get("PAYPAL_CLIENT_ID", "")
 PAYPAL_CLIENT_SECRET = os.environ.get("PAYPAL_CLIENT_SECRET", "")
-PAYPAL_API_BASE_URL = os.getenv(
+PAYPAL_API_BASE_URL = os.environ.get(
     "PAYPAL_API_BASE_URL", "https://api-m.sandbox.paypal.com"
 ) # Use the API URL
 
 # --- reCAPTCHA Keys ---
-GOOGLE_RECAPTCHA_SITE_KEY = os.getenv("GOOGLE_RECAPTCHA_SITE_KEY", "")
-GOOGLE_RECAPTCHA_SECRET_KEY = os.getenv("GOOGLE_RECAPTCHA_SECRET_KEY", "")
+GOOGLE_RECAPTCHA_SITE_KEY = os.environ.get("GOOGLE_RECAPTCHA_SITE_KEY", "")
+GOOGLE_RECAPTCHA_SECRET_KEY = os.environ.get("GOOGLE_RECAPTCHA_SECRET_KEY", "")

@@ -32,20 +32,16 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 ]
 
-# Serve static and media files
-# This works even when DEBUG=False for development purposes
-from django.views.static import serve
-from django.urls import re_path
-
-# Serve static files
-urlpatterns += [
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-]
-
-# Serve media files  
-urlpatterns += [
-    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-]
+# Serve media files in development only
+# In production, use cloud storage (S3, Cloudinary, etc.)
+# Static files are handled by WhiteNoise middleware
+if settings.DEBUG:
+    from django.views.static import serve
+    from django.urls import re_path
+    
+    urlpatterns += [
+        re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    ]
 
 
 
