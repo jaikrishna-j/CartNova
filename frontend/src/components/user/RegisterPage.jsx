@@ -138,7 +138,12 @@ const RegisterPage = () => {
               </div>
               <motion.div variants={itemVariants}><label htmlFor='password'className={labelStyle}>Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showPassword ? 'text' : 'password'} id='password' value={password} onChange={(e) => setPassword(e.target.value)} className={getPasswordInputStyle('password')} placeholder='Enter your password' required /><button type='button' onClick={() => setShowPassword(!showPassword)} className={eyeButtonStyle}>{showPassword ? <FiEyeOff /> : <FiEye />}</button></div><PasswordStrengthIndicator password={password} />{validationErrors.password && !Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password}</p>} {validationErrors.password && Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password.join(' ')}</p>}</motion.div>
               <motion.div variants={itemVariants}><label htmlFor='confirmPassword'className={labelStyle}>Confirm Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showConfirmPassword ? 'text' : 'password'} id='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={getPasswordInputStyle('confirm_password')} placeholder='Confirm your password' required /><button type='button' onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={eyeButtonStyle}>{showConfirmPassword ? <FiEyeOff /> : <FiEye />}</button></div> {validationErrors.confirm_password && <p className={errorTextStyle}>{validationErrors.confirm_password[0]}</p>}</motion.div>
-              <motion.div variants={itemVariants} className="flex justify-center pt-1 scale-90 sm:scale-100 origin-center"><ReCAPTCHA ref={recaptchaRef} sitekey="6LdRFfkrAAAAAMGgrtj7nlPy_ZFri__G0dCKbXWZ" /></motion.div>
+              <motion.div variants={itemVariants} className="flex justify-center pt-1 scale-90 sm:scale-100 origin-center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || ""}
+                />
+              </motion.div>
               <motion.button variants={itemVariants} whileHover={{ scale: 1.05, boxShadow: '0px 10px 20px rgba(79, 70, 229, 0.4)' }} whileTap={{ scale: 0.95 }} type='submit' className={submitButtonStyle} disabled={loading}>{loading ? 'Creating Account...' : 'Sign Up'}</motion.button>
             </div>
           </form>

@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-// Ensure the base URL is correct and includes the trailing slash if needed by your setup
-export const BASE_URL = 'http://127.0.0.1:8000/'; // Changed to include trailing slash
+// Prefer runtime-configurable API base URL via env (Vite uses VITE_ prefix)
+export const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/';
 
 const api = axios.create({
-  baseURL: BASE_URL
+  baseURL: BASE_URL,
 });
 
 // --- Request Interceptor ---
