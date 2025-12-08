@@ -6,6 +6,7 @@ import { getProductDetail } from '@/services/apiProducts';
 import api, { BASE_URL } from '@/api';
 import { FiShoppingCart } from 'react-icons/fi';
 import { AuthContext } from '@/context/AuthContext';
+import { getProxiedImageUrl } from '@/utils/imageProxy';
 
 // --- THIS IS THE ONLY CHANGE ---
 import toast from 'react-hot-toast'; // Change this import from 'sonner'
@@ -137,18 +138,7 @@ const ProductPage = ({ setNumberCartItems }) => {
     const productPrice = parseFloat(product.price).toFixed(2);
     const productDescription = product.description || 'No description available.';
 
-    let imgSrc = 'https://placehold.co/600x700/e0e7ff/3f51b5?text=No+Image';
-    if (product.image && typeof product.image === 'string') {
-        try {
-            if (product.image.startsWith('http')) {
-                imgSrc = product.image;
-            } else {
-                 const cleanedBaseUrl = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
-                 const cleanedImagePath = product.image.startsWith('/') ? product.image.slice(1) : product.image;
-                 imgSrc = `${cleanedBaseUrl}/${cleanedImagePath}`;
-            }
-        } catch (e) { console.error('Error creating image URL:', e); }
-    }
+    const imgSrc = getProxiedImageUrl(product.image) || 'https://placehold.co/600x700/e0e7ff/3f51b5?text=No+Image';
 
     return (
         <div className='bg-white'>

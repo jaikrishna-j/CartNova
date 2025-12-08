@@ -1,23 +1,15 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast'; // UPDATED: Changed from 'react-toastify'
-import api, { BASE_URL } from '@/api';
+import api from '@/api';
 import { FiTrash2, FiPlus, FiMinus } from 'react-icons/fi';
 import { ClipLoader } from 'react-spinners';
+import { getProxiedImageUrl } from '@/utils/imageProxy';
 
 const CartItem = ({ item, setCartItems, setCartTotal, setNumberCartItems, cartItems }) => {
     const [quantity, setQuantity] = useState(item.quantity);
     const [loading, setLoading] = useState(false);
 
-    let imgSrc = 'https://placehold.co/400x400/e0e7ff/3f51b5?text=NO+IMAGE';
-    if (item.product?.image) {
-        if (item.product.image.startsWith('http')) {
-            imgSrc = item.product.image;
-        } 
-        else {
-            try { imgSrc = new URL(item.product.image, BASE_URL).href; }
-            catch (e) { console.error("Error creating image URL:", e); }
-        }
-    }
+    const imgSrc = getProxiedImageUrl(item.product?.image) || 'https://placehold.co/400x400/e0e7ff/3f51b5?text=NO+IMAGE';
     
     const handleQuantityChange = (newQuantity) => {
         setQuantity(newQuantity);

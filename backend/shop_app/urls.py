@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import image_proxy
 
 urlpatterns = [
     path("products/", views.product_list, name="product_list"), 
@@ -17,4 +18,5 @@ urlpatterns = [
     path("initiate_payment/", views.initiate_payment, name="initiate_payment"),
     path("verify_payment/", views.verify_payment, name="verify_payment"),
     path("order_history/", views.order_history, name="order_history"),
+    path("api/image-proxy/", image_proxy.image_proxy, name="image_proxy"),
 ]

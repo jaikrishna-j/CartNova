@@ -1,21 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BASE_URL } from '@/api';
+import { getProxiedImageUrl } from '@/utils/imageProxy';
 
 const HomeCard = ({ product }) => {
   const title = product?.title ?? product?.name ?? product?.product_name ?? '';
   const priceValue = product?.price ?? '0.00';
   const price = parseFloat(priceValue).toFixed(2);
 
-  let imgSrc = 'https://placehold.co/400x300/e0e7ff/3f51b5?text=NO+IMAGE';
-  if (product?.image) {
-    try {
-      const imageUrl = new URL(product.image, BASE_URL);
-      imgSrc = imageUrl.href;
-    } catch (e) {
-      console.error("Error creating image URL:", e);
-    }
-  }
+  const imgSrc = getProxiedImageUrl(product?.image) || 'https://placehold.co/400x300/e0e7ff/3f51b5?text=NO+IMAGE';
 
   const categoryName = product?.category?.name || product?.category || 'General';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { BASE_URL } from '@/api';
 import { Link } from 'react-router-dom';
+import { getProxiedImageUrl } from '@/utils/imageProxy';
 
 // This component displays a single product item from your order history
 const OrderHistoryItem = ({ item }) => {
@@ -9,21 +9,8 @@ const OrderHistoryItem = ({ item }) => {
     // --- 1. CALCULATE THE TOTAL PRICE ---
     const itemTotal = (parseFloat(product?.price || 0) * quantity).toFixed(2);
 
-    // Safely construct image URL
-    let itemImage = 'https://placehold.co/80x80/e0e7ff/3f51b5?text=No+Img';
-    if (product?.image && typeof product.image === 'string') {
-        try {
-            if (product.image.startsWith('http://') || product.image.startsWith('https://')) {
-                itemImage = product.image;
-            } else {
-                const cleanedBaseUrl = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
-                const cleanedImagePath = product.image.startsWith('/') ? product.image.slice(1) : product.image;
-                itemImage = `${cleanedBaseUrl}/${cleanedImagePath}`;
-            }
-        } catch (e) {
-            console.error("Error creating image URL:", e, "Base:", BASE_URL, "Image:", product.image);
-        }
-    }
+    // Safely construct image URL using proxy
+    const itemImage = getProxiedImageUrl(product?.image) || 'https://placehold.co/80x80/e0e7ff/3f51b5?text=No+Img';
 
     // Format the date
     const orderDateTime = new Date(order_date).toLocaleString('en-IN', {
