@@ -92,21 +92,26 @@ except ImportError:
 # Get frontend URL from environment (for Vercel deployment)
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
 
+# Strip trailing slash from FRONTEND_URL for CORS (Django corsheaders doesn't allow paths in origins)
+FRONTEND_URL_CLEAN = FRONTEND_URL.rstrip('/') if FRONTEND_URL else None
+
 # CSRF Trusted Origins - Add your Vercel frontend URL here via environment variable
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',  # Development
+    'https://cartnova-storefront.vercel.app',  # Vercel production frontend
 ]
-if FRONTEND_URL and FRONTEND_URL not in CSRF_TRUSTED_ORIGINS:
-    CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL)
+if FRONTEND_URL_CLEAN and FRONTEND_URL_CLEAN not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL_CLEAN)
 
 # CORS settings - Environment aware
 CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False").lower() in ("1", "true", "yes")
 if not CORS_ALLOW_ALL_ORIGINS:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:5173",  # Development
+        "https://cartnova-storefront.vercel.app",  # Vercel production frontend
     ]
-    if FRONTEND_URL and FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
-        CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
+    if FRONTEND_URL_CLEAN and FRONTEND_URL_CLEAN not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(FRONTEND_URL_CLEAN)
 else:
     CORS_ALLOWED_ORIGINS = []
 
