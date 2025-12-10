@@ -9,8 +9,10 @@ function buildProductQueryParams(page, q, category, pageSize) {
     }
     if (q) {
         params.push(`q=${encodeURIComponent(q)}`);
-    }
-    if (category && category.toLowerCase() !== 'all') {
+        // When searching, ignore category filter - search across all products
+        // Don't add category parameter when search query exists
+    } else if (category && category.toLowerCase() !== 'all') {
+        // Only apply category filter when there's no search query
         params.push(`category=${encodeURIComponent(category)}`);
     }
 

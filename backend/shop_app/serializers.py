@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from shop_app.models import Product, Cart, CartItem
 from django.contrib.auth import get_user_model
+from shop_app.product_recommender import get_similar_products
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +17,9 @@ class DetailedProductSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "price", "slug", "image", "description", "similar_products"]
 
     def get_similar_products(self, product):
-        products = Product.objects.filter(category=product.category).exclude(id=product.id)[:4]
-        serializer = ProductSerializer(products, many=True)
+        # Use TF-IDF and cosine similarity for recommendations based on title and description
+        similar_products = get_similar_products(product, n_recommendations=4)
+        serializer = ProductSerializer(similar_products, many=True)
         return serializer.data
 
 

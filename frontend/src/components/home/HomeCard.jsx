@@ -21,7 +21,7 @@ const HomeCard = ({ product }) => {
             <img
               src={imgSrc}
               alt={title || 'Product Image'}
-              className="w-full h-full object-contain object-center p-3 transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-contain object-center p-3"
               onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/400x300/e0e7ff/3f51b5?text=Image+Load+Fail'; }}
             />
           </div>

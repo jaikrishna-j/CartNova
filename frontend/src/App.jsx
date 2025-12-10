@@ -16,6 +16,10 @@ import UserProfilePage from "./components/user/UserProfilePage";
 import PaymentStatusPage from "./components/payment/PaymentStatusPage";
 import CustomToastContainer from "./components/ui/CustomToastContainer";
 import RegisterPage from "./components/user/RegisterPage";
+import AboutPage from "./components/pages/AboutPage";
+import ContactPage from "./components/pages/ContactPage";
+import TermsPage from "./components/pages/TermsPage";
+import PrivacyPage from "./components/pages/PrivacyPage";
 
 // Inner component that has access to AuthContext
 const AppRoutes = () => {
@@ -82,6 +86,10 @@ const AppRoutes = () => {
             </ProtectedRoute>
           } />
           <Route path="payment-status" element={<PaymentStatusPage />}/>
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
+          <Route path="terms" element={<TermsPage />} />
+          <Route path="privacy" element={<PrivacyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

@@ -19,4 +19,5 @@ urlpatterns = [
     path("verify_payment/", views.verify_payment, name="verify_payment"),
     path("order_history/", views.order_history, name="order_history"),
     path("api/image-proxy/", image_proxy.image_proxy, name="image_proxy"),
+    path("contact/", views.contact_us, name="contact_us"),
 ]

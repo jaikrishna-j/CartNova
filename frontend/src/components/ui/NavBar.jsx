@@ -41,6 +41,7 @@ const NavBar = ({ numCartItems }) => {
   );
 
   const categoryButtonRef = useRef(null);
+  const searchTimeoutRef = useRef(null);
 
   const { data: categories = [], isPending: categoriesPending } = useQuery({
     queryKey: ['categories'],
@@ -99,14 +100,88 @@ const NavBar = ({ numCartItems }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [categoryButtonRef]);
 
+  // Real-time search with debouncing - updates URL as user types
+  useEffect(() => {
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    const currentPath = window.location.pathname;
+    const trimmedQuery = searchQuery.trim();
+
+    // Don't do anything if we're on home page and search is empty
+    if (!trimmedQuery && currentPath === '/') {
+      return;
+    }
+
+    // If user is typing/searching and not on store page, navigate to store
+    if (trimmedQuery && currentPath !== '/store') {
+      // Navigate immediately when user starts typing (if not already on store)
+      const newParams = new URLSearchParams();
+      newParams.set('q', trimmedQuery);
+      newParams.set('page', '1');
+      navigate(`/store?${newParams.toString()}`);
+      return;
+    }
+
+    // Only update URL if we're on store page
+    if (currentPath === '/store') {
+      searchTimeoutRef.current = setTimeout(() => {
+        const newParams = new URLSearchParams();
+        
+        if (trimmedQuery) {
+          // When searching, ignore category - search across all products
+          newParams.set('q', trimmedQuery);
+          newParams.set('page', '1');
+        } else {
+          // When search is cleared on store page, restore category filter if it was set
+          if (selectedCategory !== 'all') {
+            newParams.set('category', selectedCategory);
+          }
+          newParams.set('page', '1');
+        }
+        navigate(`/store?${newParams.toString()}`);
+      }, 300); // 300ms debounce delay
+    }
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, [searchQuery, navigate, selectedCategory]);
+
+  // Sync search query with URL params when URL changes externally
+  // Only sync if we're actually on a page that uses search (store page)
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    const urlQuery = searchParams.get('q') || '';
+    
+    // Only sync search query if we're on store page or if URL has a query
+    // This prevents clearing search when navigating to home page
+    if (currentPath === '/store' || urlQuery) {
+      if (urlQuery !== searchQuery) {
+        setSearchQuery(urlQuery);
+      }
+    } else if (currentPath === '/' && searchQuery) {
+      // Clear search query when navigating to home page (if it exists)
+      setSearchQuery('');
+    }
+  }, [searchParams]);
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    // Submit is handled by the debounced effect, but we can navigate immediately for better UX
     const newParams = new URLSearchParams();
     if (searchQuery.trim()) {
       newParams.set('q', searchQuery.trim());
-    }
-    if (selectedCategory !== 'all') {
-      newParams.set('category', selectedCategory);
+      // When searching, ignore category
+    } else {
+      // When search is empty, restore category filter
+      if (selectedCategory !== 'all') {
+        newParams.set('category', selectedCategory);
+      }
     }
     newParams.set('page', '1');
     navigate(`/store?${newParams.toString()}`);
@@ -115,15 +190,26 @@ const NavBar = ({ numCartItems }) => {
   const handleCategorySelect = (categoryValue) => {
     setSelectedCategory(categoryValue);
     const newParams = new URLSearchParams();
+    
+    // If there's a search query, ignore category change (search takes priority)
     if (searchQuery.trim()) {
       newParams.set('q', searchQuery.trim());
-    }
-    if (categoryValue !== 'all') {
-      newParams.set('category', categoryValue);
+      // Don't add category when searching
+    } else {
+      // Only apply category when not searching
+      if (categoryValue !== 'all') {
+        newParams.set('category', categoryValue);
+      }
     }
     newParams.set('page', '1');
     navigate(`/store?${newParams.toString()}`);
     setIsCategoryMenuOpen(false);
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    // Real-time update is handled by the debounced useEffect
   };
 
   const NAVBAR_INNER_HEIGHT_CLASS = 'h-16';
@@ -202,7 +288,7 @@ const NavBar = ({ numCartItems }) => {
                   type='text'
                   placeholder='Search products...'
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={handleSearchChange}
                   className='flex-grow bg-white px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none text-sm border-none ring-0 focus:ring-0 rounded-l-xl'
                 />
                 <button
@@ -363,7 +449,7 @@ const NavBar = ({ numCartItems }) => {
                   <div className='relative'>
                     <select
                       value={selectedCategory}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      onChange={(e) => handleCategorySelect(e.target.value)}
                       className='w-full bg-white border-2 border-gray-200 text-gray-700 text-xs px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 appearance-none cursor-pointer transition-all duration-200 hover:border-indigo-300'
                     >
                       {allCategories.map((cat) => (
@@ -379,7 +465,7 @@ const NavBar = ({ numCartItems }) => {
                       type='text'
                       placeholder='Search products...'
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={handleSearchChange}
                       className='w-[80%] bg-transparent px-3 py-2 text-gray-800 placeholder-gray-400 focus:outline-none text-xs border-none'
                     />
                     <button

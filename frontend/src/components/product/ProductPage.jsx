@@ -144,9 +144,9 @@ const ProductPage = ({ setNumberCartItems }) => {
         <div className='bg-white'>
             <section className='py-8 md:py-12'>
                 <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <div className='flex flex-col md:flex-row gap-4 md:gap-16 items-start'>
-                        {/* Image Section - Fixed reduced size for mobile */}
-                        <div className='w-full md:w-1/2 bg-gray-100 rounded-xl p-2 md:p-4 h-64 sm:h-80 md:h-auto md:aspect-square flex items-center justify-center'>
+                    <div className='flex flex-col md:flex-row gap-4 md:gap-8 lg:gap-12 items-start'>
+                        {/* Image Section - Reduced size for laptop and desktop */}
+                        <div className='w-full md:w-2/5 lg:w-2/5 bg-gray-100 rounded-xl p-2 md:p-4 h-64 sm:h-80 md:h-auto md:max-h-[500px] md:aspect-square flex items-center justify-center'>
                             <img
                                 className='w-full h-full max-w-full max-h-full object-contain rounded-lg'
                                 src={imgSrc}
@@ -158,7 +158,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                             />
                         </div>
                         {/* Details Section - Reduced text sizes for mobile */}
-                        <div className='w-full md:w-1/2 p-2'>
+                        <div className='w-full md:w-3/5 lg:w-3/5 p-2'>
                             <div className='text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2'>
                                 SKU: {product.id || 'N/A'}
                             </div>

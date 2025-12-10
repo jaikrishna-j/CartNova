@@ -10,12 +10,15 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied
 from django.db import transaction  # Import transaction
+from django.core.mail import send_mail, EmailMessage, get_connection
+from django.template.loader import render_to_string
 
 from shop_app.serializers import (
     ProductSerializer, DetailedProductSerializer, CartItemSerializer,
     SimpleCartSerializer, CartSerializer, UserSerializer, NewCartItemSerializer
 )
 from shop_app.models import Product, Cart, CartItem, Transaction
+from shop_app.search_algorithm import search_products
 from decimal import Decimal
 import uuid
 import requests
@@ -62,17 +65,24 @@ def category_list(request):
 @api_view(["GET"])
 def product_list(request):
     """
-    Returns paginated/filtered product list.
+    Returns paginated/filtered product list with advanced search algorithm.
+    Uses TF-IDF and fuzzy matching for better search results.
     """
     queryset = Product.objects.all()
     query = request.query_params.get('q', None)
     category = request.query_params.get('category', None)
 
-    if query:
-        queryset = queryset.filter(
-            Q(name__icontains=query) | Q(description__icontains=query)
-        )
-    if category and category.lower() != 'all':
+    # Apply category filter first (if no search query)
+    if category and category.lower() != 'all' and not query:
+        queryset = queryset.filter(category__iexact=category)
+    
+    # Apply advanced search algorithm if query exists
+    if query and query.strip():
+        # Use advanced search algorithm that finds exact matches and related products
+        queryset = search_products(query.strip(), queryset)
+        # Note: When searching, category is ignored (handled in frontend)
+    elif category and category.lower() != 'all':
+        # Only apply category filter when there's no search query
         queryset = queryset.filter(category__iexact=category)
 
     paginator = CustomPageNumberPagination()
@@ -739,3 +749,121 @@ def order_history(request):
         print(f"Error fetching order history for user {request.user.id}: {e}")
         traceback.print_exc()
         return Response({"error": "Could not retrieve order history."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+@csrf_exempt
+def contact_us(request):
+    """
+    Handle contact form submissions and send emails.
+    Sends email to admin and auto-response to user.
+    """
+    try:
+        name = request.data.get('name', '').strip()
+        email = request.data.get('email', '').strip()
+        subject = request.data.get('subject', '').strip()
+        message = request.data.get('message', '').strip()
+
+        # Validation
+        if not all([name, email, subject, message]):
+            return Response(
+                {"error": "All fields are required."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Admin email (your email)
+        admin_email = "jaikrishnajaisankar2005@gmail.com"
+        
+        # Email to admin - Contact form submission
+        admin_subject = f"Contact Form: {subject}"
+        admin_message = f"""
+New contact form submission from CartNova:
+
+Name: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+
+---
+This email was sent from the CartNova contact form.
+        """.strip()
+
+        try:
+            # Verify email settings are configured
+            if not settings.EMAIL_HOST_PASSWORD:
+                return Response(
+                    {"error": "Email service is not configured. Please contact the administrator."},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+
+            # Get email connection with explicit authentication
+            connection = get_connection(
+                host=settings.EMAIL_HOST,
+                port=settings.EMAIL_PORT,
+                username=settings.EMAIL_HOST_USER,
+                password=settings.EMAIL_HOST_PASSWORD,
+                use_tls=settings.EMAIL_USE_TLS,
+            )
+
+            # Send email to admin
+            send_mail(
+                subject=admin_subject,
+                message=admin_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[admin_email],
+                connection=connection,
+                fail_silently=False,
+            )
+
+            # Auto-response email to user
+            user_subject = "Thank you for contacting CartNova"
+            user_message = f"""
+Dear {name},
+
+Thank you for reaching out to CartNova!
+
+We have received your message regarding "{subject}" and appreciate you taking the time to contact us.
+
+Our team will review your inquiry and get back to you within 24 hours.
+
+If you have any urgent concerns, please feel free to contact us directly at {admin_email}.
+
+Best regards,
+The CartNova Team
+
+---
+This is an automated response. Please do not reply to this email.
+            """.strip()
+
+            # Send auto-response to user
+            send_mail(
+                subject=user_subject,
+                message=user_message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                connection=connection,
+                fail_silently=False,
+            )
+
+            return Response(
+                {"message": "Your message has been sent successfully. We will get back to you within 24 hours."},
+                status=status.HTTP_200_OK
+            )
+
+        except Exception as email_error:
+            print(f"Error sending email: {email_error}")
+            traceback.print_exc()
+            return Response(
+                {"error": "Failed to send email. Please try again later."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    except Exception as e:
+        print(f"Error in contact_us view: {e}")
+        traceback.print_exc()
+        return Response(
+            {"error": "An error occurred. Please try again."},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

@@ -11,12 +11,19 @@ const Footer = () => {
     { name: 'Profile', path: '/profile' },
   ];
 
+  const legalLinks = [
+    { name: 'About Us', path: '/about' },
+    { name: 'Contact', path: '/contact' },
+    { name: 'Terms & Conditions', path: '/terms' },
+    { name: 'Privacy Policy', path: '/privacy' },
+  ];
+
   return (
     <footer className='bg-gray-900 text-white transition-colors duration-300'>
       <div className='max-w-7xl mx-auto px-4 py-6 sm:py-8 md:py-12 sm:px-6 lg:px-8'>
         
-        {/* Main Content Grid: Changed to 2 columns for balanced alignment */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 text-center sm:text-left'>
+        {/* Main Content Grid: Changed to 3 columns for better organization */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-8 text-center sm:text-left'>
           
           {/* Section 1: Brand Identity & Social Icons */}
           <div className='space-y-3 sm:space-y-4 flex flex-col items-center sm:items-start'>
@@ -47,6 +54,22 @@ const Footer = () => {
             <h4 className='text-sm sm:text-base font-bold text-gray-400 uppercase tracking-wider'>Quick Links</h4>
             <div className='flex flex-col space-y-2'>
               {quickLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className='text-gray-300 no-underline text-sm sm:text-base hover:text-indigo-400 hover:underline transition-colors duration-200'
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3: Legal & Information Links */}
+          <div className='space-y-3 sm:space-y-4'>
+            <h4 className='text-sm sm:text-base font-bold text-gray-400 uppercase tracking-wider'>Legal & Info</h4>
+            <div className='flex flex-col space-y-2'>
+              {legalLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.path}
