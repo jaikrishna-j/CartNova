@@ -41,7 +41,6 @@ const NavBar = ({ numCartItems }) => {
   );
 
   const categoryButtonRef = useRef(null);
-  const searchTimeoutRef = useRef(null);
 
   const { data: categories = [], isPending: categoriesPending } = useQuery({
     queryKey: ['categories'],
@@ -100,57 +99,8 @@ const NavBar = ({ numCartItems }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [categoryButtonRef]);
 
-  // Real-time search with debouncing - updates URL as user types
-  useEffect(() => {
-    // Clear previous timeout
-    if (searchTimeoutRef.current) {
-      clearTimeout(searchTimeoutRef.current);
-    }
-
-    const currentPath = window.location.pathname;
-    const trimmedQuery = searchQuery.trim();
-
-    // Don't do anything if we're on home page and search is empty
-    if (!trimmedQuery && currentPath === '/') {
-      return;
-    }
-
-    // If user is typing/searching and not on store page, navigate to store
-    if (trimmedQuery && currentPath !== '/store') {
-      // Navigate immediately when user starts typing (if not already on store)
-      const newParams = new URLSearchParams();
-      newParams.set('q', trimmedQuery);
-      newParams.set('page', '1');
-      navigate(`/store?${newParams.toString()}`);
-      return;
-    }
-
-    // Only update URL if we're on store page
-    if (currentPath === '/store') {
-      searchTimeoutRef.current = setTimeout(() => {
-        const newParams = new URLSearchParams();
-        
-        if (trimmedQuery) {
-          // When searching, ignore category - search across all products
-          newParams.set('q', trimmedQuery);
-          newParams.set('page', '1');
-        } else {
-          // When search is cleared on store page, restore category filter if it was set
-          if (selectedCategory !== 'all') {
-            newParams.set('category', selectedCategory);
-          }
-          newParams.set('page', '1');
-        }
-        navigate(`/store?${newParams.toString()}`);
-      }, 300); // 300ms debounce delay
-    }
-
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, [searchQuery, navigate, selectedCategory]);
+  // Search only updates when user submits (Enter key or search button click)
+  // No auto-update while typing to improve performance
 
   // Sync search query with URL params when URL changes externally
   // Only sync if we're actually on a page that uses search (store page)
@@ -172,11 +122,13 @@ const NavBar = ({ numCartItems }) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Submit is handled by the debounced effect, but we can navigate immediately for better UX
+    // Navigate to store page with search query when user submits (Enter key or button click)
     const newParams = new URLSearchParams();
-    if (searchQuery.trim()) {
-      newParams.set('q', searchQuery.trim());
-      // When searching, ignore category
+    const trimmedQuery = searchQuery.trim();
+    
+    if (trimmedQuery) {
+      newParams.set('q', trimmedQuery);
+      // When searching, ignore category - search across all products
     } else {
       // When search is empty, restore category filter
       if (selectedCategory !== 'all') {
@@ -209,7 +161,7 @@ const NavBar = ({ numCartItems }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-    // Real-time update is handled by the debounced useEffect
+    // Search only updates on form submit (Enter key or search button click)
   };
 
   const NAVBAR_INNER_HEIGHT_CLASS = 'h-16';
