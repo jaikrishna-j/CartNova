@@ -15,36 +15,6 @@ React-based frontend application for CartNova e-commerce platform, built with Vi
 - **Lottie React** - Animation rendering
 - **React Hot Toast** - Toast notifications
 
-## 📋 Prerequisites
-
-- **Node.js 18+** and npm
-
-## 🚀 Installation & Setup
-
-1. **Navigate to frontend directory**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure API endpoint**
-   
-   Update `frontend/src/api.js` with your backend URL:
-   ```javascript
-   const API_BASE_URL = 'http://127.0.0.1:8000';
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-   
-   The frontend will be available at `http://localhost:5173`
-
 ## 📁 Project Structure
 
 ```
@@ -64,28 +34,6 @@ frontend/
 │   └── App.jsx             # Main App component
 ├── public/                 # Public assets
 └── package.json            # Node dependencies
-```
-
-## 🎯 Usage
-
-### Development
-
-```bash
-npm run dev
-```
-
-### Building for Production
-
-```bash
-npm run build
-```
-
-The build output will be in the `dist` directory.
-
-### Preview Production Build
-
-```bash
-npm run preview
 ```
 
 ## 🌐 Deployment

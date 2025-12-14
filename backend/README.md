@@ -14,80 +14,6 @@ Django REST Framework backend for CartNova e-commerce platform with MySQL databa
 - **PayPal SDK** - Payment integration
 - **NumPy & Pandas** - Data processing for recommendations
 
-## 📋 Prerequisites
-
-- **Python 3.13+** (or Python 3.8+)
-- **MySQL 8.0+**
-
-## 🚀 Installation & Setup
-
-1. **Navigate to backend directory**
-   ```bash
-   cd backend
-   ```
-
-2. **Create and activate virtual environment**
-   
-   **Windows:**
-   ```bash
-   python -m venv shopenv
-   .\shopenv\Scripts\Activate.ps1
-   ```
-   
-   **Linux/Mac:**
-   ```bash
-   python3 -m venv shopenv
-   source shopenv/bin/activate
-   ```
-
-3. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Set up MySQL database**
-   ```sql
-   CREATE DATABASE cartnova_db;
-   ```
-
-5. **Configure database settings**
-   
-   Update `backend/cartnova/settings.py` with your MySQL credentials:
-   ```python
-   DATABASES = {
-       'default': {
-           'ENGINE': 'django.db.backends.mysql',
-           'NAME': 'cartnova_db',
-           'USER': 'your_username',
-           'PASSWORD': 'your_password',
-           'HOST': 'localhost',
-           'PORT': '3306',
-       }
-   }
-   ```
-
-6. **Run migrations**
-   ```bash
-   python manage.py migrate
-   ```
-
-7. **Create superuser (optional)**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-8. **Collect static files**
-   ```bash
-   python manage.py collectstatic
-   ```
-
-9. **Run the development server**
-   ```bash
-   python manage.py runserver
-   ```
-   
-   The backend will be available at `http://127.0.0.1:8000`
-
 ## 📁 Project Structure
 
 ```
@@ -109,38 +35,6 @@ backend/
 │   └── urls.py            # Shop app URLs
 ├── manage.py               # Django management script
 └── requirements.txt        # Python dependencies
-```
-
-## 🎯 Usage
-
-### Development Server
-
-```bash
-python manage.py runserver
-```
-
-### Create Migrations
-
-```bash
-python manage.py makemigrations
-```
-
-### Apply Migrations
-
-```bash
-python manage.py migrate
-```
-
-### Create Superuser
-
-```bash
-python manage.py createsuperuser
-```
-
-### Collect Static Files
-
-```bash
-python manage.py collectstatic
 ```
 
 ## 🌐 Deployment
