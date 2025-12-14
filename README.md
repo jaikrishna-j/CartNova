@@ -46,10 +46,10 @@ CartNova is a full-stack e-commerce platform with a React/Tailwind frontend depl
 CartNova/
 ├── backend/                 # Django backend
 │   ├── cartnova/           # Django project settings
+│   │   ├── settings.py    # Project settings
+│   │   └── urls.py        # Main URL configuration
 │   ├── core/               # Core app (users, authentication)
 │   ├── shop_app/           # E-commerce app (products, cart, orders)
-│   ├── shopenv/            # Virtual environment (not in git)
-│   ├── staticfiles/        # Collected static files
 │   ├── media/              # User uploaded files
 │   ├── manage.py           # Django management script
 │   └── requirements.txt    # Python dependencies
@@ -60,11 +60,12 @@ CartNova/
 │   │   ├── context/        # React context providers
 │   │   ├── hooks/          # Custom React hooks
 │   │   ├── services/       # API services
-│   │   └── assets/         # Static assets
+│   │   ├── assets/         # Static assets
+│   │   ├── api.js          # API configuration
+│   │   └── App.jsx         # Main App component
 │   ├── public/             # Public assets
 │   └── package.json        # Node dependencies
 │
-├── .gitignore              # Git ignore rules
 └── README.md               # This file
 ```
 

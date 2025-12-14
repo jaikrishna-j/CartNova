@@ -33,6 +33,7 @@ backend/
 │   ├── search_algorithm.py # Search functionality
 │   ├── product_recommender.py # Recommendation algorithm
 │   └── urls.py            # Shop app URLs
+├── media/                  # User uploaded files
 ├── manage.py               # Django management script
 └── requirements.txt        # Python dependencies
 ```
