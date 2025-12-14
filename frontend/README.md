@@ -1,16 +1,109 @@
-# React + Vite
+# CartNova Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React-based frontend application for CartNova e-commerce platform, built with Vite, Tailwind CSS, and modern React patterns.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - UI library
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Material-UI** - React component library
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **React Query** - Data fetching and caching
+- **Framer Motion** - Animation library
+- **Lottie React** - Animation rendering
+- **React Hot Toast** - Toast notifications
 
-## React Compiler
+## 📋 Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Node.js 18+** and npm
 
-## Expanding the ESLint configuration
+## 🚀 Installation & Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. **Navigate to frontend directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure API endpoint**
+   
+   Update `frontend/src/api.js` with your backend URL:
+   ```javascript
+   const API_BASE_URL = 'http://127.0.0.1:8000';
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+   
+   The frontend will be available at `http://localhost:5173`
+
+## 📁 Project Structure
+
+```
+frontend/
+├── src/
+│   ├── components/         # React components
+│   │   ├── cart/           # Cart-related components
+│   │   ├── home/           # Home page components
+│   │   ├── product/        # Product page components
+│   │   ├── ui/             # Reusable UI components
+│   │   └── ...
+│   ├── context/            # React context providers
+│   ├── hooks/              # Custom React hooks
+│   ├── services/           # API services
+│   ├── assets/             # Static assets
+│   ├── api.js              # API configuration
+│   └── App.jsx             # Main App component
+├── public/                 # Public assets
+└── package.json            # Node dependencies
+```
+
+## 🎯 Usage
+
+### Development
+
+```bash
+npm run dev
+```
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The build output will be in the `dist` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## 🌐 Deployment
+
+### Vercel
+
+1. Import project in Vercel
+2. Set build command: `npm run build`
+3. Set output directory: `dist`
+4. Add environment variables if needed
+5. Deploy!
+
+## 📚 Key Features
+
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Product Search**: Real-time search with debouncing
+- **Shopping Cart**: Full cart management functionality
+- **User Authentication**: JWT-based authentication
+- **Product Recommendations**: AI-powered recommendations
+- **Payment Integration**: Razorpay and PayPal support
+- **Smooth Animations**: Framer Motion and Lottie animations

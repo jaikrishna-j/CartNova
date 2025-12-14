@@ -75,24 +75,17 @@ Before you begin, ensure you have the following installed:
 - **Python 3.13+** (or Python 3.8+)
 - **Node.js 18+** and npm
 - **MySQL 8.0+**
-- **Git**
 
 ## 🚀 Installation & Setup
 
 ### Backend Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/jaikrishna-j/CartNova.git
-   cd CartNova
-   ```
-
-2. **Navigate to backend directory**
+1. **Navigate to backend directory**
    ```bash
    cd backend
    ```
 
-3. **Create and activate virtual environment**
+2. **Create and activate virtual environment**
    
    **Windows:**
    ```bash
@@ -106,17 +99,17 @@ Before you begin, ensure you have the following installed:
    source shopenv/bin/activate
    ```
 
-4. **Install Python dependencies**
+3. **Install Python dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-5. **Set up MySQL database**
+4. **Set up MySQL database**
    ```sql
    CREATE DATABASE cartnova_db;
    ```
 
-6. **Configure database settings**
+5. **Configure database settings**
    
    Update `backend/cartnova/settings.py` with your MySQL credentials:
    ```python
@@ -132,27 +125,27 @@ Before you begin, ensure you have the following installed:
    }
    ```
 
-7. **Run migrations**
+6. **Run migrations**
    ```bash
    python manage.py migrate
    ```
 
-8. **Create superuser (optional)**
+7. **Create superuser (optional)**
    ```bash
    python manage.py createsuperuser
    ```
 
-9. **Collect static files**
+8. **Collect static files**
    ```bash
    python manage.py collectstatic
    ```
 
-10. **Run the development server**
-    ```bash
-    python manage.py runserver
-    ```
-    
-    The backend will be available at `http://127.0.0.1:8000`
+9. **Run the development server**
+   ```bash
+   python manage.py runserver
+   ```
+   
+   The backend will be available at `http://127.0.0.1:8000`
 
 ### Frontend Setup
 
@@ -181,37 +174,6 @@ Before you begin, ensure you have the following installed:
    The frontend will be available at `http://localhost:5173`
 
 ## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env` file in the `backend` directory (not committed to git):
-
-```env
-SECRET_KEY=your-secret-key-here
-DEBUG=False
-ALLOWED_HOSTS=localhost,127.0.0.1
-
-# Database
-DB_NAME=cartnova_db
-DB_USER=your_username
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_PORT=3306
-
-# Payment Gateways
-RAZORPAY_KEY_ID=your_razorpay_key
-RAZORPAY_KEY_SECRET=your_razorpay_secret
-PAYPAL_CLIENT_ID=your_paypal_client_id
-PAYPAL_CLIENT_SECRET=your_paypal_secret
-
-# reCAPTCHA
-GOOGLE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-GOOGLE_RECAPTCHA_SECRET_KEY=your_recaptcha_secret_key
-
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-```
 
 ### Google OAuth Setup
 
@@ -262,12 +224,11 @@ python manage.py collectstatic --noinput
 
 ### Frontend (Vercel)
 
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Set build command: `npm run build`
-4. Set output directory: `dist`
-5. Add environment variables if needed
-6. Deploy!
+1. Import project in Vercel
+2. Set build command: `npm run build`
+3. Set output directory: `dist`
+4. Add environment variables if needed
+5. Deploy!
 
 ### Backend (Render)
 
@@ -285,23 +246,32 @@ python manage.py collectstatic --noinput
 - `POST /token/` - Get JWT token
 - `POST /token/refresh/` - Refresh JWT token
 - `POST /accounts/register/` - User registration
-- `POST /accounts/login/` - User login
-- `GET /accounts/google/login/` - Google OAuth login
+- `POST /accounts/google-login/` - Google OAuth login
+- `GET /accounts/google/login/` - Google OAuth login redirect
 
 ### Products
-- `GET /api/products/` - List all products
-- `GET /api/products/{id}/` - Get product details
-- `GET /api/products/recommendations/{id}/` - Get product recommendations
-- `GET /api/products/top-selling/` - Get top-selling products
+- `GET /products/` - List all products (supports query params: page, q, category, pageSize)
+- `GET /categories/` - List all categories
+- `GET /product_detail/<slug>/` - Get product details by slug
 
 ### Cart
-- `GET /api/cart/` - Get user's cart
-- `POST /api/cart/add/` - Add item to cart
-- `PUT /api/cart/update/{id}/` - Update cart item
-- `DELETE /api/cart/remove/{id}/` - Remove cart item
+- `GET /get_cart` - Get user's cart
+- `POST /add_item/` - Add item to cart
+- `POST /update_quantity/` - Update cart item quantity
+- `POST /delete_cartitem/` - Remove cart item
+- `GET /product_in_cart` - Check if product is in cart
+- `GET /get_cart_stat` - Get cart statistics
 
-### Orders
-- `GET /api/orders/` - Get user's orders
-- `POST /api/orders/create/` - Create new order
-- `GET /api/orders/{id}/` - Get order details
+### User
+- `GET /get_username` - Get current username
+- `GET /user_info` - Get user information
+- `POST /update_user/` - Update user profile
 
+### Payment & Orders
+- `POST /initiate_payment/` - Initiate payment
+- `POST /verify_payment/` - Verify payment
+- `GET /order_history/` - Get user's order history
+
+### Other
+- `GET /api/image-proxy/` - Image proxy endpoint
+- `POST /contact/` - Contact form submission
