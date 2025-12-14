@@ -98,6 +98,7 @@ const StorePage = () => {
             isLoading={isLoading}
             productData={productData}
             urlCategory={urlCategory}
+            urlQuery={urlQuery}
             totalPages={totalPages}
             urlPage={urlPage}
             isCategoryListOpen={isCategoryListOpen}

@@ -28,7 +28,7 @@ const HomePage = () => {
     const page = urlPage;
     const numOfProductsPerPage = 8; // This should probably be handled by your paginator logic
 
-    const { isPending, isError, error, data } = useQuery({
+    const { isPending, isFetching, isError, error, data } = useQuery({
         queryKey: ['products', page, urlQuery, urlCategory],
         queryFn: () => getProducts(page, urlQuery, urlCategory),
         placeholderData: keepPreviousData
@@ -36,6 +36,9 @@ const HomePage = () => {
 
     const products = data?.results || [];
     const numOfPages = data ? Math.ceil(data.count / numOfProductsPerPage) : 0;
+    
+    // Show loading state when pending (initial load) or fetching during search/filter operations
+    const isLoading = isPending || (isFetching && isSearching);
 
     function handleSetPage (newPage) {
         if (newPage >= 1 && newPage <= numOfPages) {
@@ -55,8 +58,8 @@ const HomePage = () => {
     
     const content = (
         <section id='products' className='w-full'>
-            {isPending ? (
-                <PlaceHolderContainer />
+            {isLoading ? (
+                <PlaceHolderContainer isSearch={isSearching} />
             ) : products.length > 0 ? (
                 <CardContainer products={products} isSearch={isSearching} />
             ) : (

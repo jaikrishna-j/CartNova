@@ -201,7 +201,7 @@ const NavBar = ({ numCartItems }) => {
                   />
                 </button>
                 {isCategoryMenuOpen && (
-                  <div className='absolute top-full mt-2 left-0 lg:left-auto lg:w-56 w-full min-w-0 max-w-[min(100vw-2rem,100%)] lg:max-w-56 bg-white rounded-xl shadow-2xl border-2 border-gray-200 py-2 max-h-[calc(100vh-12rem)] overflow-y-auto z-50'>
+                  <div className='absolute top-full mt-2 left-0 lg:left-auto lg:w-56 w-full min-w-0 max-w-[min(100vw-2rem,100%)] lg:max-w-56 bg-white rounded-xl shadow-2xl border-0 py-2 max-h-[calc(100vh-12rem)] overflow-y-auto z-50'>
                     {categoriesPending ? (
                       <div className='text-center py-2 text-sm text-gray-500'>
                         Loading...
