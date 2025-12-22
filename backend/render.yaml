@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: cartnova-backend
+    env: python
+    buildCommand: bash build.sh
+    startCommand: gunicorn cartnova.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.3
+
