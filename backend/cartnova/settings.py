@@ -41,6 +41,7 @@ DEBUG = os.environ.get("DEBUG", "False").lower() in ("1", "true", "yes")
 
 # ALLOWED_HOSTS configuration
 # Default to allowing all hosts if not set, but prefer explicit configuration
+# Fixed for Render.com deployment - handles empty strings and edge cases
 ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS", "").strip()
 if ALLOWED_HOSTS_ENV and ALLOWED_HOSTS_ENV != "*":
     # Parse comma-separated list of hosts
