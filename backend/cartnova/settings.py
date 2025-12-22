@@ -97,7 +97,7 @@ MIDDLEWARE = [
 
 # Add WhiteNoise middleware if available (for production)
 try:
-    import whitenoise
+    import whitenoise  # type: ignore[import-unresolved]  # noqa: F401
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 except ImportError:
     pass  # WhiteNoise not installed, skip it (fine for development)
@@ -237,7 +237,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # WhiteNoise configuration for static files (only if whitenoise is installed)
 try:
-    import whitenoise
+    import whitenoise  # type: ignore[import-unresolved]  # noqa: F401
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 except ImportError:
     pass  # Use default static files storage if whitenoise not available
