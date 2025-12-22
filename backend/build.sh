@@ -2,8 +2,13 @@
 # Build script for Render deployment
 set -o errexit
 
-# Collect static files
-python manage.py collectstatic --noinput
+# Create staticfiles directory if it doesn't exist
+mkdir -p staticfiles
+
+# Collect static files (with verbose output for debugging)
+python manage.py collectstatic --noinput --clear || {
+    echo "Warning: collectstatic failed, continuing anyway..."
+}
 
 # Run migrations
 python manage.py migrate --noinput

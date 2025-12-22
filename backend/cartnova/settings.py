@@ -96,8 +96,10 @@ MIDDLEWARE = [
 ]
 
 # Add WhiteNoise middleware if available (for production)
+# WhiteNoise must be added after SecurityMiddleware but before other middleware
 try:
     import whitenoise  # type: ignore[import-unresolved]  # noqa: F401
+    # Insert WhiteNoise middleware right after SecurityMiddleware (index 1)
     MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 except ImportError:
     pass  # WhiteNoise not installed, skip it (fine for development)
@@ -238,7 +240,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # WhiteNoise configuration for static files (only if whitenoise is installed)
 try:
     import whitenoise  # type: ignore[import-unresolved]  # noqa: F401
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    # Use CompressedStaticFilesStorage instead of CompressedManifestStaticFilesStorage
+    # Manifest storage can cause issues if manifest.json is missing or corrupted
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+    # WhiteNoise settings for better performance
+    WHITENOISE_USE_FINDERS = True  # Fallback to Django's staticfiles finders
+    WHITENOISE_AUTOREFRESH = False  # Disable auto-refresh in production for better performance
 except ImportError:
     pass  # Use default static files storage if whitenoise not available
 
