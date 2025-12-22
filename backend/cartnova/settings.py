@@ -39,11 +39,24 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() in ("1", "true", "yes")
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get("ALLOWED_HOSTS", "*").split(",")
-    if host.strip()
-]
+# ALLOWED_HOSTS configuration
+# Default to allowing all hosts if not set, but prefer explicit configuration
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS", "").strip()
+if ALLOWED_HOSTS_ENV and ALLOWED_HOSTS_ENV != "*":
+    # Parse comma-separated list of hosts
+    ALLOWED_HOSTS = [
+        host.strip()
+        for host in ALLOWED_HOSTS_ENV.split(",")
+        if host.strip()
+    ]
+    # Ensure we have at least one host
+    if not ALLOWED_HOSTS:
+        ALLOWED_HOSTS = ["*"]
+else:
+    # Default: allow all hosts (works in Django 5.x when DEBUG=False)
+    # For production, it's better to set ALLOWED_HOSTS env var explicitly
+    # Example: ALLOWED_HOSTS=cartnova-storefront-backend.onrender.com,localhost
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -99,9 +112,17 @@ FRONTEND_URL_CLEAN = FRONTEND_URL.rstrip('/') if FRONTEND_URL else None
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',  # Development
     'https://cartnova-storefront.vercel.app',  # Vercel production frontend
+    'https://cartnova-storefront-backend.onrender.com',  # Render backend (for admin access)
 ]
 if FRONTEND_URL_CLEAN and FRONTEND_URL_CLEAN not in CSRF_TRUSTED_ORIGINS:
     CSRF_TRUSTED_ORIGINS.append(FRONTEND_URL_CLEAN)
+
+# Also add backend URL from environment if provided
+BACKEND_URL = os.environ.get("BACKEND_URL", "")
+if BACKEND_URL:
+    BACKEND_URL_CLEAN = BACKEND_URL.rstrip('/')
+    if BACKEND_URL_CLEAN not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(BACKEND_URL_CLEAN)
 
 # CORS settings - Environment aware
 CORS_ALLOW_ALL_ORIGINS = os.environ.get("CORS_ALLOW_ALL_ORIGINS", "False").lower() in ("1", "true", "yes")
