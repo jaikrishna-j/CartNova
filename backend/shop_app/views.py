@@ -31,20 +31,34 @@ BASE_URL = "http://localhost:5173"
 
 # --- Initialize Razorpay client ---
 razorpay_client = None
-try:
-    print("Attempting to initialize Razorpay client...")
-    key_id = settings.RAZORPAY_KEY_ID
-    key_secret = settings.RAZORPAY_KEY_SECRET
-    if not key_id or not key_secret:
-        print("ERROR: Razorpay Key ID or Secret Key is missing in settings.py")
-    else:
-        razorpay_client = razorpay.Client(auth=(key_id, key_secret))
-        print("Razorpay client initialized successfully.")
-except AttributeError as e:
-     print(f"ERROR: Razorpay keys not found in settings.py. Details: {e}")
-except Exception as e:
-    print(f"CRITICAL ERROR initializing Razorpay client: {e}")
-    traceback.print_exc()
+
+def initialize_razorpay():
+    """Initialize or re-initialize Razorpay client"""
+    global razorpay_client
+    try:
+        print("Attempting to initialize Razorpay client...")
+        key_id = settings.RAZORPAY_KEY_ID
+        key_secret = settings.RAZORPAY_KEY_SECRET
+        if not key_id or not key_secret:
+            print("ERROR: Razorpay Key ID or Secret Key is missing in settings.py")
+            razorpay_client = None
+            return False
+        else:
+            razorpay_client = razorpay.Client(auth=(key_id, key_secret))
+            print("Razorpay client initialized successfully.")
+            return True
+    except AttributeError as e:
+        print(f"ERROR: Razorpay keys not found in settings.py. Details: {e}")
+        razorpay_client = None
+        return False
+    except Exception as e:
+        print(f"CRITICAL ERROR initializing Razorpay client: {e}")
+        traceback.print_exc()
+        razorpay_client = None
+        return False
+
+# Initialize on module load
+initialize_razorpay()
 # --- End Razorpay Initialization ---
 
 
@@ -355,19 +369,23 @@ def initiate_payment(request):
     # --- Cart Fetching ---
     cart = None
     try:
-        print(f"Fetching cart {cart_code} for user {request.user.id}...")
-        cart = Cart.objects.get(cart_code=cart_code, user=request.user, paid=False)
-        print("Found cart belonging to user.")
-    except Cart.DoesNotExist:
-        try:
-            print(f"Cart not found for user. Trying anonymous cart {cart_code}...")
-            cart = Cart.objects.get(cart_code=cart_code, user=None, paid=False)
-            print("Found anonymous cart. Associating with user.")
+        # First, try to find cart by cart_code and paid=False (like get_cart does)
+        print(f"Fetching cart {cart_code}...")
+        cart = Cart.objects.get(cart_code=cart_code, paid=False)
+        print(f"Found cart. Current user: {cart.user}, Request user: {request.user.id}")
+        
+        # If cart doesn't belong to current user, associate it with them
+        if cart.user != request.user:
+            print(f"Associating cart with user {request.user.id}...")
             cart.user = request.user
             cart.save()
-        except Cart.DoesNotExist:
-            print(f"Cart {cart_code} not found or already paid.")
-            return Response({'error': 'Cart not found, already paid, or invalid.'}, status=status.HTTP_404_NOT_FOUND)
+            print("Cart associated with user successfully.")
+        else:
+            print("Cart already belongs to user.")
+            
+    except Cart.DoesNotExist:
+        print(f"Cart {cart_code} not found or already paid.")
+        return Response({'error': 'Cart not found, already paid, or invalid.'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
          print(f"Unexpected error fetching cart: {e}")
          traceback.print_exc()
@@ -393,8 +411,10 @@ def initiate_payment(request):
         if gateway == 'razorpay':
             print("Processing Razorpay...")
             if not razorpay_client:
-                print("ERROR: Razorpay client is None.")
-                return Response({'error': 'Payment provider (Razorpay) configuration error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                print("WARNING: Razorpay client is None. Attempting to re-initialize...")
+                if not initialize_razorpay():
+                    print("ERROR: Failed to initialize Razorpay client.")
+                    return Response({'error': 'Payment provider (Razorpay) configuration error.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             currency = "INR"
             amount_in_paisa = int(total_amount_decimal * 100)
@@ -589,8 +609,10 @@ def verify_payment(request):
                 'razorpay_signature': razorpay_signature
             }
             if not razorpay_client:
-                print("ERROR: RZP client None for verification.")
-                return Response({"error": "RZP config error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                print("WARNING: RZP client None for verification. Attempting to re-initialize...")
+                if not initialize_razorpay():
+                    print("ERROR: Failed to initialize Razorpay client for verification.")
+                    return Response({"error": "RZP config error."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             try:
                 print("Calling verify_payment_signature...")
