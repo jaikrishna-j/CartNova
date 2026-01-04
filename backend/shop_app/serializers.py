@@ -65,7 +65,6 @@ class SimpleCartSerializer(serializers.ModelSerializer):
 
 
 # --- NEW SERIALIZER FOR ORDER HISTORY ---
-# I corrected a small typo: 'order_data' -> 'order_date' to match your Meta fields
 class NewCartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
     order_id = serializers.SerializerMethodField()

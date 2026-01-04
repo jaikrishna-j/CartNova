@@ -7,9 +7,7 @@ import api, { BASE_URL } from '@/api';
 import { FiShoppingCart } from 'react-icons/fi';
 import { AuthContext } from '@/context/AuthContext';
 import { getProxiedImageUrl } from '@/utils/imageProxy';
-
-// --- THIS IS THE ONLY CHANGE ---
-import toast from 'react-hot-toast'; // Change this import from 'sonner'
+import toast from 'react-hot-toast';
 
 import { generateRandomAlphanumeric } from '../../GenerateCartCode';
 import Spinner from '../ui/Spinner'; 
@@ -126,9 +124,9 @@ const ProductPage = ({ setNumberCartItems }) => {
     if (loading) return <ProductPagePlaceHolder />;
     if (error && !product) {
         return (
-             <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center bg-white min-h-screen'>
+             <div className='min-h-screen px-4 py-12 mx-auto text-center bg-white max-w-7xl sm:px-6 lg:px-8'>
                  <p className="text-red-500">{error}</p>
-                 <Link to="/store" className="text-indigo-600 hover:underline mt-4 inline-block">Go back to Store</Link>
+                 <Link to="/store" className="inline-block mt-4 text-indigo-600 hover:underline">Go back to Store</Link>
              </div>
         );
     }
@@ -143,12 +141,12 @@ const ProductPage = ({ setNumberCartItems }) => {
     return (
         <div className='bg-white'>
             <section className='py-8 md:py-12'>
-                <div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <div className='flex flex-col md:flex-row gap-4 md:gap-8 lg:gap-12 items-start'>
+                <div className='max-w-6xl px-4 mx-auto sm:px-6 lg:px-8'>
+                    <div className='flex flex-col items-start gap-4 md:flex-row md:gap-8 lg:gap-12'>
                         {/* Image Section - Reduced size for laptop and desktop */}
                         <div className='w-full md:w-2/5 lg:w-2/5 bg-gray-100 rounded-xl p-2 md:p-4 h-64 sm:h-80 md:h-auto md:max-h-[500px] md:aspect-square flex items-center justify-center'>
                             <img
-                                className='w-full h-full max-w-full max-h-full object-contain rounded-lg'
+                                className='object-contain w-full h-full max-w-full max-h-full rounded-lg'
                                 src={imgSrc}
                                 alt={productName}
                                 onError={e => {
@@ -158,19 +156,19 @@ const ProductPage = ({ setNumberCartItems }) => {
                             />
                         </div>
                         {/* Details Section - Reduced text sizes for mobile */}
-                        <div className='w-full md:w-3/5 lg:w-3/5 p-2'>
-                            <div className='text-xs sm:text-sm text-gray-500 mb-1 sm:mb-2'>
+                        <div className='w-full p-2 md:w-3/5 lg:w-3/5'>
+                            <div className='mb-1 text-xs text-gray-500 sm:text-sm sm:mb-2'>
                                 SKU: {product.id || 'N/A'}
                             </div>
-                            <h1 className='text-lg sm:text-xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2 sm:mb-4 leading-tight line-clamp-3 md:line-clamp-none'>
+                            <h1 className='mb-2 text-lg font-extrabold leading-tight text-gray-900 sm:text-xl md:text-3xl lg:text-4xl sm:mb-4 line-clamp-3 md:line-clamp-none'>
                                 {productName}
                             </h1>
                             <div className='flex items-baseline mb-4 sm:mb-6'>
-                                <span className='text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600'>
+                                <span className='text-xl font-bold text-transparent sm:text-2xl md:text-3xl bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-600'>
                                     ₹{productPrice}
                                 </span>
                             </div>
-                            <p className='text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8'>
+                            <p className='mb-6 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg sm:mb-8'>
                                 {productDescription}
                             </p>
                             <div className='flex flex-wrap gap-4'>
@@ -182,7 +180,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                                 >
                                     {isAdding ? (
                                         <>
-                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
@@ -195,7 +193,7 @@ const ProductPage = ({ setNumberCartItems }) => {
                                     )}
                                 </button>
                             </div>
-                            {error && !inCart && <p className="text-red-500 mt-4">{error}</p>}
+                            {error && !inCart && <p className="mt-4 text-red-500">{error}</p>}
                         </div>
                     </div>
                 </div>

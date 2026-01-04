@@ -11,7 +11,6 @@ import { AuthContext } from '@/context/AuthContext';
 import { useGoogleLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 
-// --- Style Definitions ---
 const pageStyle = 'h-screen overflow-hidden flex items-center justify-center bg-gray-50 p-2 sm:p-4';
 const containerStyle = 'w-full max-w-5xl mx-auto max-h-[calc(100vh-1rem)] sm:max-h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 bg-white rounded-2xl shadow-2xl overflow-hidden';
 const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-8 lg:p-12 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
@@ -160,11 +159,11 @@ const LoginPage = () => {
         {/* Left Side */}
         <div className={leftPanelStyle}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={loginAnimation} loop={true} className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-64 lg:h-64' /></motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wider mt-2 lg:mt-4'>Welcome Back!</h1><p className='mt-2 lg:mt-4 text-xs sm:text-sm md:text-sm lg:text-base text-indigo-200 max-w-xs mx-auto'>It's great to see you again. Your next premium find is just a click away.</p></motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='mt-2 text-xl font-extrabold tracking-wider sm:text-2xl md:text-3xl lg:text-4xl lg:mt-4'>Welcome Back!</h1><p className='max-w-xs mx-auto mt-2 text-xs text-indigo-200 lg:mt-4 sm:text-sm md:text-sm lg:text-base'>It's great to see you again. Your next premium find is just a click away.</p></motion.div>
         </div>
         {/* Right Side */}
         <motion.div className={rightPanelStyle} variants={cardVariants} initial='hidden' animate='visible'>
-          <motion.div variants={itemVariants} className='text-center mb-4 sm:mb-6'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign In to Your Account</h2><p className={subtitleStyle}>Or{' '} <Link to='/register' className={linkStyle}>Create a new account</Link></p></motion.div>
+          <motion.div variants={itemVariants} className='mb-4 text-center sm:mb-6'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign In to Your Account</h2><p className={subtitleStyle}>Or{' '} <Link to='/register' className={linkStyle}>Create a new account</Link></p></motion.div>
 
           <form onSubmit={handleStandardSubmit}>
             <div className={formStyle}>
@@ -175,7 +174,7 @@ const LoginPage = () => {
               </motion.div>
               {/* Password Field */}
               <motion.div variants={itemVariants}>
-                 <div className='flex justify-between items-center mb-1'> <label htmlFor='password' className={labelStyle}>Password</label> <Link to='/forgot-password' className='text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-500'>Forgot Password?</Link> </div>
+                 <div className='flex items-center justify-between mb-1'> <label htmlFor='password' className={labelStyle}>Password</label> <Link to='/forgot-password' className='text-xs font-medium text-indigo-600 sm:text-sm hover:text-indigo-500'>Forgot Password?</Link> </div>
                  <div className={inputGroupStyle}> <span className={iconStyle}><FiLock className={iconSvgStyle} /></span> <input type={showPassword ? 'text' : 'password'} id='password' value={password} onChange={(e) => setPassword(e.target.value)} className={passwordInputStyle} placeholder='Enter your password' required /> <button type='button' onClick={() => setShowPassword(!showPassword)} className={eyeButtonStyle}>{showPassword ? <FiEyeOff /> : <FiEye />}</button> </div>
               </motion.div>
               {/* Submit Button */}

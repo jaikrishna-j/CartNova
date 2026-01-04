@@ -1,4 +1,4 @@
-@import "./tailwind-scope.css"; /* Import the scoped Tailwind CSS file */
+@import "./tailwind-scope.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,26 +71,17 @@ html {
   html, body {
     overflow-x: hidden;
   }
-  
-  /* Better focus styles for accessibility */
   *:focus-visible {
     @apply outline-none ring-2 ring-indigo-500 ring-offset-2;
   }
-  
-  /* Improved selection colors */
-  ::selection {
+    ::selection {
     @apply bg-indigo-200 text-indigo-900;
   }
-  
-  /* Ensure mobile menu stays on top with very high z-index on mobile screens */
-  @media (max-width: 1023px) {
-    /* Ensure mobile menu stays on top and isolates content */
+    @media (max-width: 1023px) {
     body.mobile-menu-open nav[class*="NavBar"] {
       z-index: 999999 !important;
       isolation: isolate !important;
-    }
-    
-    /* Ensure mobile menu container isolates its content with very high z-index */
+    }    
     body.mobile-menu-open nav[class*="NavBar"] > div[class*="fixed"][class*="z-"] {
       isolation: isolate !important;
       contain: layout style paint !important;

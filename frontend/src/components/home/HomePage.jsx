@@ -7,8 +7,7 @@ import NetworkErrorDisplay from '@/components/ui/NetworkErrorDisplay';
 import Header from '@/components/home/Header';
 import CardContainer from '@/components/home/CardContainer';
 import { useEffect } from 'react';
-// FIX: Import the FUNCTION, not the value
-import { generateRandomAlphanumeric } from '@/GenerateCartCode'; // Adjusted path assuming it's in src/
+import { generateRandomAlphanumeric } from '@/GenerateCartCode';
 
 const HomePage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -63,7 +62,7 @@ const HomePage = () => {
             ) : products.length > 0 ? (
                 <CardContainer products={products} isSearch={isSearching} />
             ) : (
-                <div className='text-center py-20 bg-white'>
+                <div className='py-20 text-center bg-white'>
                     <p className='text-xl text-gray-500'>
                         No products found for your search criteria.
                     </p>
@@ -71,7 +70,7 @@ const HomePage = () => {
             )}
             
             {numOfPages > 1 && (
-                <div className='flex justify-center w-full my-6 sm:my-8 md:my-10 px-4'>
+                <div className='flex justify-center w-full px-4 my-6 sm:my-8 md:my-10'>
                     <PagePagination
                         page={page}
                         numOfPages={numOfPages}

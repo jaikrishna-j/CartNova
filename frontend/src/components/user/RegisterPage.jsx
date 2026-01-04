@@ -41,7 +41,6 @@ const PasswordStrengthIndicator = ({ password }) => {
   );
 };
 
-// --- Style Definitions ---
 const pageStyle = 'min-h-screen flex items-center justify-center bg-gray-50 p-2 sm:p-4';
 const containerStyle = 'w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 bg-white rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[95vh] lg:max-h-[90vh]';
 const leftPanelStyle = 'hidden lg:flex flex-col justify-center items-center p-6 xl:p-8 bg-gradient-to-br from-indigo-600 to-purple-700 text-white text-center';
@@ -118,11 +117,11 @@ const RegisterPage = () => {
         {/* Left Side */}
         <div className={leftPanelStyle}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}><Lottie animationData={registerAnimation} loop={true} className='w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 xl:w-56 xl:h-56' /></motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='text-xl sm:text-2xl md:text-2xl xl:text-3xl font-extrabold tracking-wider mt-2 xl:mt-4'>Create Account</h1><p className='mt-2 xl:mt-3 text-xs sm:text-sm md:text-sm xl:text-base text-indigo-200 max-w-xs mx-auto'>Join CartNova today and start discovering amazing products!</p></motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}><h1 className='mt-2 text-xl font-extrabold tracking-wider sm:text-2xl md:text-2xl xl:text-3xl xl:mt-4'>Create Account</h1><p className='max-w-xs mx-auto mt-2 text-xs text-indigo-200 xl:mt-3 sm:text-sm md:text-sm xl:text-base'>Join CartNova today and start discovering amazing products!</p></motion.div>
         </div>
         {/* Right Side */}
         <motion.div className={rightPanelStyle} variants={cardVariants} initial='hidden' animate='visible'>
-          <motion.div variants={itemVariants} className='text-center mb-4 sm:mb-5'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign Up</h2><p className={subtitleStyle}>Already have an account?{' '} <Link to='/login' className={linkStyle}>Sign in</Link></p></motion.div>
+          <motion.div variants={itemVariants} className='mb-4 text-center sm:mb-5'>{error && <Error error={error} />}<h2 className={titleStyle}>Sign Up</h2><p className={subtitleStyle}>Already have an account?{' '} <Link to='/login' className={linkStyle}>Sign in</Link></p></motion.div>
           <form onSubmit={handleStandardSubmit}>
             <div className={formStyle}>
               <div className={gridStyle}>
@@ -138,7 +137,7 @@ const RegisterPage = () => {
               </div>
               <motion.div variants={itemVariants}><label htmlFor='password'className={labelStyle}>Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showPassword ? 'text' : 'password'} id='password' value={password} onChange={(e) => setPassword(e.target.value)} className={getPasswordInputStyle('password')} placeholder='Enter your password' required /><button type='button' onClick={() => setShowPassword(!showPassword)} className={eyeButtonStyle}>{showPassword ? <FiEyeOff /> : <FiEye />}</button></div><PasswordStrengthIndicator password={password} />{validationErrors.password && !Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password}</p>} {validationErrors.password && Array.isArray(validationErrors.password) && <p className={errorTextStyle}>{validationErrors.password.join(' ')}</p>}</motion.div>
               <motion.div variants={itemVariants}><label htmlFor='confirmPassword'className={labelStyle}>Confirm Password <span className="text-red-500">*</span></label><div className={inputGroupStyle}><span className={iconStyle}><FiLock className={iconSvgStyle} /></span><input type={showConfirmPassword ? 'text' : 'password'} id='confirmPassword' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className={getPasswordInputStyle('confirm_password')} placeholder='Confirm your password' required /><button type='button' onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={eyeButtonStyle}>{showConfirmPassword ? <FiEyeOff /> : <FiEye />}</button></div> {validationErrors.confirm_password && <p className={errorTextStyle}>{validationErrors.confirm_password[0]}</p>}</motion.div>
-              <motion.div variants={itemVariants} className="flex justify-center pt-1 scale-90 sm:scale-100 origin-center">
+              <motion.div variants={itemVariants} className="flex justify-center pt-1 origin-center scale-90 sm:scale-100">
                 <ReCAPTCHA
                   ref={recaptchaRef}
                   sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || ""}

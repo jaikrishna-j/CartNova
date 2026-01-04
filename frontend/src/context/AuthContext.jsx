@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useState, useCallback } from 'react'; // Added useCallback
+import React, { createContext, useEffect, useState, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import api from '@/api'; // Your configured axios instance with interceptor
+import api from '@/api';
 
 export const AuthContext = createContext({
   isAuthenticated: false,
@@ -24,8 +24,6 @@ export function AuthProvider({ children }) {
     setUsername('');
   };
 
-  // --- Combined checkAuth and get_username ---
-  // useCallback prevents recreating the function on every render
   const checkAuthAndFetchUser = useCallback(async () => {
     // console.log("checkAuthAndFetchUser called"); // Debug log
     const token = localStorage.getItem('access');
@@ -42,22 +40,15 @@ export function AuthProvider({ children }) {
           // Token exists and is not expired
           authenticated = true;
           try {
-            // --- Fetch username ONLY if token seems valid ---
-            // The 'api' interceptor will add the token header automatically
             const response = await api.get('/get_username'); // Use root path if needed
             fetchedUsername = response.data.username;
-            // console.log("Username fetched successfully:", fetchedUsername); // Debug log
           } catch (error) {
-            // Error fetching username even with a seemingly valid token
             console.error("Error fetching username:", error.response ? error.response.data : error.message);
-            // This might happen if the token is invalid on the server side (e.g., blacklisted)
             authenticated = false; // Mark as not authenticated
             clearAuth(); // Clear invalid token
           }
         } else {
           console.log("Token expired.");
-          // --- Optional: Implement token refresh logic here ---
-          // If refresh fails or isn't implemented, clear auth
           clearAuth();
         }
       } catch (error) {
@@ -65,8 +56,6 @@ export function AuthProvider({ children }) {
         clearAuth(); // Clear invalid token
       }
     } else {
-        // console.log("No access token found."); // Debug log
-        // Ensure state reflects logged out status if no token
         if (isAuthenticated) setIsAuthenticated(false);
         if (username) setUsername('');
     }
@@ -79,15 +68,13 @@ export function AuthProvider({ children }) {
 
   // Run the check on initial component mount
   useEffect(() => {
-    setLoading(true); // Start loading on mount
+    setLoading(true);
     checkAuthAndFetchUser();
   }, [checkAuthAndFetchUser]); // Dependency array includes the function itself
 
   // Logout function
   const logout = () => {
     clearAuth();
-    // Optionally redirect user after logout
-    // navigate('/login');
     console.log("User logged out.");
   };
 
@@ -96,15 +83,14 @@ export function AuthProvider({ children }) {
     isAuthenticated,
     setIsAuthenticated, // Still needed by Login/Register to trigger state change
     username,
-    get_username: checkAuthAndFetchUser, // Renamed function call
+    get_username: checkAuthAndFetchUser, // Expose function to refresh username
     logout,
     loading
   };
 
   return (
     <AuthContext.Provider value={authValue}>
-      {/* Only render children when initial check is done */}
-      {!loading ? children : null /* Or show a loading spinner */}
+      {!loading ? children : null}
     </AuthContext.Provider>
   );
 }

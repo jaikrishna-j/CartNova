@@ -13,7 +13,7 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'ref', 'get_products', 'status', 'amount', 'currency', 'created_at')
     list_filter = ('status', 'user', 'currency')
     search_fields = ('ref', 'user__username', 'cart__cart_code')
-    ordering = ('-created_at',) # Removed 'user' to order all transactions by date
+    ordering = ('-created_at',)
     list_per_page = 25
 
     # --- 1. CREATE THE METHOD to get product names ---

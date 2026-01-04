@@ -64,7 +64,6 @@ const AppRoutes = () => {
 
   return (
     <>
-      {/* This renders your toast container */}
       <CustomToastContainer />
       
       <Routes>

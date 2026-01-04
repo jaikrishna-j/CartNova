@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Optional: isolate Tailwind styles visually */
 .tailwind-scope {
   all: unset;
   font-family: inherit;

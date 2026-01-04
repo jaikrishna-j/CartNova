@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-// Prefer runtime-configurable API base URL via env (Vite uses VITE_ prefix)
 export const BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/';
 
@@ -9,9 +8,7 @@ const api = axios.create({
   baseURL: BASE_URL,
 });
 
-// --- Request Interceptor ---
-// This code runs BEFORE each request using the 'api' instance is sent.
-// It's responsible for adding the Authorization header.
+
 api.interceptors.request.use(
   (config) => {
     // 1. Get the token from localStorage
@@ -29,19 +26,12 @@ api.interceptors.request.use(
           config.headers.Authorization = `Bearer ${token}`;
           // console.log("Interceptor adding token:", token); // Uncomment for debugging
         } else {
-          // Optional: Handle expired token case here (e.g., try refreshing)
           console.log("Token found but expired.");
-          // You might want to remove the expired token from localStorage
-          // localStorage.removeItem("access");
-          // localStorage.removeItem("refresh");
-          // Potentially redirect to login or attempt refresh here
         }
       } catch (error) {
          console.error("Error decoding token:", error);
-         // Handle cases where the token is invalid
          localStorage.removeItem("access");
          localStorage.removeItem("refresh");
-         // Potentially redirect to login
       }
     } else {
         // console.log("No token found in localStorage."); // Uncomment for debugging
@@ -55,7 +45,5 @@ api.interceptors.request.use(
   }
 );
 
-// Optional: Response Interceptor (useful for handling token refresh later)
-// api.interceptors.response.use(...)
 
 export default api;
