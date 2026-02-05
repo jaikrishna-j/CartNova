@@ -1,5 +1,3 @@
-# shop_app/views.py
-
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.decorators import api_view, permission_classes
@@ -9,7 +7,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import PermissionDenied
-from django.db import transaction  # Import transaction
+from django.db import transaction
 from django.core.mail import send_mail, EmailMessage, get_connection
 from django.template.loader import render_to_string
 
